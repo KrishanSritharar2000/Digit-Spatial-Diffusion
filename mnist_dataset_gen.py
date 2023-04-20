@@ -5,6 +5,7 @@ import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 from PIL import Image
 import random
+import numpy as np
 class DatasetGenerator:
 
     def __init__(self, rows=3, cols=3):
@@ -27,7 +28,7 @@ class DatasetGenerator:
         }
 
         # Load MNIST dataset
-        # self.load_mnist()
+        self.load_mnist()
 
     def load_mnist(self):
         # Load the MNIST dataset
@@ -95,7 +96,7 @@ class DatasetGenerator:
         prompt = ""
         for i in range(num_digits - 1):
             # select a random digit from 1 to 10
-            digit = random.randint(1, 10)
+            digit = random.randint(0, 9)
             digits.append(digit)
             
             # select a random spatial relationship
@@ -104,15 +105,90 @@ class DatasetGenerator:
             spatial_relationship = self.spatial_relationships[spatial_relationship]
 
             prompt += f"{digit} {random.choice(spatial_relationship)} "            
-        digit = random.randint(1, 10)
+        digit = random.randint(0, 9)
+        digits.append(digit)
         prompt += f"{digit}"
 
         return prompt, digits, relationships
+    
+
+    def generate_image(self, prompt):
+        def get_empty_positions(occupied_positions, relationship, prev_pos):
+            possible_positions = []
+            if relationship == "left":
+                possible_positions.extend([(row, col) for row in range(self.rows) for col in range(prev_pos[1]+1, self.cols)])
+            elif relationship == "right":
+                possible_positions.extend([(row, col) for row in range(self.rows) for col in range(0, prev_pos[1])])
+            elif relationship == "above":
+                possible_positions.extend([(row, col) for row in range(prev_pos[0]+1, self.rows) for col in range(self.cols)])
+            elif relationship == "below":
+                possible_positions.extend([(row, col) for row in range(0, prev_pos[0]) for col in range(self.cols)])
+            #Remove positions that are already occupied
+            empty_positions = []
+            for pos in possible_positions:
+                if pos not in occupied_positions:
+                    empty_positions.append(pos)
+            return empty_positions
+
+
+
+            for row in range(self.row):
+                for col in range():
+                    if (row, col) not in occupied_positions:
+                        if relationship == "left":
+                            if col > 0 and (row, col - 1) not in occupied_positions:
+                                empty_positions.append((row, col))
+                        elif relationship == "right":
+                            if col < 2 and (row, col + 1) not in occupied_positions:
+                                empty_positions.append((row, col))
+                        elif relationship == "above":
+                            if row > 0 and (row - 1, col) not in occupied_positions:
+                                empty_positions.append((row, col))
+                        elif relationship == "below":
+                            if row < 2 and (row + 1, col) not in occupied_positions:
+                                empty_positions.append((row, col))
+            return empty_positions
+
+        prompt_str, digits, relationships = prompt
+        positions = [(-1, -1)] * self.cols
+
+        image = np.zeros((84, 84), dtype=np.uint8)
+        prompt_image = Image.new('L', (28 * self.cols, 28 * self.rows))
+
+        digits_completed = 0
+        while (digits_completed < len(digits)):
+            if digits_completed == 0:
+                x, y = np.random.randint(0, 3), np.random.randint(0, 3)
+                positions[digits_completed] = (x, y)
+                # image[x * 28:(x + 1) * 28, y * 28:(y + 1) * 28] = mnist_images[digits.index(digits[i])]
+                digit_image = Image.fromarray((self.get_mnist_digit(digits[digits_completed]) * 255).astype('uint8'))
+                prompt_image.paste(digit_image, (28 * y, 28 * x))
+            else:
+                prev_pos = positions[digits_completed - 1]
+                relationship = relationships[digits_completed - 1]
+                empty_positions = get_empty_positions(positions, relationship, prev_pos)
+
+                if not empty_positions:
+                    print("Unable to place the digit given the prompt and previous positions.")
+                    prompt_image = Image.new('L', (28 * self.cols, 28 * self.rows))
+                    digits_completed = 0
+                    continue
+                    raise ValueError("Unable to place the digit given the prompt and previous positions.")
+
+
+                x, y = empty_positions[np.random.randint(0, len(empty_positions))]
+                positions[digits_completed] = (x, y)
+                digit_image = Image.fromarray((self.get_mnist_digit(digits[digits_completed]) * 255).astype('uint8'))
+                prompt_image.paste(digit_image, (28 * y, 28 * x))
+                # image[x * 28:(x + 1) * 28, y * 28:(y + 1) * 28] = mnist_images[digits.index(digits[i])]
+            digits_completed += 1
+        return prompt_image
 
 gen = DatasetGenerator()
 digits_to_combine = [3, 5, 1, 7, 0, 0, 7]
-prompt = gen.create_a_prompt(3)
-gen.create_prompt_image(prompt)
-print(prompt)
-# combined_image = gen.create_combined_image(digits_to_combine)
-# combined_image.show()
+for i in range(5):
+    prompt = gen.create_a_prompt(3)
+    print(prompt)
+    combined_image = gen.generate_image(prompt)
+    # combined_image = gen.create_combined_image(digits_to_combine)
+    combined_image.show()
