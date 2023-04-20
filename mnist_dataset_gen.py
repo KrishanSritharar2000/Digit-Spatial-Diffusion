@@ -186,9 +186,13 @@ class DatasetGenerator:
 
 gen = DatasetGenerator()
 digits_to_combine = [3, 5, 1, 7, 0, 0, 7]
+counter = 0
 for i in range(5):
     prompt = gen.create_a_prompt(3)
     print(prompt)
     combined_image = gen.generate_image(prompt)
     # combined_image = gen.create_combined_image(digits_to_combine)
-    combined_image.show()
+    
+    #save the image with the filename as the prompt
+    combined_image.save(f"./data/dataset/{counter}_{prompt[0]}.png")
+    counter += 1
