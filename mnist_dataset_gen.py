@@ -186,8 +186,8 @@ class DatasetGenerator:
 
 gen = DatasetGenerator()
 digits_to_combine = [3, 5, 1, 7, 0, 0, 7]
-counter = 0
-for i in range(5):
+counter = 5
+for i in range(95):
     prompt = gen.create_a_prompt(3)
     print(prompt)
     combined_image = gen.generate_image(prompt)
