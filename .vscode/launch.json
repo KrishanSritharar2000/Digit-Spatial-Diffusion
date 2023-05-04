@@ -10,7 +10,18 @@
             "request": "launch",
             "program": "mnist_dataset_gen.py",
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/stable-diffusion",
+            "args": [
+                "--base",
+                "configs/custom/mnist_autoencoder_kl_64x64x3.yaml",
+                "-t",
+                "--gpus",
+                "0",
+            ],
+            // "env": {
+            //     "XDG_CACHE_HOME" : "/home/krishan/fyp/final-year-project/stable-diffusion/data"
+            // }
         }
     ]
 }

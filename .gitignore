@@ -1,6 +1,6 @@
 stable-diffusion/logs/*
 data/*
-
+stable-diffusion/data/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
