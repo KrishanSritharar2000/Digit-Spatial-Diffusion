@@ -112,11 +112,11 @@ class MNISTDataset(Dataset):
 
 class MNISTTrain(MNISTDataset):
     def __init__(self, **kwargs):
-        super().__init__('data/mnist', indices=[i for i in range(80)], **kwargs)
+        super().__init__('data/mnist_dataset/dataset', indices=[i for i in range(8000)], **kwargs)
 
 class MNISTValidation(MNISTDataset):
     def __init__(self, **kwargs):
-        super().__init__('data/mnist', indices=[i for i in range(80, 100)], **kwargs)
+        super().__init__('data/mnist_dataset/dataset', indices=[i for i in range(8000, 10000)], **kwargs)
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
