@@ -12,6 +12,7 @@ class DatasetGenerator:
         assert rows == cols, 'Only square images are supported'
         self.rows = rows
         self.cols = cols
+        self.attempts = 0
 
         # self.spatial_relationships = {
         #     'left': ['to the left of', 'left of', 'on the left of'],
@@ -157,6 +158,7 @@ class DatasetGenerator:
 
         digits_completed = 0
         while (digits_completed < len(digits)):
+            self.attempts += 1
             if digits_completed == 0:
                 x, y = np.random.randint(0, 3), np.random.randint(0, 3)
                 positions[digits_completed] = (x, y)
@@ -169,11 +171,10 @@ class DatasetGenerator:
                 empty_positions = get_empty_positions(positions, relationship, prev_pos)
 
                 if not empty_positions:
-                    print("Unable to place the digit given the prompt and previous positions.")
+                    # print("Unable to place the digit given the prompt and previous positions.")
                     prompt_image = Image.new('L', (28 * self.cols, 28 * self.rows))
                     digits_completed = 0
                     continue
-                    raise ValueError("Unable to place the digit given the prompt and previous positions.")
 
 
                 x, y = empty_positions[np.random.randint(0, len(empty_positions))]
@@ -186,8 +187,9 @@ class DatasetGenerator:
 
 gen = DatasetGenerator()
 digits_to_combine = [3, 5, 1, 7, 0, 0, 7]
-counter = 5
-for i in range(95):
+counter = 7000
+imagesToMake = 3000
+for i in range(imagesToMake):
     prompt = gen.create_a_prompt(3)
     print(prompt)
     combined_image = gen.generate_image(prompt)
@@ -196,3 +198,4 @@ for i in range(95):
     #save the image with the filename as the prompt
     combined_image.save(f"./data/dataset/{counter}_{prompt[0]}.png")
     counter += 1
+print(f"Generated {gen.attempts} images to produce {imagesToMake} images")
