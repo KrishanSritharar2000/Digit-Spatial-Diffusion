@@ -27,6 +27,8 @@ from pytorch_lightning.utilities import rank_zero_info
 from ldm.data.base import Txt2ImgIterableBaseDataset
 from ldm.util import instantiate_from_config
 
+import wandb
+
 
 def get_parser(**parser_kwargs):
     def str2bool(v):
@@ -434,6 +436,7 @@ class CUDACallback(Callback):
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
+    # wandb.init(project="final-year-project")
     # custom parser to specify config files, train, test and debug mode,
     # postfix, resume.
     # `--key value` arguments are interpreted as arguments to the trainer.
@@ -734,8 +737,8 @@ if __name__ == "__main__":
 
         import signal
 
-        # signal.signal(signal.SIGUSR1, melk)
-        # signal.signal(signal.SIGUSR2, divein)
+        signal.signal(signal.SIGUSR1, melk)
+        signal.signal(signal.SIGUSR2, divein)
 
         # run
         if opt.train:

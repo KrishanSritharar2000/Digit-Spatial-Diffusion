@@ -33,7 +33,7 @@ data:
             params:
                 size: 256
         validation:
-            target: custom.data.mnist_dataset.MNISTTrain
+            target: custom.data.mnist_dataset.MNISTValidation
             params:
                 size: 256
 
