@@ -16,7 +16,7 @@
             // "cwd": "${workspaceFolder}/stable-diffusion",
             "args": [
                 "--base",
-                "configs/custom/mnist_autoencoder_kl_64x64x3.yaml",
+                "configs/custom/mnist_autoencoder.yaml",
                 "-t",
                 "--gpus",
                 "0",
