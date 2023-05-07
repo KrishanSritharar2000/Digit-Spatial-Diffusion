@@ -61,11 +61,11 @@ class MNISTDataset(Dataset):
 
 class MNISTTrain(MNISTDataset):
     def __init__(self, **kwargs):
-        super().__init__('../data/mnist_dataset/dataset', indicesFile="../data/mnist_dataset/train_indices.pkl", **kwargs)
+        super().__init__('data/mnist_dataset/dataset', indicesFile="data/train_indices.pkl", **kwargs)
 
 class MNISTValidation(MNISTDataset):
     def __init__(self, **kwargs):
-        super().__init__('../data/mnist_dataset/dataset', indicesFile="../data/mnist_dataset/test_indices.pkl", **kwargs)
+        super().__init__('data/mnist_dataset/dataset', indicesFile="data/test_indices.pkl", **kwargs)
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
