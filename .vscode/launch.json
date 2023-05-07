@@ -8,12 +8,10 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "trial.py",
+            "program": "main.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "cwd": "${workspaceFolder}",
-
-            // "cwd": "${workspaceFolder}/stable-diffusion",
+            "cwd": "${workspaceFolder}/stable-diffusion",
             "args": [
                 "--base",
                 "configs/custom/mnist_autoencoder.yaml",

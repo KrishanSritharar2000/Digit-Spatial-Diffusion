@@ -1,5 +1,6 @@
 stable-diffusion/logs/*
-data/*
+data/MNIST
+data/mnist_dataset/dataset
 stable-diffusion/data/*
 
 # Byte-compiled / optimized / DLL files
