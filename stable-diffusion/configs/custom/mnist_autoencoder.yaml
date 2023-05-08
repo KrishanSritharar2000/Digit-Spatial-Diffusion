@@ -4,6 +4,7 @@ model:
     params:
         monitor: "val/rec_loss"
         embed_dim: 3
+        ckpt_path: "logs/2023-05-08T09-35-35_mnist_autoencoder/checkpoints/epoch=000004.ckpt"
         lossconfig:
             target: ldm.modules.losses.LPIPSWithDiscriminator
             params:
@@ -38,6 +39,11 @@ data:
             target: custom.data.mnist_dataset.MNISTValidation
             params:
                 size: 256
+        test:
+            target: custom.data.mnist_dataset.MNISTValidation
+            params:
+                size: 256      
+        
 
 lightning:
     callbacks:
