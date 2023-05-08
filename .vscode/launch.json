@@ -19,9 +19,10 @@
                 "--gpus",
                 "0",
             ],
-            // "env": {
-            //     "XDG_CACHE_HOME" : "/home/krishan/fyp/final-year-project/stable-diffusion/data"
-            // }
+            "env": {
+                "WANDB_EXECUTABLE": "/vol/bitbucket/ks1619/miniconda3/install/envs/sd-conda-env/bin/python",
+                //     "XDG_CACHE_HOME" : "/home/krishan/fyp/final-year-project/stable-diffusion/data"
+            }
         }
     ]
 }
