@@ -18,6 +18,9 @@
                 "-t",
                 "--gpus",
                 "0",
+                "--resume",
+                "logs/2023-05-08T09-35-35_mnist_autoencoder"
+
             ],
             "env": {
                 "WANDB_EXECUTABLE": "/vol/bitbucket/ks1619/miniconda3/install/envs/sd-conda-env/bin/python",

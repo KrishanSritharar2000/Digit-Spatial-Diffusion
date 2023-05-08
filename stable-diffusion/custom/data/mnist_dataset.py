@@ -36,9 +36,9 @@ class MNISTDataset(Dataset):
         img_path = os.path.join(self.root_dir, self.all_image_files[self.indices[idx]])
         image = Image.open(img_path)
 
-        # Convert the image to RGB if it is grayscale
-        if not image.mode == "RGB":
-            image = image.convert("RGB")
+        # # Convert the image to RGB if it is grayscale
+        # if not image.mode == "RGB":
+        #     image = image.convert("RGB")
 
         if self.size is not None:
             image = image.resize((self.size, self.size), resample=self.interpolation)
