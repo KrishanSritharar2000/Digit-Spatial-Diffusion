@@ -182,13 +182,13 @@ class DatasetGenerator:
                 digit_image = Image.fromarray((self.get_mnist_digit(digits[digits_completed]) * 255).astype('uint8'))
                 prompt_image.paste(digit_image, (28 * y, 28 * x))
                 # image[x * 28:(x + 1) * 28, y * 28:(y + 1) * 28] = mnist_images[digits.index(digits[i])]
-        digits_completed += 1
+            digits_completed += 1
         return prompt_image
 
 gen = DatasetGenerator()
 digits_to_combine = [3, 5, 1, 7, 0, 0, 7]
-counter = 7000
-imagesToMake = 3000
+counter = 0
+imagesToMake = 1000
 for i in range(imagesToMake):
     prompt = gen.create_a_prompt(3)
     print(prompt)
@@ -196,6 +196,6 @@ for i in range(imagesToMake):
     # combined_image = gen.create_combined_image(digits_to_combine)
     
     #save the image with the filename as the prompt
-    combined_image.save(f"./data/dataset/{counter}_{prompt[0]}.png")
+    combined_image.save(f"../data/test_dataset/{counter}_{prompt[0]}.png")
     counter += 1
 print(f"Generated {gen.attempts} images to produce {imagesToMake} images")
