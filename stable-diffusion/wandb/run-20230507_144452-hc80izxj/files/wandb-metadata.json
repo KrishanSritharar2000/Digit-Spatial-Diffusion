@@ -1,0 +1,91 @@
+{
+    "os": "Linux-5.19.0-38-generic-x86_64-with-glibc2.10",
+    "python": "3.8.5",
+    "heartbeatAt": "2023-05-07T13:44:52.793829",
+    "startedAt": "2023-05-07T13:44:52.137835",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--base",
+        "configs/custom/mnist_autoencoder.yaml",
+        "-t",
+        "--gpus",
+        "0"
+    ],
+    "state": "running",
+    "program": "main.py",
+    "codePath": "stable-diffusion/main.py",
+    "git": {
+        "remote": "git@github.com:KrishanSritharar2000/final-year-project.git",
+        "commit": "455085a6d15586e7abb548f5121323712dc35f37"
+    },
+    "email": "ks1619@ic.ac.uk",
+    "root": "/vol/bitbucket/ks1619/final-year-project",
+    "host": "gpu19.doc.ic.ac.uk",
+    "username": "ks1619",
+    "executable": "/vol/bitbucket/ks1619/fyp-env/bin/python",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 1980.2130000000002,
+        "min": 1200.0,
+        "max": 3900.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1199.99,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2000.001,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1200.003,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3600.0,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1200.091,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1999.99,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1200.176,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 3900.0
+        }
+    ],
+    "disk": {
+        "total": 64.66359329223633,
+        "used": 46.48628234863281
+    },
+    "gpu": "NVIDIA GeForce RTX 2080 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        }
+    ],
+    "memory": {
+        "total": 62.54279327392578
+    }
+}

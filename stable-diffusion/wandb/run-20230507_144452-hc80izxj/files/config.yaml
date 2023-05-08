@@ -1,0 +1,147 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    python_version: 3.8.5
+    cli_version: 0.15.1
+    framework: huggingface
+    huggingface_version: 4.19.2
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1683467092.192011
+    t:
+      1:
+      - 1
+      - 9
+      - 11
+      - 41
+      - 49
+      - 55
+      2:
+      - 1
+      - 9
+      - 11
+      - 41
+      - 49
+      - 55
+      3:
+      - 7
+      - 23
+      4: 3.8.5
+      5: 0.15.1
+      6: 4.19.2
+      8:
+      - 5
+    m:
+    - 1: trainer/global_step
+      6:
+      - 3
+    - 1: aeloss_step
+      5: 1
+      6:
+      - 1
+    - 1: train/total_loss
+      5: 1
+      6:
+      - 1
+    - 1: train/logvar
+      5: 1
+      6:
+      - 1
+    - 1: train/kl_loss
+      5: 1
+      6:
+      - 1
+    - 1: train/nll_loss
+      5: 1
+      6:
+      - 1
+    - 1: train/rec_loss
+      5: 1
+      6:
+      - 1
+    - 1: train/d_weight
+      5: 1
+      6:
+      - 1
+    - 1: train/disc_factor
+      5: 1
+      6:
+      - 1
+    - 1: train/g_loss
+      5: 1
+      6:
+      - 1
+    - 1: discloss_step
+      5: 1
+      6:
+      - 1
+    - 1: train/disc_loss
+      5: 1
+      6:
+      - 1
+    - 1: train/logits_real
+      5: 1
+      6:
+      - 1
+    - 1: train/logits_fake
+      5: 1
+      6:
+      - 1
+    - 1: epoch
+      5: 1
+      6:
+      - 1
+    - 1: val/rec_loss
+      5: 1
+      6:
+      - 1
+    - 1: val/total_loss
+      5: 1
+      6:
+      - 1
+    - 1: val/logvar
+      5: 1
+      6:
+      - 1
+    - 1: val/kl_loss
+      5: 1
+      6:
+      - 1
+    - 1: val/nll_loss
+      5: 1
+      6:
+      - 1
+    - 1: val/d_weight
+      5: 1
+      6:
+      - 1
+    - 1: val/disc_factor
+      5: 1
+      6:
+      - 1
+    - 1: val/g_loss
+      5: 1
+      6:
+      - 1
+    - 1: val/disc_loss
+      5: 1
+      6:
+      - 1
+    - 1: val/logits_real
+      5: 1
+      6:
+      - 1
+    - 1: val/logits_fake
+      5: 1
+      6:
+      - 1
+    - 1: aeloss_epoch
+      5: 1
+      6:
+      - 1
+    - 1: discloss_epoch
+      5: 1
+      6:
+      - 1

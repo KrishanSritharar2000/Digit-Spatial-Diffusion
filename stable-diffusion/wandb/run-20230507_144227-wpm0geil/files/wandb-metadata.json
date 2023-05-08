@@ -1,0 +1,85 @@
+{
+    "os": "Linux-5.19.0-38-generic-x86_64-with-glibc2.10",
+    "python": "3.8.5",
+    "heartbeatAt": "2023-05-07T13:42:27.799689",
+    "startedAt": "2023-05-07T13:42:27.178853",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "main.py",
+    "codePath": "stable-diffusion/main.py",
+    "git": {
+        "remote": "git@github.com:KrishanSritharar2000/final-year-project.git",
+        "commit": "455085a6d15586e7abb548f5121323712dc35f37"
+    },
+    "email": "ks1619@ic.ac.uk",
+    "root": "/vol/bitbucket/ks1619/final-year-project",
+    "host": "gpu19.doc.ic.ac.uk",
+    "username": "ks1619",
+    "executable": "/vol/bitbucket/ks1619/fyp-env/bin/python",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 1449.9446249999999,
+        "min": 1200.0,
+        "max": 3900.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1199.563,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1199.926,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2005.784,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1200.003,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1199.924,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1200.172,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1600.271,
+            "min": 1200.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1200.006,
+            "min": 1200.0,
+            "max": 3900.0
+        }
+    ],
+    "disk": {
+        "total": 64.66359329223633,
+        "used": 46.48628234863281
+    },
+    "gpu": "NVIDIA GeForce RTX 2080 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        }
+    ],
+    "memory": {
+        "total": 62.54279327392578
+    }
+}
