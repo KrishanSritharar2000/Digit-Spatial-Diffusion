@@ -1,3 +1,5 @@
+from typing import Optional
+from pytorch_lightning.utilities.types import STEP_OUTPUT
 import torch
 import pytorch_lightning as pl
 import torch.nn.functional as F
@@ -10,6 +12,7 @@ from ldm.modules.distributions.distributions import DiagonalGaussianDistribution
 
 from ldm.util import instantiate_from_config
 
+import matplotlib.pyplot as plt
 
 class VQModel(pl.LightningModule):
     def __init__(self,
@@ -382,6 +385,47 @@ class AutoencoderKL(pl.LightningModule):
         self.log_dict(log_dict_ae)
         self.log_dict(log_dict_disc)
         return self.log_dict
+
+    def test_step(self, batch, batch_idx):
+        inputs = self.get_input(batch, self.image_key)
+        reconstructions, posterior = self(inputs)
+        
+        aeloss, log_dict_ae = self.loss(inputs, reconstructions, posterior, 0, self.global_step,
+                                        last_layer=self.get_last_layer(), split="test")
+
+        discloss, log_dict_disc = self.loss(inputs, reconstructions, posterior, 1, self.global_step,
+                                            last_layer=self.get_last_layer(), split="test")
+        
+        # Visualise the results
+
+        input_tensor = inputs.cpu().numpy()  # If your tensor is on GPU, move it to CPU first and then convert to numpy array
+        reconstructed_tensor = reconstructions.cpu().numpy()
+
+
+        # Create a grid of subplots
+        fig, axes = plt.subplots(nrows=4, ncols=4, figsize=(12, 12))
+
+        # Iterate through the images in the batch and display them in the subplots
+        for i, ax in enumerate(axes.flat):
+            if i % 2 == 0:
+                image = input_tensor[i // 2, 0, :, :]
+                ax.set_title(f'Input {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
+            else:
+                image = reconstructed_tensor[i // 2, 0, :, :]
+                # ax.set_title(f'Reconstructed {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
+            ax.imshow(image, cmap='gray')
+            ax.axis('off')
+
+
+        # Display the grid of images
+        plt.tight_layout()
+        plt.savefig(f"outputs/output-{batch_idx}.png")
+        
+        self.log("test/rec_loss", log_dict_ae["test/rec_loss"])
+        self.log_dict(log_dict_ae)
+        self.log_dict(log_dict_disc)
+        return self.log_dict
+
 
     def configure_optimizers(self):
         lr = self.learning_rate

@@ -15,11 +15,11 @@
             "args": [
                 "--base",
                 "configs/custom/mnist_autoencoder.yaml",
-                "-t",
+                // "-t",
                 "--gpus",
                 "0",
-                "--resume",
-                "logs/2023-05-08T09-35-35_mnist_autoencoder"
+                // "--resume",
+                // "logs/2023-05-08T09-35-35_mnist_autoencoder"
 
             ],
             "env": {
