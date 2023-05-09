@@ -359,8 +359,9 @@ class AutoencoderKL(pl.LightningModule):
 
         if (batch_idx == 0):
             input_tensor = inputs.cpu().numpy()  # If your tensor is on GPU, move it to CPU first and then convert to numpy array
-            reconstructions_tensor = reconstructions.detach().cpu().numpy()
-            fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(12, 12))
+            reconstructions_tensor = MNISTDataset.denormalise(reconstructions) * 256
+            reconstructions_tensor = reconstructions_tensor.detach().cpu().numpy()
+            fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 12))
 
                     # Iterate through the images in the batch and display them in the subplots
             for i, ax in enumerate(axes.flat):
@@ -374,7 +375,7 @@ class AutoencoderKL(pl.LightningModule):
                 ax.axis('off')
             # Display the grid of images
             plt.tight_layout()
-            now = datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
+            now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
             plt.savefig(f"training_image_log/training_step{batch_idx}-{now}.png")
 
 
@@ -441,7 +442,7 @@ class AutoencoderKL(pl.LightningModule):
 
         # Display the grid of images
         plt.tight_layout()
-        plt.savefig(f"test_outputs/output-{batch_idx}.png")
+        plt.savefig(f"test_outputs/model3-epoch4/output-{batch_idx}.png")
         
         self.log("test/rec_loss", log_dict_ae["test/rec_loss"])
         self.log_dict(log_dict_ae)

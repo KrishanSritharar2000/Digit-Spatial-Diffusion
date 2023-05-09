@@ -73,6 +73,14 @@ class MNISTDataset(Dataset):
         image = to_pil(denormalized)
 
         return image
+    
+    @staticmethod
+    def denormalise(tensor):
+        # Denormalize
+        denormalized = (tensor + 1.0) * 127.5
+        denormalized = denormalized.clamp(0, 255)
+
+        return denormalized
 
 class MNISTTrain(MNISTDataset):
     def __init__(self, **kwargs):
