@@ -8,6 +8,7 @@ import importlib
 import csv
 import numpy as np
 import time
+from custom.data.mnist_dataset import MNISTDataset
 import torch
 import torchvision
 import pytorch_lightning as pl
@@ -310,6 +311,7 @@ class ImageLogger(Callback):
         self.batch_freq = batch_frequency
         self.max_images = max_images
         self.logger_log_images = {
+            pl.loggers.WandbLogger: self._wandb,
             pl.loggers.TestTubeLogger: self._testtube,
         }
         self.log_steps = [
@@ -332,6 +334,17 @@ class ImageLogger(Callback):
             pl_module.logger.experiment.add_image(
                 tag, grid,
                 global_step=pl_module.global_step)
+
+    @rank_zero_only
+    def _wandb(self, pl_module, images, batch_idx, split):
+        for k in images:
+            grid = torchvision.utils.make_grid(images[k])
+            grid = (grid + 1.0) / 2.0  # -1,1 -> 0,1; c,h,w
+
+            tag = f"{split}/{k}"
+            pl_module.logger.experiment.log({
+                tag: [wandb.Image(grid, caption=tag)]
+            }, step=pl_module.global_step)
 
     @rank_zero_only
     def log_local(self, save_dir, split, images,
@@ -376,6 +389,8 @@ class ImageLogger(Callback):
                     images[k] = images[k].detach().cpu()
                     if self.clamp:
                         images[k] = torch.clamp(images[k], -1., 1.)
+                    for i in range(images[k].shape[0]):
+                        images[k][i] = MNISTDataset.denormalise(images[k][i]) * 255 
 
             self.log_local(pl_module.logger.save_dir, split, images,
                            pl_module.global_step, pl_module.current_epoch, batch_idx)
@@ -436,7 +451,7 @@ class CUDACallback(Callback):
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    # wandb.init(project="final-year-project")
+    wandb.init(project="final-year-project")
     # custom parser to specify config files, train, test and debug mode,
     # postfix, resume.
     # `--key value` arguments are interpreted as arguments to the trainer.
@@ -578,7 +593,7 @@ if __name__ == "__main__":
                 }
             },
         }
-        default_logger_cfg = default_logger_cfgs["testtube"]
+        default_logger_cfg = default_logger_cfgs["wandb"]
         if "logger" in lightning_config:
             logger_cfg = lightning_config.logger
         else:
@@ -629,7 +644,7 @@ if __name__ == "__main__":
             "image_logger": {
                 "target": "main.ImageLogger",
                 "params": {
-                    "batch_frequency": 750,
+                    "batch_frequency": 100,
                     "max_images": 4,
                     "clamp": True
                 }
@@ -683,6 +698,7 @@ if __name__ == "__main__":
             callbacks_cfg[k]) for k in callbacks_cfg]
 
         trainer_opt.gpus = '0'
+        trainer_opt.precision = 16
         trainer = Trainer.from_argparse_args(trainer_opt, **trainer_kwargs)
         trainer.logdir = logdir
 
