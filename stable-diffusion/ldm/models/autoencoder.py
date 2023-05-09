@@ -1,5 +1,6 @@
 from typing import Optional
 from pytorch_lightning.utilities.types import STEP_OUTPUT
+from custom.data.mnist_dataset import MNISTDataset
 import torch
 import pytorch_lightning as pl
 import torch.nn.functional as F
@@ -13,6 +14,7 @@ from ldm.modules.distributions.distributions import DiagonalGaussianDistribution
 from ldm.util import instantiate_from_config
 
 import matplotlib.pyplot as plt
+import datetime
 
 class VQModel(pl.LightningModule):
     def __init__(self,
@@ -355,6 +357,28 @@ class AutoencoderKL(pl.LightningModule):
         inputs = self.get_input(batch, self.image_key)
         reconstructions, posterior = self(inputs)
 
+        if (batch_idx == 0):
+            input_tensor = inputs.cpu().numpy()  # If your tensor is on GPU, move it to CPU first and then convert to numpy array
+            reconstructions_tensor = reconstructions.detach().cpu().numpy()
+            fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(12, 12))
+
+                    # Iterate through the images in the batch and display them in the subplots
+            for i, ax in enumerate(axes.flat):
+                if i % 2 == 0:
+                    image = input_tensor[i // 2, 0, :, :]
+                    ax.set_title(f'Input {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
+                else:
+                    image = reconstructions_tensor[i // 2, 0, :, :]
+                    # ax.set_title(f'Reconstructed {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
+                ax.imshow(image, cmap='gray')
+                ax.axis('off')
+            # Display the grid of images
+            plt.tight_layout()
+            now = datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
+            plt.savefig(f"training_image_log/training_step{batch_idx}-{now}.png")
+
+
+
         if optimizer_idx == 0:
             # train encoder+decoder+logvar
             aeloss, log_dict_ae = self.loss(inputs, reconstructions, posterior, optimizer_idx, self.global_step,
@@ -397,10 +421,8 @@ class AutoencoderKL(pl.LightningModule):
                                             last_layer=self.get_last_layer(), split="test")
         
         # Visualise the results
-
         input_tensor = inputs.cpu().numpy()  # If your tensor is on GPU, move it to CPU first and then convert to numpy array
-        reconstructed_tensor = reconstructions.cpu().numpy()
-
+        # reconstructed_tensor = denormalized_output.cpu().numpy()
 
         # Create a grid of subplots
         fig, axes = plt.subplots(nrows=4, ncols=4, figsize=(12, 12))
@@ -411,7 +433,7 @@ class AutoencoderKL(pl.LightningModule):
                 image = input_tensor[i // 2, 0, :, :]
                 ax.set_title(f'Input {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
             else:
-                image = reconstructed_tensor[i // 2, 0, :, :]
+                image = MNISTDataset.visualize(reconstructions[i // 2])
                 # ax.set_title(f'Reconstructed {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
             ax.imshow(image, cmap='gray')
             ax.axis('off')
@@ -419,7 +441,7 @@ class AutoencoderKL(pl.LightningModule):
 
         # Display the grid of images
         plt.tight_layout()
-        plt.savefig(f"outputs/output-{batch_idx}.png")
+        plt.savefig(f"test_outputs/output-{batch_idx}.png")
         
         self.log("test/rec_loss", log_dict_ae["test/rec_loss"])
         self.log_dict(log_dict_ae)

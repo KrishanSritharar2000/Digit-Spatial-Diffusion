@@ -6,6 +6,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import torch
 import pickle
+
 class MNISTDataset(Dataset):
     def __init__(self, root_dir, indicesFile=None, transform=None, 
                  size=None,
@@ -17,6 +18,8 @@ class MNISTDataset(Dataset):
         if indicesFile is not None:
             with open(indicesFile, 'rb') as f:
                 self.indices = pickle.load(f)
+        else:
+            self.indices = np.arange(len(self.all_image_files))
 
         self.transform = transform
         self.size = size
@@ -58,6 +61,18 @@ class MNISTDataset(Dataset):
         output["image"] = normalized_image
         output["label"] = label
         return output
+    
+    @staticmethod
+    def visualize(tensor):
+        # Denormalize
+        denormalized = (tensor + 1.0) * 127.5
+        denormalized = denormalized.clamp(0, 255)
+
+        # Convert back to PIL Image
+        to_pil = transforms.ToPILImage()
+        image = to_pil(denormalized)
+
+        return image
 
 class MNISTTrain(MNISTDataset):
     def __init__(self, **kwargs):
@@ -66,6 +81,11 @@ class MNISTTrain(MNISTDataset):
 class MNISTValidation(MNISTDataset):
     def __init__(self, **kwargs):
         super().__init__('data/mnist_dataset/dataset', indicesFile="data/test_indices.pkl", **kwargs)
+
+class MNISTTest(MNISTDataset):
+    def __init__(self, **kwargs):
+        super().__init__('data/mnist_dataset/test_dataset', **kwargs)
+
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
