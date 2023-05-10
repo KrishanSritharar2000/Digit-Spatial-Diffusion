@@ -59,7 +59,7 @@ class MNISTDataset(Dataset):
         normalized_image = (image / 127.5 - 1.0).to(torch.float32)
 
         output["image"] = normalized_image
-        output["label"] = label
+        output["caption"] = label
         return output
     
     @staticmethod

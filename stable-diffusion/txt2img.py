@@ -1,3 +1,8 @@
+import sys
+import os
+sys.path.append(os.getcwd())
+sys.path.insert(0, '..')
+
 import argparse, os, sys, glob
 import cv2
 import torch
@@ -5,7 +10,7 @@ import numpy as np
 from omegaconf import OmegaConf
 from PIL import Image
 from tqdm import tqdm, trange
-from imwatermark import WatermarkEncoder
+# from imwatermark import WatermarkEncoder
 from itertools import islice
 from einops import rearrange
 from torchvision.utils import make_grid
@@ -38,6 +43,7 @@ def numpy_to_pil(images):
     """
     Convert a numpy image or a batch of images to a PIL image.
     """
+
     if images.ndim == 3:
         images = images[None, ...]
     images = (images * 255).round().astype("uint8")
@@ -236,9 +242,9 @@ def main():
 
     if opt.laion400m:
         print("Falling back to LAION 400M model...")
-        opt.config = "configs/latent-diffusion/txt2img-1p4B-eval.yaml"
-        opt.ckpt = "models/ldm/text2img-large/model.ckpt"
-        opt.outdir = "outputs/txt2img-samples-laion400m"
+    opt.config = "configs/custom/mnist_ldm.yaml"
+    opt.ckpt = "logs/2023-05-09T22-07-39_mnist_ldm/checkpoints/epoch=000000.ckpt"
+    opt.outdir = "test_outputs/ldm"
 
     seed_everything(opt.seed)
 
@@ -260,8 +266,8 @@ def main():
 
     print("Creating invisible watermark encoder (see https://github.com/ShieldMnt/invisible-watermark)...")
     wm = "StableDiffusionV1"
-    wm_encoder = WatermarkEncoder()
-    wm_encoder.set_watermark('bytes', wm.encode('utf-8'))
+    # wm_encoder = WatermarkEncoder()
+    # wm_encoder.set_watermark('bytes', wm.encode('utf-8'))
 
     batch_size = opt.n_samples
     n_rows = opt.n_rows if opt.n_rows > 0 else batch_size
@@ -322,7 +328,7 @@ def main():
                             for x_sample in x_checked_image_torch:
                                 x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
                                 img = Image.fromarray(x_sample.astype(np.uint8))
-                                img = put_watermark(img, wm_encoder)
+                                # img = put_watermark(img, wm_encoder)
                                 img.save(os.path.join(sample_path, f"{base_count:05}.png"))
                                 base_count += 1
 
@@ -338,7 +344,7 @@ def main():
                     # to image
                     grid = 255. * rearrange(grid, 'c h w -> h w c').cpu().numpy()
                     img = Image.fromarray(grid.astype(np.uint8))
-                    img = put_watermark(img, wm_encoder)
+                    # img = put_watermark(img, wm_encoder)
                     img.save(os.path.join(outpath, f'grid-{grid_count:04}.png'))
                     grid_count += 1
 

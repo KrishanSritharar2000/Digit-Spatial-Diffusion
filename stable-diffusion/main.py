@@ -698,7 +698,7 @@ if __name__ == "__main__":
             callbacks_cfg[k]) for k in callbacks_cfg]
 
         trainer_opt.gpus = '0'
-        trainer_opt.precision = 16
+        # trainer_opt.precision = 16
         trainer = Trainer.from_argparse_args(trainer_opt, **trainer_kwargs)
         trainer.logdir = logdir
 
