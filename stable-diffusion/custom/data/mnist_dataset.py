@@ -52,7 +52,7 @@ class MNISTDataset(Dataset):
         
         to_tensor = transforms.Compose([
             transforms.ToTensor(),
-            # transforms.Normalize((0.5,), (0.5,))
+            transforms.Normalize((0.5,), (0.5,))
         ])
         # to_tensor = transforms.ToTensor()
         image = to_tensor(image)
@@ -73,8 +73,17 @@ class MNISTDataset(Dataset):
         # denormalized = denormalized.clamp(0, 255)
 
         # Convert back to PIL Image
-        # tensor = (tensor * 0.5) + 0.5  # scale back to [0, 1] range
-        to_tensor = transforms.ToTensor()
+        tensor = (tensor * 0.5) + 0.5  # scale back to [0, 1] range
+        to_pil = transforms.ToPILImage()
+        pil_img = to_pil(tensor)
+        return pil_img
+        # tensor = tensor * 255  # scale to [0, 255] range
+        # return tensor.to(torch.uint8)
+        to_tensor = transforms.Compose([
+            transforms.Normalize((0.5,), (0.5,)),
+            transforms.ToTensor()
+        ])
+        # to_tensor = transforms.ToTensor()
         image = to_tensor(tensor)
 
         return image
@@ -86,7 +95,7 @@ class MNISTDataset(Dataset):
         # denormalized = denormalized.clamp(0, 255)
 
         # return tensor * 256
-        # tensor = (tensor * 0.5) + 0.5  # scale back to [0, 1] range
+        tensor = (tensor * 0.5) + 0.5  # scale back to [0, 1] range
         tensor = tensor * 255  # scale to [0, 255] range
         tensor = tensor.clamp(0, 255)  # ensure values are within [0, 255]
         return tensor.to(torch.uint8)

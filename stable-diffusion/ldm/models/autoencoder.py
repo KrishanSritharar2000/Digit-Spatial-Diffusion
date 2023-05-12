@@ -442,7 +442,7 @@ class AutoencoderKL(pl.LightningModule):
 
         # Display the grid of images
         plt.tight_layout()
-        plt.savefig(f"test_outputs/model4-epoch13/output-{batch_idx}.png")
+        plt.savefig(f"test_outputs/model5-epoch11-norm-11/output-{batch_idx}.png")
         
         self.log("test/rec_loss", log_dict_ae["test/rec_loss"])
         self.log_dict(log_dict_ae)
