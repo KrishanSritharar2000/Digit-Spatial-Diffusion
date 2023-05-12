@@ -359,7 +359,7 @@ class AutoencoderKL(pl.LightningModule):
 
         if (batch_idx == 0):
             input_tensor = inputs.cpu().numpy()  # If your tensor is on GPU, move it to CPU first and then convert to numpy array
-            reconstructions_tensor = MNISTDataset.denormalise(reconstructions) * 256
+            reconstructions_tensor = MNISTDataset.denormalise(reconstructions)
             reconstructions_tensor = reconstructions_tensor.detach().cpu().numpy()
             fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 12))
 
@@ -367,7 +367,7 @@ class AutoencoderKL(pl.LightningModule):
             for i, ax in enumerate(axes.flat):
                 if i % 2 == 0:
                     image = input_tensor[i // 2, 0, :, :]
-                    ax.set_title(f'Input {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
+                    ax.set_title(f'Input {i//2 + 1}: {batch["caption"][i//2]}')  # Set the title to include the label
                 else:
                     image = reconstructions_tensor[i // 2, 0, :, :]
                     # ax.set_title(f'Reconstructed {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
@@ -376,7 +376,7 @@ class AutoencoderKL(pl.LightningModule):
             # Display the grid of images
             plt.tight_layout()
             now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
-            plt.savefig(f"training_image_log/training_step{batch_idx}-{now}.png")
+            plt.savefig(f"training_image_log/model4/training_step{batch_idx}-{now}.png")
 
 
 
@@ -432,7 +432,7 @@ class AutoencoderKL(pl.LightningModule):
         for i, ax in enumerate(axes.flat):
             if i % 2 == 0:
                 image = input_tensor[i // 2, 0, :, :]
-                ax.set_title(f'Input {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
+                ax.set_title(f'Input {i//2 + 1}: {batch["caption"][i//2]}')  # Set the title to include the label
             else:
                 image = MNISTDataset.visualize(reconstructions[i // 2])
                 # ax.set_title(f'Reconstructed {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
@@ -442,7 +442,7 @@ class AutoencoderKL(pl.LightningModule):
 
         # Display the grid of images
         plt.tight_layout()
-        plt.savefig(f"test_outputs/model3-epoch4/output-{batch_idx}.png")
+        plt.savefig(f"test_outputs/model4-epoch13/output-{batch_idx}.png")
         
         self.log("test/rec_loss", log_dict_ae["test/rec_loss"])
         self.log_dict(log_dict_ae)
