@@ -245,6 +245,10 @@ def main():
     opt.config = "configs/custom/mnist_ldm.yaml"
     opt.ckpt = "logs/2023-05-09T22-07-39_mnist_ldm/checkpoints/epoch=000000.ckpt"
     opt.outdir = "test_outputs/ldm"
+    opt.C = 3
+    opt.H = 256
+    opt.W = 256
+    opt.f = 4
 
     seed_everything(opt.seed)
 
@@ -320,9 +324,9 @@ def main():
                         x_samples_ddim = torch.clamp((x_samples_ddim + 1.0) / 2.0, min=0.0, max=1.0)
                         x_samples_ddim = x_samples_ddim.cpu().permute(0, 2, 3, 1).numpy()
 
-                        x_checked_image, has_nsfw_concept = check_safety(x_samples_ddim)
+                        # x_checked_image, has_nsfw_concept = check_safety(x_samples_ddim)
 
-                        x_checked_image_torch = torch.from_numpy(x_checked_image).permute(0, 3, 1, 2)
+                        x_checked_image_torch = torch.from_numpy(x_samples_ddim).permute(0, 3, 1, 2)
 
                         if not opt.skip_save:
                             for x_sample in x_checked_image_torch:
