@@ -376,7 +376,7 @@ class AutoencoderKL(pl.LightningModule):
             # Display the grid of images
             plt.tight_layout()
             now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
-            plt.savefig(f"training_image_log/model4/training_step{batch_idx}-{now}.png")
+            plt.savefig(f"training_image_log/model7/training_step{batch_idx}-{now}.png")
 
 
 
@@ -385,6 +385,8 @@ class AutoencoderKL(pl.LightningModule):
             aeloss, log_dict_ae = self.loss(inputs, reconstructions, posterior, optimizer_idx, self.global_step,
                                             last_layer=self.get_last_layer(), split="train")
             self.log("aeloss", aeloss, prog_bar=True, logger=True, on_step=True, on_epoch=True)
+            #Log rec_loss
+            self.log("rec_loss", log_dict_ae["train/rec_loss"], prog_bar=True, logger=True, on_step=True, on_epoch=True)
             self.log_dict(log_dict_ae, prog_bar=False, logger=True, on_step=True, on_epoch=False)
             return aeloss
 
@@ -442,7 +444,7 @@ class AutoencoderKL(pl.LightningModule):
 
         # Display the grid of images
         plt.tight_layout()
-        plt.savefig(f"test_outputs/model5-epoch11-norm-11/output-{batch_idx}.png")
+        plt.savefig(f"test_outputs/model6-epoch1/output-{batch_idx}.png")
         
         self.log("test/rec_loss", log_dict_ae["test/rec_loss"])
         self.log_dict(log_dict_ae)
