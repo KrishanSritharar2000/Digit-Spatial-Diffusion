@@ -62,7 +62,10 @@ class MNISTDataset(Dataset):
         if self.transform:
             image = self.transform(image)
 
-        # normalized_image = (image / 127.5 - 1.0).to(torch.float32)
+        #shift image values from [0,1] into [-1,1]
+        image = (image * 2.0) - 1.0
+
+        # image = (image / 127.5 - 1.0).to(torch.float32)
 
         output["image"] = image
         output["caption"] = label
@@ -71,9 +74,10 @@ class MNISTDataset(Dataset):
     @staticmethod
     def visualize(tensor):
         # Denormalize
-        # denormalized = (tensor + 1.0) * 127.5
-        # denormalized = denormalized.clamp(0, 255)
-
+        
+        denormalized = (tensor + 1.0) * 127.5
+        denormalized = denormalized.clamp(0, 255)
+        # return denormalized.to(torch.uint8)
         # Convert back to PIL Image
         # tensor = (tensor * 0.5) + 0.5  # scale back to [0, 1] range
         to_pil = transforms.ToPILImage()

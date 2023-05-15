@@ -280,15 +280,19 @@ class SetupCallback(Callback):
                 if 'metrics_over_trainsteps_checkpoint' in self.lightning_config['callbacks']:
                     os.makedirs(os.path.join(
                         self.ckptdir, 'trainstep_checkpoints'), exist_ok=True)
-            print("Project config")
-            print(OmegaConf.to_yaml(self.config))
-            OmegaConf.save(self.config,
-                           os.path.join(self.cfgdir, "{}-project.yaml".format(self.now)))
+            try:
+                print("Project config")
+                print(OmegaConf.to_yaml(self.config))
+                time.sleep(0.1)
+                OmegaConf.save(self.config,
+                            os.path.join(self.cfgdir, "{}-project.yaml".format(self.now)))
 
-            print("Lightning config")
-            print(OmegaConf.to_yaml(self.lightning_config))
-            OmegaConf.save(OmegaConf.create({"lightning": self.lightning_config}),
-                           os.path.join(self.cfgdir, "{}-lightning.yaml".format(self.now)))
+                print("Lightning config")
+                print(OmegaConf.to_yaml(self.lightning_config))
+                OmegaConf.save(OmegaConf.create({"lightning": self.lightning_config}),
+                            os.path.join(self.cfgdir, "{}-lightning.yaml".format(self.now)))
+            except Exception as e:
+                warnings.warn("Could not save configs: {}".format(e))
 
         else:
             # ModelCheckpoint callback created log directory --- remove it
@@ -451,7 +455,7 @@ class CUDACallback(Callback):
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    # wandb.init(project="final-year-project")
+    # wandb.init(project="final-year-project")# , id="silvery-bird-66", resume=True)
     # custom parser to specify config files, train, test and debug mode,
     # postfix, resume.
     # `--key value` arguments are interpreted as arguments to the trainer.
@@ -698,6 +702,7 @@ if __name__ == "__main__":
             callbacks_cfg[k]) for k in callbacks_cfg]
 
         trainer_opt.gpus = '0'
+        # trainer_opt.gpus = [0, 1]
         # trainer_opt.precision = 16
         trainer = Trainer.from_argparse_args(trainer_opt, **trainer_kwargs)
         trainer.logdir = logdir

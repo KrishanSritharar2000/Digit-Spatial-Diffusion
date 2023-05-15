@@ -2,6 +2,10 @@ stable-diffusion/logs/*
 data/MNIST
 data/mnist_dataset/dataset
 stable-diffusion/data/*
+stable-diffusion/test_outputs/*
+stable-diffusion/training_image_log/*
+stable-diffusion/wandb/*
+wandb/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

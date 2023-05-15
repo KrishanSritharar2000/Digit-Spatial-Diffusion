@@ -1,9 +1,9 @@
 model:
-  base_learning_rate: 5.0e-5   # set to target_lr by starting main.py with '--scale_lr False'
+  base_learning_rate: 1.0e-04   # set to target_lr by starting main.py with '--scale_lr False'
   target: ldm.models.diffusion.ddpm.LatentDiffusion
   params:
-    linear_start: 0.0015
-    linear_end: 0.0155
+    linear_start: 0.00085
+    linear_end: 0.0120
     num_timesteps_cond: 1
     log_every_t: 200
     timesteps: 1000
@@ -13,10 +13,12 @@ model:
     conditioning_key: crossattn
     image_size: 64 #64
     channels: 3
-    cond_stage_trainable: True
+    cond_stage_trainable: false
     concat_mode: False
     scale_by_std: True
     monitor: 'val/loss_simple_ema'
+    # scale_factor: 0.18215
+    use_ema: False
 
     scheduler_config: # 10000 warmup steps
       target: ldm.lr_scheduler.LambdaLinearScheduler
@@ -33,13 +35,17 @@ model:
         image_size: 64 #64
         in_channels: 3
         out_channels: 3
-        model_channels: 64 #64
-        attention_resolutions: [ 1, 2, 4, 8 ]   # 32, 16, 8, 4
+        model_channels: 320 #64
+        attention_resolutions: [ 4, 2, 1 ]
         num_res_blocks: 2
-        channel_mult: [ 1,2,2,4,4 ]  # 32, 16, 8, 4, 2
+        channel_mult: [ 1, 2, 4, 4 ]
         num_heads: 8
-        use_scale_shift_norm: True
-        resblock_updown: True
+        use_spatial_transformer: True
+        transformer_depth: 1
+        context_dim: 768
+        use_checkpoint: True
+        legacy: False
+
 
     first_stage_config:
       base_learning_rate: 4.5e-6
@@ -49,12 +55,7 @@ model:
           embed_dim: 3
           ckpt_path: trained_models/ae_model.ckpt
           lossconfig:
-              target: ldm.modules.losses.LPIPSWithDiscriminator
-              params:
-                  disc_start: 50001
-                  kl_weight: 0.000001
-                  disc_weight: 0.5
-                  disc_in_channels: 1
+            target: torch.nn.Identity
 
           ddconfig:
             double_z: True
@@ -74,15 +75,18 @@ model:
     #     embed_dim: 512
     #     key: caption
     cond_stage_config:
-      target: ldm.modules.encoders.modules.BERTEmbedder
-      params:
-        n_embed: 512
-        n_layer: 16
+      target: ldm.modules.encoders.modules.FrozenCLIPEmbedder
+
+    # cond_stage_config:
+    #   target: ldm.modules.encoders.modules.BERTEmbedder
+    #   params:
+    #     n_embed: 512
+    #     n_layer: 16
 
 data:
   target: main.DataModuleFromConfig
   params:
-    batch_size: 2
+    batch_size: 1
     wrap: True
     train:
         target: custom.data.mnist_dataset.MNISTTrain
