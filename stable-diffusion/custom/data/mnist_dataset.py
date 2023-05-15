@@ -65,44 +65,35 @@ class MNISTDataset(Dataset):
         #shift image values from [0,1] into [-1,1]
         image = (image * 2.0) - 1.0
 
-        # image = (image / 127.5 - 1.0).to(torch.float32)
-
         output["image"] = image
         output["caption"] = label
         return output
     
     @staticmethod
     def visualize(tensor):
-        # Denormalize
-        
-        denormalized = (tensor + 1.0) * 127.5
-        denormalized = denormalized.clamp(0, 255)
-        # return denormalized.to(torch.uint8)
+        #reverse this (image * 2.0) - 1.0
+        tensor = (tensor + 1.0) / 2.0  # scale to [0, 1] range
+        denormalized = tensor * 255
+        denormalized = denormalized.clamp(0, 255)  # ensure values are within [0, 255]
         # Convert back to PIL Image
-        # tensor = (tensor * 0.5) + 0.5  # scale back to [0, 1] range
         to_pil = transforms.ToPILImage()
         pil_img = to_pil(tensor)
         return pil_img
-        # tensor = tensor * 255  # scale to [0, 255] range
-        # return tensor.to(torch.uint8)
-        to_tensor = transforms.Compose([
-            transforms.Normalize((0.5,), (0.5,)),
-            transforms.ToTensor()
-        ])
-        # to_tensor = transforms.ToTensor()
-        image = to_tensor(tensor)
-
-        return image
     
     @staticmethod
     def denormalise(tensor):
-        # Denormalize
-        # denormalized = (tensor + 1.0) * 127.5
-        # denormalized = denormalized.clamp(0, 255)
+        if (len(tensor.shape) == 4):
+            if (tensor.shape[0] != 1):
+                imgs = []
+                for i in range(tensor.shape[0]):
+                    imgs.append(MNISTDataset.visualize(tensor[i]))
+                return imgs
+        return [MNISTDataset.visualize(tensor)]
 
-        # return tensor * 256
-        # tensor = (tensor * 0.5) + 0.5  # scale back to [0, 1] range
-        tensor = tensor * 255  # scale to [0, 255] range
+    @staticmethod
+    def denormaliseOneLayer(tensor):
+        tensor = (tensor + 1.0) / 2.0  # scale to [0, 1] range
+        tensor = tensor * 255
         tensor = tensor.clamp(0, 255)  # ensure values are within [0, 255]
         return tensor.to(torch.uint8)
 

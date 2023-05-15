@@ -359,8 +359,7 @@ class AutoencoderKL(pl.LightningModule):
 
         if (batch_idx == 0):
             input_tensor = inputs.cpu().numpy()  # If your tensor is on GPU, move it to CPU first and then convert to numpy array
-            reconstructions_tensor = MNISTDataset.denormalise(reconstructions)
-            reconstructions_tensor = reconstructions_tensor.detach().cpu().numpy()
+            reconstructions_list = MNISTDataset.denormalise(reconstructions)
             fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(12, 12))
 
                     # Iterate through the images in the batch and display them in the subplots
@@ -369,7 +368,7 @@ class AutoencoderKL(pl.LightningModule):
                     image = input_tensor[i // 2, 0, :, :]
                     ax.set_title(f'Input {i//2 + 1}: {batch["caption"][i//2]}')  # Set the title to include the label
                 else:
-                    image = reconstructions_tensor[i // 2, 0, :, :]
+                    image = reconstructions_list[i // 2] #, 0, :, :]
                     # ax.set_title(f'Reconstructed {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
                 ax.imshow(image, cmap='gray')
                 ax.axis('off')
