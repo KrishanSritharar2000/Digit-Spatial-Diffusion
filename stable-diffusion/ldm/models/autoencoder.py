@@ -130,7 +130,8 @@ class VQModel(pl.LightningModule):
         x = batch[k]
         if len(x.shape) == 3:
             x = x[..., None]
-        x = x.permute(0, 3, 1, 2).to(memory_format=torch.contiguous_format).float()
+        # x = x.permute(0, 3, 1, 2).to(memory_format=torch.contiguous_format).float()
+
         if self.batch_resize_range is not None:
             lower_size = self.batch_resize_range[0]
             upper_size = self.batch_resize_range[1]
@@ -193,12 +194,57 @@ class VQModel(pl.LightningModule):
                    prog_bar=True, logger=True, on_step=False, on_epoch=True, sync_dist=True)
         self.log(f"val{suffix}/aeloss", aeloss,
                    prog_bar=True, logger=True, on_step=False, on_epoch=True, sync_dist=True)
-        if version.parse(pl.__version__) >= version.parse('1.4.0'):
-            del log_dict_ae[f"val{suffix}/rec_loss"]
+        # if version.parse(pl.__version__) >= version.parse('1.4.0'):
+        #     del log_dict_ae[f"val{suffix}/rec_loss"]
+        # self.log_dict(log_dict_ae)
+        self.log_dict(log_dict_disc)
+        return self.log_dict
+    
+    def test_step(self, batch, batch_idx, suffix=""):
+        x = self.get_input(batch, self.image_key)
+        xrec, qloss, ind = self(x, return_pred_indices=True)
+        aeloss, log_dict_ae = self.loss(qloss, x, xrec, 0,
+                                        self.global_step,
+                                        last_layer=self.get_last_layer(),
+                                        split="val"+suffix,
+                                        predicted_indices=ind
+                                        )
+
+        discloss, log_dict_disc = self.loss(qloss, x, xrec, 1,
+                                            self.global_step,
+                                            last_layer=self.get_last_layer(),
+                                            split="val"+suffix,
+                                            predicted_indices=ind
+                                            )
+        
+        # Visualise the results
+        input_tensor = x.cpu().numpy()  # If your tensor is on GPU, move it to CPU first and then convert to numpy array
+        # reconstructed_tensor = denormalized_output.cpu().numpy()
+
+        # Create a grid of subplots
+        fig, axes = plt.subplots(nrows=4, ncols=4, figsize=(12, 12))
+
+        # Iterate through the images in the batch and display them in the subplots
+        for i, ax in enumerate(axes.flat):
+            if i % 2 == 0:
+                image = input_tensor[i // 2, 0, :, :]
+                ax.set_title(f'Input {i//2 + 1}: {batch["caption"][i//2]}')  # Set the title to include the label
+            else:
+                image = MNISTDataset.visualize(xrec[i // 2])
+                # ax.set_title(f'Reconstructed {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
+            ax.imshow(image, cmap='gray')
+            ax.axis('off')
+
+
+        # Display the grid of images
+        plt.tight_layout()
+        plt.savefig(f"test_outputs/model12/epoch11/output-{batch_idx}.png")
+        
+        # self.log("test/rec_loss", log_dict_ae["test/rec_loss"])
         self.log_dict(log_dict_ae)
         self.log_dict(log_dict_disc)
         return self.log_dict
-
+    
     def configure_optimizers(self):
         lr_d = self.learning_rate
         lr_g = self.lr_g_factor*self.learning_rate
@@ -271,10 +317,10 @@ class VQModelInterface(VQModel):
         super().__init__(embed_dim=embed_dim, *args, **kwargs)
         self.embed_dim = embed_dim
 
-    def encode(self, x):
-        h = self.encoder(x)
-        h = self.quant_conv(h)
-        return h
+    # def encode(self, x):
+    #     h = self.encoder(x)
+    #     h = self.quant_conv(h)
+    #     return h
 
     def decode(self, h, force_not_quantize=False):
         # also go through quantization layer
@@ -443,7 +489,7 @@ class AutoencoderKL(pl.LightningModule):
 
         # Display the grid of images
         plt.tight_layout()
-        plt.savefig(f"test_outputs/myAE/output-{batch_idx}.png")
+        plt.savefig(f"test_outputs/myAE/16-05/output-{batch_idx}.png")
         
         self.log("test/rec_loss", log_dict_ae["test/rec_loss"])
         self.log_dict(log_dict_ae)
