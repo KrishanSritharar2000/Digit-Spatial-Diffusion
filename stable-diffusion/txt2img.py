@@ -24,14 +24,14 @@ from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 from ldm.models.diffusion.dpm_solver import DPMSolverSampler
 
-from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
+# from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
 from transformers import AutoFeatureExtractor
 
 
 # load safety model
 safety_model_id = "CompVis/stable-diffusion-safety-checker"
 safety_feature_extractor = AutoFeatureExtractor.from_pretrained(safety_model_id)
-safety_checker = StableDiffusionSafetyChecker.from_pretrained(safety_model_id)
+# safety_checker = StableDiffusionSafetyChecker.from_pretrained(safety_model_id)
 
 
 def chunk(it, size):
@@ -242,12 +242,12 @@ def main():
 
     if opt.laion400m:
         print("Falling back to LAION 400M model...")
-    opt.config = "configs/custom/mnist_ldm.yaml"
-    opt.ckpt = "logs/2023-05-09T22-07-39_mnist_ldm/checkpoints/epoch=000000.ckpt"
-    opt.outdir = "test_outputs/ldm"
-    opt.C = 3
-    opt.H = 256
-    opt.W = 256
+    opt.config = "trained_models/ldm_model1_epoch2_config.yaml"
+    opt.ckpt = "trained_models/ldm_model1_epoch2.ckpt"
+    opt.outdir = "ldm_test_outputs/model1"
+    opt.C = 4
+    opt.H = 128
+    opt.W = 128
     opt.f = 4
 
     seed_everything(opt.seed)
@@ -324,6 +324,7 @@ def main():
                         x_samples_ddim = torch.clamp((x_samples_ddim + 1.0) / 2.0, min=0.0, max=1.0)
                         x_samples_ddim = x_samples_ddim.cpu().permute(0, 2, 3, 1).numpy()
 
+                        # Ignore safety checking for performance
                         # x_checked_image, has_nsfw_concept = check_safety(x_samples_ddim)
 
                         x_checked_image_torch = torch.from_numpy(x_samples_ddim).permute(0, 3, 1, 2)
@@ -331,7 +332,10 @@ def main():
                         if not opt.skip_save:
                             for x_sample in x_checked_image_torch:
                                 x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
-                                img = Image.fromarray(x_sample.astype(np.uint8))
+                                x_sample = x_sample.astype(np.uint8)
+                                x_sample = x_sample.squeeze(axis=-1)  # remove the singleton dimension
+                                # img = Image.fromarray(x_sample.astype(np.uint8))
+                                img = Image.fromarray(x_sample, 'L')  # 'L' mode is for grayscale images
                                 # img = put_watermark(img, wm_encoder)
                                 img.save(os.path.join(sample_path, f"{base_count:05}.png"))
                                 base_count += 1
