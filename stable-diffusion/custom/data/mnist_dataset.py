@@ -6,6 +6,9 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import torch
 import pickle
+import datetime
+import matplotlib.pyplot as plt
+
 
 class MNISTDataset(Dataset):
     def __init__(self, root_dir, indicesFile=None, transform=None, 
@@ -97,6 +100,27 @@ class MNISTDataset(Dataset):
         tensor = tensor * 255
         tensor = tensor.clamp(0, 255)  # ensure values are within [0, 255]
         return tensor.to(torch.uint8)
+    
+    @staticmethod
+    def visualiseAndSave(tensor, reconstructions, conds):
+        input_tensor = tensor.cpu().numpy()  # If your tensor is on GPU, move it to CPU first and then convert to numpy array
+        reconstructions_list = MNISTDataset.denormalise(reconstructions)
+        fig, axes = plt.subplots(nrows=4, ncols=4, figsize=(12, 12))
+
+                # Iterate through the images in the batch and display them in the subplots
+        for i, ax in enumerate(axes.flat):
+            if i % 2 == 0:
+                image = input_tensor[i // 2, 0, :, :]
+                ax.set_title(f'Input {i//2 + 1}: {conds[i//2]}')  # Set the title to include the label
+            else:
+                image = reconstructions_list[i // 2] #, 0, :, :]
+                # ax.set_title(f'Reconstructed {i//2 + 1}: {batch["label"][i//2]}')  # Set the title to include the label
+            ax.imshow(image, cmap='gray')
+            ax.axis('off')
+        # Display the grid of images
+        plt.tight_layout()
+        now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
+        plt.savefig(f"training_ldm_log/recon/{now}.png")
 
 
 
