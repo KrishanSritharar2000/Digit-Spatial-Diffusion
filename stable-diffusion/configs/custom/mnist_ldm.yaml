@@ -39,7 +39,7 @@ model:
         num_heads: 4
         use_spatial_transformer: true
         transformer_depth: 1
-        context_dim: 768
+        context_dim: 768 #1280
         use_checkpoint: true
         legacy: False
 
@@ -75,6 +75,11 @@ model:
 
     cond_stage_config:
       target: ldm.modules.encoders.modules.FrozenCLIPEmbedder
+    # cond_stage_config:
+    #   target: ldm.modules.encoders.modules.BERTEmbedder
+    #   params:
+    #     n_embed: 1280
+    #     n_layer: 32
 
 data:
     target: main.DataModuleFromConfig
