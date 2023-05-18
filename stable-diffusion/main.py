@@ -394,7 +394,7 @@ class ImageLogger(Callback):
                     if self.clamp:
                         images[k] = torch.clamp(images[k], -1., 1.)
                     for i in range(images[k].shape[0]):
-                        images[k][i] = MNISTDataset.denormalise(images[k][i])
+                        images[k][i] = MNISTDataset.denormaliseOneLayer(images[k][i])
 
             self.log_local(pl_module.logger.save_dir, split, images,
                            pl_module.global_step, pl_module.current_epoch, batch_idx)
@@ -455,7 +455,7 @@ class CUDACallback(Callback):
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    # wandb.init(project="final-year-project")# , id="silvery-bird-66", resume=True)
+    # wandb.init(project="final-year-project") #, id="fn26yojf", resume=True)
     # custom parser to specify config files, train, test and debug mode,
     # postfix, resume.
     # `--key value` arguments are interpreted as arguments to the trainer.
