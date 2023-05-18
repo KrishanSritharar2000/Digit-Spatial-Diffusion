@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Python: AE/LDM",
             "type": "python",
             "request": "launch",
             "program": "main.py",
@@ -14,7 +14,7 @@
             "cwd": "${workspaceFolder}/stable-diffusion",
             "args": [
                 "--base",
-                "configs/custom/mnist_autoencoder.yaml",
+                "configs/custom/mnist_ldm.yaml",
                 "-t",
                 "--gpus",
                 "0",
@@ -26,34 +26,26 @@
                 // "PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb": "512"
                 //     "XDG_CACHE_HOME" : "/home/krishan/fyp/final-year-project/stable-diffusion/data"
             }
+        },
+        {
+            "name": "Python: txt2img",
+            "type": "python",
+            "request": "launch",
+            "program": "txt2img.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/stable-diffusion",
+            "args": [
+                "--n_samples",
+                "1",
+                "--prompt",
+                "4 below 5 left of 2",
+            ],
+            "env": {
+                "WANDB_EXECUTABLE": "/vol/bitbucket/ks1619/miniconda3/install/envs/sd-conda-env/bin/python",
+                // "PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb": "512"
+                //     "XDG_CACHE_HOME" : "/home/krishan/fyp/final-year-project/stable-diffusion/data"
+            }
         }
     ]
 }
-// {
-//     // Use IntelliSense to learn about possible attributes.
-//     // Hover to view descriptions of existing attributes.
-//     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-//     "version": "0.2.0",
-//     "configurations": [
-//         {
-//             "name": "Python: Current File",
-//             "type": "python",
-//             "request": "launch",
-//             "program": "txt2img.py",
-//             "console": "integratedTerminal",
-//             "justMyCode": true,
-//             "cwd": "${workspaceFolder}/stable-diffusion",
-//             "args": [
-//                 "--n_samples",
-//                 "1",
-//                 "--prompt",
-//                 "4 below 5 left of 2.png",
-//             ],
-//             "env": {
-//                 "WANDB_EXECUTABLE": "/vol/bitbucket/ks1619/miniconda3/install/envs/sd-conda-env/bin/python",
-//                 // "PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb": "512"
-//                 //     "XDG_CACHE_HOME" : "/home/krishan/fyp/final-year-project/stable-diffusion/data"
-//             }
-//         }
-//     ]
-// }
