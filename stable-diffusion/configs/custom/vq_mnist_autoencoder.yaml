@@ -1,34 +1,33 @@
 model:
     base_learning_rate: 4.5e-6
-    target: ldm.models.autoencoder.AutoencoderKL
+    target: ldm.models.autoencoder.VQModelInterface
     params:
-        monitor: "val/rec_loss"
-        embed_dim: 6
         lossconfig:
-            target: ldm.modules.losses.LPIPSWithDiscriminator
+            target: ldm.modules.losses.VQLPIPSWithDiscriminator
             params:
-                disc_start: 10001
-                kl_weight: 0.25
+                disc_start: 50001
                 disc_weight: 0.5
-                disc_in_channels: 1
+                disc_in_channels: 3
 
+        embed_dim: 3
+        n_embed: 8192
+        monitor: val/rec_loss
         ddconfig:
-          double_z: True
-          z_channels: 4  
+          double_z: false
+          z_channels: 3
           resolution: 128
-          in_channels: 1
-          out_ch: 1
-          ch: 32
-          ch_mult: [ 1,2,4,4 ]  # num_down = len(ch_mult)-1
+          in_channels: 3
+          out_ch: 3
+          ch: 128
+          ch_mult: [1, 2, 4]
           num_res_blocks: 2
-          attn_resolutions: [ ]
-          dropout: 0.1
-          tanh_out: True
+          attn_resolutions: []
+          dropout: 0.0
 
 data:
     target: main.DataModuleFromConfig
     params:
-        batch_size: 32
+        batch_size: 8
         wrap: True
         train:
             target: custom.data.mnist_dataset.MNISTTrain

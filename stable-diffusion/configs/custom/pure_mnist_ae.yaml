@@ -3,41 +3,40 @@ model:
     target: ldm.models.autoencoder.AutoencoderKL
     params:
         monitor: "val/rec_loss"
-        embed_dim: 6
+        embed_dim: 4
         lossconfig:
             target: ldm.modules.losses.LPIPSWithDiscriminator
             params:
-                disc_start: 10001
-                kl_weight: 0.25
+                disc_start: 50001
+                kl_weight: 0.000001
                 disc_weight: 0.5
-                disc_in_channels: 1
+                disc_in_channels: 3
 
         ddconfig:
           double_z: True
-          z_channels: 4  
-          resolution: 128
-          in_channels: 1
-          out_ch: 1
-          ch: 32
+          z_channels: 4
+          resolution: 64
+          in_channels: 3
+          out_ch: 3
+          ch: 64
           ch_mult: [ 1,2,4,4 ]  # num_down = len(ch_mult)-1
           num_res_blocks: 2
           attn_resolutions: [ ]
           dropout: 0.1
-          tanh_out: True
 
 data:
     target: main.DataModuleFromConfig
     params:
-        batch_size: 32
+        batch_size: 64
         wrap: True
         train:
-            target: custom.data.mnist_dataset.MNISTTrain
+            target: custom.data.mnist_dataset.PureMNISTTrain
             params:
-                size: 128
+                size: 64
         validation:
-            target: custom.data.mnist_dataset.MNISTValidation
+            target: custom.data.mnist_dataset.PureMNISTValidation
             params:
-                size: 128
+                size: 64
         
 
 lightning:
