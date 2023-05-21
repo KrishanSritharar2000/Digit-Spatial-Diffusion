@@ -242,12 +242,14 @@ def main():
 
     if opt.laion400m:
         print("Falling back to LAION 400M model...")
-    opt.config = "trained_models/ldm_model1_epoch2_config.yaml"
-    opt.ckpt = "trained_models/ldm_model1_epoch2.ckpt"
-    opt.outdir = "ldm_test_outputs/model1"
+    opt.config = "trained_models/ldm_model6_config.yaml"
+    opt.ckpt = "trained_models/ldm_model6_epoch30.ckpt"
+    # opt.config = "configs/stable-diffusion/v1-inference.yaml"
+    # opt.ckpt = "../ControlNet/models/v1-5-pruned.ckpt"
+    opt.outdir = "ldm_test_outputs/test"
     opt.C = 4
-    opt.H = 128
-    opt.W = 128
+    opt.H = 64
+    opt.W = 64
     opt.f = 4
 
     seed_everything(opt.seed)
