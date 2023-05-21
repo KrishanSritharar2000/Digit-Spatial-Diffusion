@@ -8,7 +8,7 @@ from cldm.model import create_model, load_state_dict
 
 
 # Configs
-resume_path = './models/control_sd15_ini.ckpt'
+resume_path = './models/control_mnist_m6e30.ckpt'
 batch_size = 1
 logger_freq = 300
 learning_rate = 1e-5
@@ -17,7 +17,7 @@ only_mid_control = False
 
 
 # First use cpu to load models. Pytorch Lightning will automatically move it to GPUs.
-model = create_model('./models/cldm_v15.yaml').cpu()
+model = create_model('./models/model6_epoch30_control.yaml').cpu()
 model.load_state_dict(load_state_dict(resume_path, location='cpu'))
 model.learning_rate = learning_rate
 model.sd_locked = sd_locked

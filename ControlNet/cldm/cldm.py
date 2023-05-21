@@ -321,7 +321,10 @@ class ControlLDM(LatentDiffusion):
         if bs is not None:
             control = control[:bs]
         control = control.to(self.device)
-        control = einops.rearrange(control, 'b h w c -> b c h w')
+        # if len(control.shape) == 4:
+        #     control = einops.rearrange(control, 'b h w c -> b c h w')
+        # elif len(control.shape) == 3:
+        #     control = einops.rearrange(control, 'c h w -> h w c')
         control = control.to(memory_format=torch.contiguous_format).float()
         return x, dict(c_crossattn=[c], c_concat=[control])
 

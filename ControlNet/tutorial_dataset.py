@@ -22,12 +22,16 @@ class MyDataset(Dataset):
         target_filename = item['target']
         prompt = item['prompt']
 
-        source = cv2.imread('./training/fill50k/' + source_filename)
-        target = cv2.imread('./training/fill50k/' + target_filename)
+
+        source = cv2.imread('./training/fill50k/' + source_filename, 0)
+        target = cv2.imread('./training/fill50k/' + target_filename, 0)
 
         # Do not forget that OpenCV read images in BGR order.
-        source = cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
-        target = cv2.cvtColor(target, cv2.COLOR_BGR2RGB)
+        #Read the images in grayscale
+        # source = cv2.cvtColor(source, cv2.IMREAD_GRAYSCALE)
+        # target = cv2.cvtColor(target, cv2.IMREAD_GRAYSCALE)
+        # source = cv2.imread(source, 0)
+        # target = cv2.imread(target, 0)
 
         # Normalize source images to [0, 1].
         source = source.astype(np.float32) / 255.0
