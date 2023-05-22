@@ -8,11 +8,11 @@ import torch
 import pickle
 import datetime
 import matplotlib.pyplot as plt
-
+import re
 
 class MNISTControlDataset(Dataset):
     def __init__(self, transform=None, 
-                 size=None,
+                 size=128,
                  interpolation="bicubic",
                  ):
         self.root_dir = '../stable-diffusion/data/mnist_dataset/dataset'
@@ -23,7 +23,7 @@ class MNISTControlDataset(Dataset):
         #         self.indices = pickle.load(f)
         # else:
         # self.indices = np.arange(len(self.all_image_files))
-        with open('../stable-diffusion/data/train_indicies.pkl', 'rb') as f:
+        with open('../stable-diffusion/data/train_indices.pkl', 'rb') as f:
             self.indices = pickle.load(f)
 
         self.transform = transform
@@ -33,11 +33,22 @@ class MNISTControlDataset(Dataset):
                               "bicubic": PIL.Image.BICUBIC,
                               "lanczos": PIL.Image.LANCZOS,
                               }[interpolation]
+        
+        self.relations = {
+            "left of": 0,
+            "right of": 1,
+            "above": 2,
+            "below": 3
+        }
+
+        self.digit_regex = r'\b\d\b'
+        self.relationship_regex = r'\b(left of|right of|above|below)\b'
+
+
     def __len__(self):
         return len(self.indices)
 
     def __getitem__(self, idx):
-        output = {}
         if torch.is_tensor(idx):
             idx = idx.tolist()
 
@@ -70,15 +81,25 @@ class MNISTControlDataset(Dataset):
         #shift image values from [0,1] into [-1,1]
         image = ((image * 2.0) - 1.0).to(torch.float32)
 
-        hint = self.convertLabelToHintTesnor(label)
+        hint = self.convertLabelToHintTensor(label)
 
-        return dict(jpg=image, txt=label, source=hint)
+        return dict(jpg=image, txt=label, hint=hint)
 
     def convertLabelToHintTensor(self, label):
         #Make a tensor of size 10x10x4
         matrix = torch.zeros((10,10,4))
-        #
-        pass
+        # strip label of whistespaces
+        label = label.strip()
+        digits = re.findall(self.digit_regex, label)
+        relationships = re.findall(self.relationship_regex, label)
+        digits = list(map(int, digits))
+        triplets = [(digits[i], relationships[i], digits[i + 1]) for i in range(len(relationships))]
+        for triplet in triplets:
+            matrix[triplet[0], triplet[2], self.relations[triplet[1]]] = 1
+        matrix = matrix.reshape(1, 20, 20)
+        return matrix
+
+
 
 
     
