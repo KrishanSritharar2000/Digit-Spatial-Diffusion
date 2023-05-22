@@ -73,6 +73,8 @@ with block:
         with gr.Column():
             input_image = gr.Image(source='upload', type="numpy")
             prompt = gr.Textbox(label="Prompt")
+            prompt_digit_1 = gr.Dropdown(label="Prompt Digit 1", choices=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
+            relationship_1 = gr.Dropdown(label="Relationship 1", choices=['left of', 'right of', 'above', 'below'])
             run_button = gr.Button(label="Run")
             with gr.Accordion("Advanced options", open=False):
                 num_samples = gr.Slider(label="Images", minimum=1, maximum=12, value=1, step=1)
