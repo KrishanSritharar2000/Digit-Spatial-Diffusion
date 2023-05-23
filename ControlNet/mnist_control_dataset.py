@@ -9,6 +9,8 @@ import pickle
 import datetime
 import matplotlib.pyplot as plt
 import re
+from einops import rearrange
+
 
 class MNISTControlDataset(Dataset):
     def __init__(self, transform=None, 
@@ -96,7 +98,7 @@ class MNISTControlDataset(Dataset):
         triplets = [(digits[i], relationships[i], digits[i + 1]) for i in range(len(relationships))]
         for triplet in triplets:
             matrix[triplet[0], triplet[2], self.relations[triplet[1]]] = 1
-        matrix = matrix.reshape(1, 20, 20)
+        matrix = rearrange(matrix, "h w c -> c h w")
         return matrix
 
 
