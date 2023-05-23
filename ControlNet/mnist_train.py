@@ -9,7 +9,7 @@ from cldm.model import create_model, load_state_dict
 
 
 # Configs
-resume_path = './models/control_mnist_m6e30.ckpt'
+resume_path = './models/control_mnist_m6e30_take2.ckpt'
 batch_size = 1
 logger_freq = 300
 learning_rate = 1e-5

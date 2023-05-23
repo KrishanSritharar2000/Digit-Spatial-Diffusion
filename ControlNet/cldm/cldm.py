@@ -38,7 +38,9 @@ class ControlledUnetModel(UNetModel):
             if only_mid_control or control is None:
                 h = torch.cat([h, hs.pop()], dim=1)
             else:
-                h = torch.cat([h, hs.pop() + control.pop()], dim=1)
+                hs_pop = hs.pop()
+                control_pop = control.pop()
+                h = torch.cat([h, hs_pop + control_pop], dim=1)
             h = module(h, emb, context)
 
         h = h.type(x.dtype)
@@ -143,6 +145,9 @@ class ControlNet(nn.Module):
             ]
         )
         self.zero_convs = nn.ModuleList([self.make_zero_conv(model_channels)])
+
+        self.hint_flatten = nn.Flatten()
+        self.hint_upscale = nn.Linear(hint_channels*10*10, hint_channels*128*128)
 
         self.input_hint_block = TimestepEmbedSequential(
             conv_nd(dims, hint_channels, 16, 3, padding=1),
@@ -281,9 +286,19 @@ class ControlNet(nn.Module):
     def make_zero_conv(self, channels):
         return TimestepEmbedSequential(zero_module(conv_nd(self.dims, channels, channels, 1, padding=0)))
 
+    # Converts the hint from [4, 10, 10] into [4, 128, 128]
+    def shape_hint(self, hint):
+        batch_size = hint.shape[0] 
+        hint = self.hint_flatten(hint)
+        hint = self.hint_upscale(hint)
+        hint = hint.view(batch_size, 4, 128, 128)
+        return hint
+
     def forward(self, x, hint, timesteps, context, **kwargs):
         t_emb = timestep_embedding(timesteps, self.model_channels, repeat_only=False)
         emb = self.time_embed(t_emb)
+
+        hint = self.shape_hint(hint)
 
         guided_hint = self.input_hint_block(hint, emb, context)
 
@@ -293,6 +308,8 @@ class ControlNet(nn.Module):
         for module, zero_conv in zip(self.input_blocks, self.zero_convs):
             if guided_hint is not None:
                 h = module(h, emb, context)
+                # if (h.shape[2] != guided_hint.shape[2]) or (h.shape[3] != guided_hint.shape[3]):
+                #     guided_hint = nn.functional.interpolate(guided_hint, size=(h.shape[2], h.shape[3]), mode='bilinear', align_corners=False)
                 h += guided_hint
                 guided_hint = None
             else:
@@ -358,6 +375,7 @@ class ControlLDM(LatentDiffusion):
         log = dict()
         z, c = self.get_input(batch, self.first_stage_key, bs=N)
         c_cat, c = c["c_concat"][0][:N], c["c_crossattn"][0][:N]
+        c_cat = self.control_model.shape_hint(c_cat)
         N = min(z.shape[0], N)
         n_row = min(z.shape[0], n_row)
         log["reconstruction"] = self.decode_first_stage(z)
