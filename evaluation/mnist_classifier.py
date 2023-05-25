@@ -4,6 +4,8 @@ import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
 from tqdm import tqdm
+from torch.utils.data import TensorDataset
+import pickle
 
 # Check if GPU is available and if not, fall back on CPU
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -24,7 +26,7 @@ class Net(nn.Module):
         return x
     
 
-class MnistClassifier:
+class MNISTClassifier:
 
     def __init__(self):
         self.load_data()
@@ -102,7 +104,32 @@ class MnistClassifier:
         self.net.load_state_dict(torch.load(PATH))
         self.net.to(device)
 
+    def classify_digit(self, digitImage):
+        #Convert the image to a tensor
+        digitTensor = transforms.ToTensor()(digitImage)
+        digitTensor = digitTensor.to(device)
+        # Classify a digit
+        with torch.no_grad():
+            output = self.net(digitTensor)
+            _, predicted = torch.max(output.data, 1)
+            return predicted.item()
+        
+    def create_no_digit_dataset(self):
+        no_digit_images_zero = torch.zeros([500, 1, 28, 28])
+        no_digit_images_rand = torch.rand([500, 1, 28, 28])
+        no_digit_images = torch.cat((no_digit_images_zero, no_digit_images_rand), 0)
+        #shuffle the images
+        no_digit_images = no_digit_images[torch.randperm(no_digit_images.size()[0])]
+        no_digit_labels = torch.full((1000,), 10)
+        self.no_digit_dataset = TensorDataset(no_digit_images, no_digit_labels)
+        with open('./no_digit_dataset_test.pkl', 'wb') as f:
+            pickle.dump(self.no_digit_dataset, f)
+        torch.save(self.no_digit_dataset, './no_digit_dataset_test.pth')
+
    
 
 if __name__ == "__main__":
-    mnist_classifier = MnistClassifier()
+    mnist_classifier = MNISTClassifier()
+    # mnist_classifier.load()
+    # mnist_classifier.test()
+    mnist_classifier.create_no_digit_dataset()
