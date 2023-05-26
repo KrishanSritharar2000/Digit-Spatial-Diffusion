@@ -142,12 +142,12 @@ class MNISTClassifier:
             return predicted.item()
         
     def create_no_digit_dataset(self):
-        no_digit_images_zero = torch.zeros([3000, 1, 28, 28])
-        no_digit_images_rand = 2 * torch.rand([3000, 1, 28, 28]) - 1
-        no_digit_images = torch.cat((no_digit_images_zero, no_digit_images_rand), 0)
+        no_digit_images = torch.zeros([3000, 1, 28, 28])
+        # no_digit_images_rand = 2 * torch.rand([3000, 1, 28, 28]) - 1
+        # no_digit_images = torch.cat((no_digit_images_zero, no_digit_images_rand), 0)
         #shuffle the images
-        no_digit_images = no_digit_images[torch.randperm(no_digit_images.size()[0])]
-        no_digit_labels = torch.full((6000,), 10)
+        # no_digit_images = no_digit_images[torch.randperm(no_digit_images.size()[0])]
+        no_digit_labels = torch.full((3000,), 10)
         no_digit_images = no_digit_images.to(torch.float32)
         no_digit_labels = no_digit_labels.to(torch.int64)
         self.no_digit_dataset = CustomTensorDataset(no_digit_images, no_digit_labels)

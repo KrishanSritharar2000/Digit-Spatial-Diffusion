@@ -4,48 +4,66 @@
 import PIL
 from PIL import Image
 import numpy as np
-from mnist_classifier import MNISTClassifier
-
+from mnist_classifier import MNISTClassifier, CustomTensorDataset
+import re
 
 class DigitRelationshipFinder:
     def __init__(self, classifier):
         self.classifier = classifier
+        self.digit_regex = r'\b\d\b'
+        self.relationship_regex = r'\b(left of|right of|above|below)\b'
 
     def find_relationships(self, image):
         # Convert PIL Image to numpy array
         image = np.array(image)
 
         # Split the image into 9 digits
-        digits = [Image.fromarray(image[28*(i//3):28*((i//3)+1), 28*(i%3):28*((i%3)+1)]) for i in range(9)]
-
+        all_digits = [Image.fromarray(image[28*(i//3):28*((i//3)+1), 28*(i%3):28*((i%3)+1)]) for i in range(9)]
 
         # Identify each digit using the classifier
-        identified_digits = [self.classifier.classify_digit(digit) for digit in digits]
+        identified_digits = [self.classifier.classify_digit(digit) for digit in all_digits]
 
         relationships = []
-
+        digits = list(filter(lambda x: x != 10, identified_digits))
         # Find the relationships
         for i, digit in enumerate(identified_digits):
+            if digit == 10:
+                continue
             # Compute the position in the 3x3 grid
-            row, col = divmod(i, 3)
+            row_i, col_i = divmod(i, 3)
 
-            # Check for a digit to the right
-            if col < 2:
-                relationships.append((digit, "right of", identified_digits[i+1]))
+            # Now compare this digit to all other digits
+            for j, other_digit in enumerate(identified_digits):
+                if other_digit == 10 or i == j:
+                    continue
+                # Compute the position in the 3x3 grid
+                row_j, col_j = divmod(j, 3)
 
-            # Check for a digit to the left
-            if col > 0:
-                relationships.append((digit, "left of", identified_digits[i-1]))
+                # Determine the relationship
+                if col_j > col_i:
+                    relationships.append((digit, "left of", other_digit))
+                if col_j < col_i:
+                    relationships.append((digit, "right of", other_digit))
+                if row_j > row_i:
+                    relationships.append((digit, "above", other_digit))
+                if row_j < row_i:
+                    relationships.append((digit, "below", other_digit))
 
-            # Check for a digit below
-            if row < 2:
-                relationships.append((digit, "below", identified_digits[i+3]))
+        return set(relationships), digits
+    
+    def compute_accuracy(self, prompt, image):
+        relationships, digits = self.find_relationships(image)
+        prompt = prompt.strip()
+        p_digits = re.findall(self.digit_regex, prompt)
+        p_relationships = re.findall(self.relationship_regex, prompt)
+        p_relationships_and_digits = [(p_digits[i], p_relationships[i], p_digits[i + 1]) for i in range(len(p_relationships))]
+        accuracy = 0
+        if len(digits) != len(p_digits):
+            return 0
+        for relationship in p_relationships_and_digits:
+            if relationship in relationships:
+                accuracy += 1
 
-            # Check for a digit above
-            if row > 0:
-                relationships.append((digit, "above", identified_digits[i-3]))
-
-        return relationships
 
 if __name__ == "__main__":
     # Load the classifier
