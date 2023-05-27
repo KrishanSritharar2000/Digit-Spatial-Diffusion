@@ -27,6 +27,7 @@ from ldm.models.diffusion.dpm_solver import DPMSolverSampler
 # from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
 from transformers import AutoFeatureExtractor
 
+
 # load safety model
 safety_model_id = "CompVis/stable-diffusion-safety-checker"
 safety_feature_extractor = AutoFeatureExtractor.from_pretrained(safety_model_id)
@@ -245,13 +246,14 @@ def main():
     opt.ckpt = "trained_models/ldm_model6_epoch30.ckpt"
     # opt.config = "configs/stable-diffusion/v1-inference.yaml"
     # opt.ckpt = "../ControlNet/models/v1-5-pruned.ckpt"
-    opt.outdir = "ldm_test_outputs/eval_test_dataset/1"
+    opt.outdir = "ldm_test_outputs/test_set_baseline"
     opt.C = 4
     opt.H = 64
     opt.W = 64
     opt.f = 4
-    opt.prompt = "8 right of 4 below 0"
+    opt.n_iter = 1
     opt.n_samples = 8
+    # opt.prompt = "8 right of 4 below 0"
 
     seed_everything(opt.seed)
 
@@ -287,12 +289,13 @@ def main():
         print(f"reading prompts from {opt.from_file}")
         with open(opt.from_file, "r") as f:
             data = f.read().splitlines()
-            data = list(chunk(data, batch_size))
+            data_idx_prompt = [tuple(i.split("_")) for i in data]
+            # data_idx_prompt = list(chunk(data_idx_prompt, batch_size))
 
-    sample_path = os.path.join(outpath, "samples")
-    os.makedirs(sample_path, exist_ok=True)
-    base_count = len(os.listdir(sample_path))
-    grid_count = len(os.listdir(outpath)) - 1
+    # sample_path = os.path.join(outpath, "samples")
+    # os.makedirs(sample_path, exist_ok=True)
+    # base_count = len(os.listdir(sample_path))
+    # grid_count = len(os.listdir(outpath)) - 1
 
     start_code = None
     if opt.fixed_code:
@@ -303,14 +306,22 @@ def main():
         with precision_scope("cuda"):
             with model.ema_scope():
                 tic = time.time()
-                all_samples = list()
                 for n in trange(opt.n_iter, desc="Sampling"):
-                    for prompts in tqdm(data, desc="data"):
+                    for prompts in tqdm(data_idx_prompt, desc="data_idx_prompt"):
+                        all_samples = list()
+                        idx, prompts = prompts
+                     
+                        sample_path = os.path.join(outpath, f"{idx}_{prompts}")
+                        os.makedirs(sample_path, exist_ok=True)
+                        base_count = len(os.listdir(sample_path))
+                        grid_count = len(os.listdir(outpath)) - 1
+
                         uc = None
                         if opt.scale != 1.0:
                             uc = model.get_learned_conditioning(batch_size * [""])
                         if isinstance(prompts, tuple):
                             prompts = list(prompts)
+                        prompts = batch_size * [prompts]
                         c = model.get_learned_conditioning(prompts)
                         shape = [opt.C, opt.H // opt.f, opt.W // opt.f]
                         samples_ddim, _ = sampler.sample(S=opt.ddim_steps,
@@ -346,18 +357,18 @@ def main():
                         if not opt.skip_grid:
                             all_samples.append(x_checked_image_torch)
 
-                if not opt.skip_grid:
-                    # additionally, save as grid
-                    grid = torch.stack(all_samples, 0)
-                    grid = rearrange(grid, 'n b c h w -> (n b) c h w')
-                    grid = make_grid(grid, nrow=n_rows)
+                        if not opt.skip_grid:
+                            # additionally, save as grid
+                            grid = torch.stack(all_samples, 0)
+                            grid = rearrange(grid, 'n b c h w -> (n b) c h w')
+                            grid = make_grid(grid, nrow=n_rows)
 
-                    # to image
-                    grid = 255. * rearrange(grid, 'c h w -> h w c').cpu().numpy()
-                    img = Image.fromarray(grid.astype(np.uint8))
-                    # img = put_watermark(img, wm_encoder)
-                    img.save(os.path.join(outpath, f'grid-{grid_count:04}.png'))
-                    grid_count += 1
+                            # to image
+                            grid = 255. * rearrange(grid, 'c h w -> h w c').cpu().numpy()
+                            img = Image.fromarray(grid.astype(np.uint8))
+                            # img = put_watermark(img, wm_encoder)
+                            img.save(os.path.join(sample_path, f'grid-{grid_count:04}.png'))
+                            grid_count += 1
 
                 toc = time.time()
 

@@ -31,6 +31,7 @@ class MNISTDataset(Dataset):
                               "bicubic": PIL.Image.BICUBIC,
                               "lanczos": PIL.Image.LANCZOS,
                               }[interpolation]
+        self.prompts = set()
     def __len__(self):
         return len(self.indices)
 
@@ -71,6 +72,7 @@ class MNISTDataset(Dataset):
 
         output["image"] = image
         output["caption"] = label
+        self.prompts.add(self.all_image_files[self.indices[idx]].split(".")[0])
         return output
     
     @staticmethod
@@ -122,6 +124,10 @@ class MNISTDataset(Dataset):
         now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
         plt.savefig(f"training_ldm_log/recon/{now}.png")
 
+    def savePrompts(self, path):
+        with open(path, 'w') as f:
+            for item in self.prompts:
+                f.write("%s\n" % item)
 
 
 class MNISTTrain(MNISTDataset):
@@ -138,17 +144,43 @@ class MNISTTest(MNISTDataset):
 
 
 if __name__ == '__main__':
-    import matplotlib.pyplot as plt
-    from torchvision import transforms
+    # import matplotlib.pyplot as plt
+    # from torchvision import transforms
 
-    transform = transforms.Compose([
-        transforms.Resize(32),
-        transforms.ToTensor(),
-    ])
+    # transform = transforms.Compose([
+    #     transforms.Resize(32),
+    #     transforms.ToTensor(),
+    # ])
 
-    dataset = MNISTTrain(transform=transform)
-    print(len(dataset))
-    print(dataset[0]["image"].shape)
-    print(dataset[0]["label"])
-    plt.imshow(dataset[0]["image"].squeeze().numpy())
-    plt.show()
+    # dataset = MNISTTrain(transform=transform)
+    # print(len(dataset))
+    # print(dataset[0]["image"].shape)
+    # print(dataset[0]["label"])
+    # plt.imshow(dataset[0]["image"].squeeze().numpy())
+    # plt.show()
+    # t = MNISTTrain()
+    # get everything in t
+    # print(len(t))
+    # for i in range(len(t)):
+        # t[i]
+    # print(t.prompts)
+    # print(len(t.prompts))
+    u = MNISTTest()
+    for i in range(len(u)):
+        u[i]
+    # print(len(u.prompts))
+
+    # v = MNISTValidation()
+    # for i in range(len(v)):
+    #     v[i]
+    # print(len(v.prompts))
+
+    # # print everything in u which isnt also in t
+    # print(len(u.prompts - t.prompts))
+    # print(len(v.prompts - t.prompts))
+    # print(len(t.prompts - u.prompts))
+    # print(len(t.prompts - v.prompts))
+    # print(len(u.prompts - v.prompts))
+    # print(len(v.prompts - u.prompts))
+    
+    u.savePrompts("data/mnist_dataset/test_prompts_dup.txt")

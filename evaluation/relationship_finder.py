@@ -6,6 +6,7 @@ from PIL import Image
 import numpy as np
 from mnist_classifier import MNISTClassifier, CustomTensorDataset
 import re
+import os
 
 class DigitRelationshipFinder:
     def __init__(self, classifier):
@@ -54,15 +55,22 @@ class DigitRelationshipFinder:
     def compute_accuracy(self, prompt, image):
         relationships, digits = self.find_relationships(image)
         prompt = prompt.strip()
-        p_digits = re.findall(self.digit_regex, prompt)
+        p_digits = list(map(int, re.findall(self.digit_regex, prompt)))
         p_relationships = re.findall(self.relationship_regex, prompt)
         p_relationships_and_digits = [(p_digits[i], p_relationships[i], p_digits[i + 1]) for i in range(len(p_relationships))]
         accuracy = 0
         if len(digits) != len(p_digits):
             return 0
-        for relationship in p_relationships_and_digits:
-            if relationship in relationships:
-                accuracy += 1
+        # for relationship in p_relationships_and_digits:
+        #     if relationship in relationships:
+        #         accuracy += 1
+
+        prompt_set = set(p_relationships_and_digits)
+        image_set = set(relationships)
+
+        matches = prompt_set.intersection(image_set)
+        score = len(matches) / len(prompt_set)
+        return score
 
 
 if __name__ == "__main__":
@@ -71,14 +79,42 @@ if __name__ == "__main__":
     classifier = MNISTClassifier()
     classifier.load()
     
-    # Load the image
-    image = Image.open("samples/00000.png")
-    size =  84 # 28*3
-    image = image.resize((84, 84), resample=PIL.Image.BICUBIC)
-
+    # Load all the images from the './samples' directory
+    directory = './samples'
+    image_size =  84 # 28*3
     finder = DigitRelationshipFinder(classifier)
-    relationships = finder.find_relationships(image)
+
+    accuracy = 0
+    samples = 0
+    # Iterate over all files in the directory
+    for filename in os.listdir(directory):
+        if filename.endswith(".jpg") or filename.endswith(".png"):
+            # Construct the full file path
+            file_path = os.path.join(directory, filename)
+            print(f"Processing {file_path}")
+
+            # Get the filename
+            prompt = "8 right of 4 below 0"
+            print(prompt)
+
+            # Open the image file
+            image = Image.open(file_path)
+            image = image.resize((image_size, image_size), resample=PIL.Image.BICUBIC)
+
+            
+            a = finder.compute_accuracy(prompt, image)
+            print(f"Accuracy: {a}")
+            accuracy += a
+            samples += 1
+
+            # Close the image file
+            image.close()
+
+    print(f"Average accuracy: {accuracy/samples}")
     
+
+
+    # relationships = finder.find_relationships(image)
 
 
 
