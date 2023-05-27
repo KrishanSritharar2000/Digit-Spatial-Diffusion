@@ -7,6 +7,7 @@ from PIL import Image
 from pytorch_lightning.callbacks import Callback
 from pytorch_lightning.utilities.distributed import rank_zero_only
 
+import wandb
 
 class ImageLogger(Callback):
     def __init__(self, batch_frequency=2000, max_images=4, clamp=True, increase_log_steps=True,
@@ -23,6 +24,17 @@ class ImageLogger(Callback):
         self.log_on_batch_idx = log_on_batch_idx
         self.log_images_kwargs = log_images_kwargs if log_images_kwargs else {}
         self.log_first_step = log_first_step
+
+    @rank_zero_only
+    def _wandb(self, pl_module, images, batch_idx, split):
+        for k in images:
+            grid = torchvision.utils.make_grid(images[k])
+            grid = (grid + 1.0) / 2.0  # -1,1 -> 0,1; c,h,w
+
+            tag = f"{split}/{k}"
+            pl_module.logger.experiment.log({
+                tag: [wandb.Image(grid, caption=tag)]
+            }, step=pl_module.global_step)
 
     @rank_zero_only
     def log_local(self, save_dir, split, images, global_step, current_epoch, batch_idx):

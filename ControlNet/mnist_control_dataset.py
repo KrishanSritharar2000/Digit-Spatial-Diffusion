@@ -13,20 +13,25 @@ from einops import rearrange
 
 
 class MNISTControlDataset(Dataset):
-    def __init__(self, transform=None, 
+    def __init__(self, root_dir, indicesFile=None, transform=None, 
                  size=128,
                  interpolation="bicubic",
                  ):
-        self.root_dir = '../stable-diffusion/data/mnist_dataset/dataset'
+        self.root_dir = root_dir
         self.all_image_files = os.listdir(self.root_dir)
 
+        if indicesFile is not None:
+            with open(indicesFile, 'rb') as f:
+                self.indices = pickle.load(f)
+        else:
+            self.indices = np.arange(len(self.all_image_files))
         # if indicesFile is not None:
         #     with open(indicesFile, 'rb') as f:
         #         self.indices = pickle.load(f)
         # else:
         # self.indices = np.arange(len(self.all_image_files))
-        with open('../stable-diffusion/data/train_indices.pkl', 'rb') as f:
-            self.indices = pickle.load(f)
+        # with open('../stable-diffusion/data/train_indices.pkl', 'rb') as f:
+        #     self.indices = pickle.load(f)
 
         self.transform = transform
         self.size = size
@@ -153,3 +158,15 @@ class MNISTControlDataset(Dataset):
         plt.tight_layout()
         now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
         plt.savefig(f"training_ldm_log/recon/{now}.png")
+
+class MNISTControlTrain(MNISTControlDataset):
+    def __init__(self, **kwargs):
+        super().__init__('../stable-diffusion/data/mnist_dataset/dataset', indicesFile="../stable-diffusion/data/train_indices.pkl", **kwargs)
+
+class MNISTControlValidation(MNISTControlDataset):
+    def __init__(self, **kwargs):
+        super().__init__('../stable-diffusion/data/mnist_dataset/dataset', indicesFile="../stable-diffusion/data/test_indices.pkl", **kwargs)
+
+class MNISTControlTest(MNISTControlDataset):
+    def __init__(self, **kwargs):
+        super().__init__('../stable-diffusion/data/mnist_dataset/test_dataset', **kwargs)
