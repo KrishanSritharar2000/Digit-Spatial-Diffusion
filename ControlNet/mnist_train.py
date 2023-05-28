@@ -98,9 +98,8 @@ class DataModuleFromConfig(pl.LightningDataModule):
                           num_workers=self.num_workers, worker_init_fn=init_fn)
 # Configs
 resume_path = './models/control_mnist_m6e30_take2.ckpt'
-batch_size = 4
-logger_freq = 100
-learning_rate = 1e-5
+logger_freq = 500
+learning_rate = 5e-5
 sd_locked = True
 only_mid_control = False
 
@@ -116,6 +115,7 @@ model.only_mid_control = only_mid_control
 
 config = OmegaConf.load(config_path)
 data = instantiate_from_config(config.data)
+batch_size = data.batch_size
 # NOTE according to https://pytorch-lightning.readthedocs.io/en/latest/datamodules.html
 # calling these ourselves should not be necessary but it is.
 # lightning still takes care of proper multiprocessing though
@@ -133,13 +133,16 @@ nowname = now + '_' + name
 logdir = os.path.join('logs', nowname)
 wandb_logger = WandbLogger(save_dir=logdir, log_model=True, name=nowname, id=name)
 
+ckptdir = os.path.join(logdir, "checkpoints")
 # Create a checkpoint callback
 checkpoint_callback = ModelCheckpoint(
-    monitor="val_loss",  # the validation metric to monitor, change it as per your requirements
-    dirpath=logdir,  # the directory where checkpoints will be saved
-    filename="{epoch}-{step}-{val_loss:.2f}",  # a unique name for each checkpoint
-    save_top_k=5,  # keep only the top 5 models
+    monitor="val/loss_simple_ema",  # the validation metric to monitor, change it as per your requirements
+    dirpath=ckptdir,  # the directory where checkpoints will be saved
+    filename="{epoch}-{step}-{val_loss:.6f}",  # a unique name for each checkpoint
+    save_top_k=10,  # keep only the top 5 models
     mode="min",  # the goal is to minimize the monitored quantity
+    save_last=True,
+    verbose=True,
 )
 
 # Misc

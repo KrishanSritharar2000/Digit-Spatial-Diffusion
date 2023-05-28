@@ -6,8 +6,12 @@ import torchvision
 from PIL import Image
 from pytorch_lightning.callbacks import Callback
 from pytorch_lightning.utilities.distributed import rank_zero_only
+import pytorch_lightning as pl
 
 import wandb
+import warnings
+
+warnings.filterwarnings("ignore")
 
 class ImageLogger(Callback):
     def __init__(self, batch_frequency=2000, max_images=4, clamp=True, increase_log_steps=True,
@@ -17,6 +21,9 @@ class ImageLogger(Callback):
         self.rescale = rescale
         self.batch_freq = batch_frequency
         self.max_images = max_images
+        self.logger_log_images = {
+            pl.loggers.WandbLogger: self._wandb,
+        }
         if not increase_log_steps:
             self.log_steps = [self.batch_freq]
         self.clamp = clamp
@@ -76,6 +83,10 @@ class ImageLogger(Callback):
 
             self.log_local(pl_module.logger.save_dir, split, images,
                            pl_module.global_step, pl_module.current_epoch, batch_idx)
+
+            logger_log_images = self.logger_log_images.get(
+                logger, lambda *args, **kwargs: None)
+            logger_log_images(pl_module, images, pl_module.global_step, split)
 
             if is_train:
                 pl_module.train()

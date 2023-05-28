@@ -41,15 +41,7 @@ class MNISTControlDataset(Dataset):
                               "lanczos": PIL.Image.LANCZOS,
                               }[interpolation]
         
-        self.relations = {
-            "left of": 0,
-            "right of": 1,
-            "above": 2,
-            "below": 3
-        }
 
-        self.digit_regex = r'\b\d\b'
-        self.relationship_regex = r'\b(left of|right of|above|below)\b'
 
 
     def __len__(self):
@@ -92,17 +84,29 @@ class MNISTControlDataset(Dataset):
 
         return dict(jpg=image, txt=label, hint=hint)
 
-    def convertLabelToHintTensor(self, label):
+    @staticmethod
+    def convertLabelToHintTensor(label):
+        relations = {
+            "left of": 0,
+            "right of": 1,
+            "above": 2,
+            "below": 3
+        }
+
+        digit_regex = r'\b\d\b'
+        relationship_regex = r'\b(left of|right of|above|below)\b'
+
+
         #Make a tensor of size 10x10x4
         matrix = torch.zeros((10,10,4))
         # strip label of whistespaces
         label = label.strip()
-        digits = re.findall(self.digit_regex, label)
-        relationships = re.findall(self.relationship_regex, label)
+        digits = re.findall(digit_regex, label)
+        relationships = re.findall(relationship_regex, label)
         digits = list(map(int, digits))
         triplets = [(digits[i], relationships[i], digits[i + 1]) for i in range(len(relationships))]
         for triplet in triplets:
-            matrix[triplet[0], triplet[2], self.relations[triplet[1]]] = 1
+            matrix[triplet[0], triplet[2], relations[triplet[1]]] = 1
         matrix = rearrange(matrix, "h w c -> c h w")
         return matrix
 

@@ -287,6 +287,7 @@ class ControlNet(nn.Module):
         return TimestepEmbedSequential(zero_module(conv_nd(self.dims, channels, channels, 1, padding=0)))
 
     # Converts the hint from [4, 10, 10] into [4, 128, 128]
+
     def shape_hint(self, hint):
         batch_size = hint.shape[0] 
         hint = self.hint_flatten(hint)
@@ -297,6 +298,7 @@ class ControlNet(nn.Module):
     def forward(self, x, hint, timesteps, context, **kwargs):
         t_emb = timestep_embedding(timesteps, self.model_channels, repeat_only=False)
         emb = self.time_embed(t_emb)
+
 
         hint = self.shape_hint(hint)
 
@@ -375,11 +377,11 @@ class ControlLDM(LatentDiffusion):
         log = dict()
         z, c = self.get_input(batch, self.first_stage_key, bs=N)
         c_cat, c = c["c_concat"][0][:N], c["c_crossattn"][0][:N]
-        c_cat = self.control_model.shape_hint(c_cat)
+        # c_cat = self.control_model.shape_hint(c_cat)
         N = min(z.shape[0], N)
         n_row = min(z.shape[0], n_row)
         log["reconstruction"] = self.decode_first_stage(z)
-        log["control"] = c_cat * 2.0 - 1.0
+        log["control"] = self.control_model.shape_hint(c_cat)#* 2.0 - 1.0
         log["conditioning"] = log_txt_as_img((512, 512), batch[self.cond_stage_key], size=16)
 
         if plot_diffusion_rows:
@@ -430,7 +432,7 @@ class ControlLDM(LatentDiffusion):
     def sample_log(self, cond, batch_size, ddim, ddim_steps, **kwargs):
         ddim_sampler = DDIMSampler(self)
         b, c, h, w = cond["c_concat"][0].shape
-        shape = (self.channels, h // 8, w // 8)
+        shape = (4, 16, 16)#(self.channels, h // 8, w // 8)
         samples, intermediates = ddim_sampler.sample(ddim_steps, batch_size, shape, cond, verbose=False, **kwargs)
         return samples, intermediates
 
