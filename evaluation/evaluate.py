@@ -78,6 +78,42 @@ class Evaluate:
         score = len(matches) / len(prompt_set)
         return score
     
+    def compute_accurary(self, data):
+        accuracy = 0
+        for prompt_with_idx in tqdm(data.keys(), desc="Computing accuracy"):
+            t_accuracy = 0
+            prompt = prompt_with_idx.split("_")[1].strip()
+            
+            p_digits = list(map(int, re.findall(self.digit_regex, prompt)))
+            p_relationships = re.findall(self.relationship_regex, prompt)
+            p_relationships_and_digits = [(p_digits[i], p_relationships[i], p_digits[i + 1]) for i in range(len(p_relationships))]
+
+            for img in tqdm(data[prompt_with_idx].keys(), desc="Processing image data", leave=False):
+                relationships, digits = data[prompt_with_idx][img]["relationships"], data[prompt_with_idx][img]["digits"]
+            
+                # If the number of digits is not the same, then the accuracy is 0
+                if len(digits) != len(p_digits):
+                    t_accuracy += 0
+                    continue
+                # If a digit is not in the prompt, then the accuracy is 0
+                if (set(digits) != set(p_digits)):
+                    t_accuracy += 0
+                    continue
+
+                prompt_set = set(p_relationships_and_digits)
+                image_set = set(relationships)
+
+                # Accuracy is how many relationships are correct (either 0.5 or 1 since there are only 2 in p_relationships)
+                matches = prompt_set.intersection(image_set)
+                score = len(matches) / len(prompt_set)
+                t_accuracy += score
+            # print(f"Accuracy for {prompt_with_idx}: {t_accuracy / len(data[prompt_with_idx])}")
+            accuracy += t_accuracy / len(data[prompt_with_idx])
+        print(f"Total accuracy: {accuracy / len(data)}")
+        return accuracy / len(data)
+
+
+    
     def calculate_relationships_on_testset(self, test_dir):
         # Check that test_dir exists
         if not os.path.exists(test_dir):
@@ -123,16 +159,52 @@ class Evaluate:
                     "relationships": relationships,
                     "digits": digits,
                 }
-        with open('testset_m6e30_baseline.pkl', 'wb') as f:
+        with open('testset_m6e30_3_baseline.pkl', 'wb') as f:
             pickle.dump(data, f)
-        with open('testset_m6e30_baseline.json', 'wb') as f:
-            json.dumps(data, f)
+        # with open('testset_m15e181_baseline.json', 'wb') as f:
+        #     json.dumps(data, f)
 
 
 if __name__ == "__main__":
     e = Evaluate()
-    e.calculate_relationships_on_testset('../stable-diffusion/ldm_test_outputs/test_set_baseline')
-    # data = pickle.load(open('testset_m6e30_baseline.pkl', 'rb'))
+    # e.calculate_relationships_on_testset('../stable-diffusion/ldm_test_outputs/test_set_baseline_m6e30_3')
+    # print("testset_m6e30_baseline")
+    # data1 = pickle.load(open('testset_m6e30_1_baseline.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('testset_m6e30_2_baseline.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('testset_m6e30_3_baseline.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
+
+    # print("testset_m12e152_baseline")
+    # data1 = pickle.load(open('testset_m12e152_1_baseline.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('testset_m12e152_2_baseline.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('testset_m12e152_3_baseline.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
+
+
+    # print("testset_m14e244_baseline")
+    # data1 = pickle.load(open('testset_m14e244_1_baseline.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('testset_m14e244_2_baseline.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('testset_m14e244_3_baseline.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
+
+
+    # print("testset_m15e181_baseline")
+    # data1 = pickle.load(open('testset_m15e181_1_baseline.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('testset_m15e181_2_baseline.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('testset_m15e181_3_baseline.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
     # print(len(data))
 
     

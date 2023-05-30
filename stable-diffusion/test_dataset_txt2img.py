@@ -26,7 +26,7 @@ from ldm.models.diffusion.dpm_solver import DPMSolverSampler
 
 # from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
 from transformers import AutoFeatureExtractor
-
+import random
 
 # load safety model
 safety_model_id = "CompVis/stable-diffusion-safety-checker"
@@ -242,17 +242,22 @@ def main():
 
     if opt.laion400m:
         print("Falling back to LAION 400M model...")
-    opt.config = "trained_models/ldm_model6_config.yaml"
-    opt.ckpt = "trained_models/ldm_model6_epoch30.ckpt"
+    opt.config = "trained_models/ldm_model11_config.yaml"
+    opt.ckpt = "trained_models/ldm_model11_epoch7.ckpt"
     # opt.config = "configs/stable-diffusion/v1-inference.yaml"
     # opt.ckpt = "../ControlNet/models/v1-5-pruned.ckpt"
-    opt.outdir = "ldm_test_outputs/test_set_baseline"
+    opt.outdir = "ldm_test_outputs/test_set_baseline_m11e7_3"
     opt.C = 4
     opt.H = 64
     opt.W = 64
     opt.f = 4
     opt.n_iter = 1
     opt.n_samples = 8
+    opt.from_file = "custom/data/test_prompts_dup.txt"
+    # opt.seed = 42
+    # opt.seed = 79637
+    opt.seed = 92923
+    print(f"Using seed {opt.seed}")
     # opt.prompt = "8 right of 4 below 0"
 
     seed_everything(opt.seed)

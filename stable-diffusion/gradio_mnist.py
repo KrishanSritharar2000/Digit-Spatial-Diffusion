@@ -31,6 +31,7 @@ import cv2
 import gradio as gr
 import numpy as np
 import torch
+import random
 
 from pytorch_lightning import seed_everything
 
@@ -107,9 +108,9 @@ def check_safety(x_image):
     return x_checked_image, has_nsfw_concept
 
 
-def main(prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_digit_3):
+def main(prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_digit_3, seed, n_samples, strength, scale, ddim_steps):
     prompt = f"{prompt_digit_1} {relationship_1} {prompt_digit_2} {relationship_2} {prompt_digit_3}"
-    prompt = "1 below 2 below 3 below 4 below 5 below 6 below 7 below 8 below 9 below 0"
+    # prompt = "1 below 2 below 3 below 4 below 5 below 6 below 7 below 8 below 9 below 0"
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -250,8 +251,8 @@ def main(prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_
 
     if opt.laion400m:
         print("Falling back to LAION 400M model...")
-    opt.config = "trained_models/ldm_model6_config.yaml"
-    opt.ckpt = "trained_models/ldm_model6_epoch30.ckpt"
+    opt.config = "trained_models/ldm_model15_config.yaml"
+    opt.ckpt = "trained_models/ldm_model15_epoch181.ckpt"
     # opt.config = "configs/stable-diffusion/v1-inference.yaml"
     # opt.ckpt = "../ControlNet/models/v1-5-pruned.ckpt"
     opt.outdir = "ldm_test_outputs/test"
@@ -261,7 +262,14 @@ def main(prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_
     opt.f = 4
     opt.prompt = prompt
 
-    seed_everything(opt.seed)
+    # seed_everything(opt.seed)
+    if seed == -1:
+        seed = random.randint(0, 65535)
+    seed_everything(seed)
+    opt.num_samples = n_samples
+    opt.scale = scale
+    opt.ddim_steps = ddim_steps
+
 
     config = OmegaConf.load(f"{opt.config}")
     model = load_model_from_config(config, f"{opt.ckpt}")
@@ -269,6 +277,8 @@ def main(prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     model = model.to(device)
 
+    model.control_scales = [strength * (0.825 ** float(12 - i)) for i in range(13)] if guess_mode else ([strength] * 13)  # Magic number. IDK why. Perhaps because 0.825**12<0.01 but 0.826**12>0.01
+    
     if opt.dpm_solver:
         sampler = DPMSolverSampler(model)
     elif opt.plms:
@@ -408,7 +418,7 @@ if __name__ == "__main__":
                                         value='longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality')
             with gr.Column():
                 result_gallery = gr.Gallery(label='Output', show_label=False, elem_id="gallery").style(grid=2, height='auto')
-        ips = [prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_digit_3]
+        ips = [prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_digit_3, seed, num_samples, strength, scale, ddim_steps]
         run_button.click(fn=main, inputs=ips, outputs=[result_gallery])
 
 

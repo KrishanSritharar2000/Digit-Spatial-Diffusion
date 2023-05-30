@@ -14,9 +14,9 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.fc1 = nn.Linear(28 * 28, 512)
-        self.fc2 = nn.Linear(512, 256)
-        self.fc3 = nn.Linear(256, 11)
+        self.fc1 = nn.Linear(28 * 28, 256)
+        self.fc2 = nn.Linear(256, 512)
+        self.fc3 = nn.Linear(512, 11)
 
     def forward(self, x):
         x = x.view(-1, 28 * 28)
@@ -51,7 +51,7 @@ class MNISTClassifier:
 
         # Prepare data loaders
         self.trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle=True)
-        self.testloader = torch.utils.data.DataLoader(test_dataset, batch_size=64, shuffle=False)
+        self.testloader = torch.utils.data.DataLoader(test_dataset, batch_size=64, shuffle=True)
         
 
     def print_sample_types(self, dataset, num_samples=5):
@@ -73,7 +73,7 @@ class MNISTClassifier:
         optimizer = optim.Adam(self.net.parameters(), lr=0.001)
 
         # Train the network showing the loss and progress using tqdm
-        for epoch in tqdm(range(10)):  # loop over the dataset multiple times
+        for epoch in tqdm(range(100)):  # loop over the dataset multiple times
             running_loss = 0.0
             for i, data in tqdm(enumerate(self.trainloader, 0)):
                 # get the inputs
@@ -106,7 +106,7 @@ class MNISTClassifier:
         print('Finished Training')
 
         # Save the model
-        PATH = './mnist_classifier_no_digit_inc.pth'
+        PATH = './mnist_classifier_no_digit_inc_512_3.pth'
         torch.save(self.net.state_dict(), PATH)
 
     def test(self):
@@ -127,7 +127,10 @@ class MNISTClassifier:
         # Load the model
         self.net = Net()
         # PATH = './mnist_classifier.pth'
-        PATH = './mnist_classifier_no_digit_inc.pth'
+        # PATH = './mnist_classifier_no_digit_inc.pth'
+        PATH = './mnist_classifier_no_digit_inc_512_2.pth'
+
+        
         self.net.load_state_dict(torch.load(PATH))
         self.net.to(device)
 
@@ -170,7 +173,7 @@ class CustomTensorDataset(torch.utils.data.Dataset):
 
 if __name__ == "__main__":
     mnist_classifier = MNISTClassifier()
-    # mnist_classifier.train()
-    mnist_classifier.load()
+    mnist_classifier.train()
+    # mnist_classifier.load()
     mnist_classifier.test()
     # mnist_classifier.create_no_digit_dataset()
