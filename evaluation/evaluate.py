@@ -114,7 +114,7 @@ class Evaluate:
 
 
     
-    def calculate_relationships_on_testset(self, test_dir):
+    def calculate_relationships_on_testset(self, test_dir, pickleFile):
         # Check that test_dir exists
         if not os.path.exists(test_dir):
             raise ValueError("Test directory does not exist")
@@ -159,7 +159,7 @@ class Evaluate:
                     "relationships": relationships,
                     "digits": digits,
                 }
-        with open('testset_m6e30_3_baseline.pkl', 'wb') as f:
+        with open(pickleFile, 'wb') as f:
             pickle.dump(data, f)
         # with open('testset_m15e181_baseline.json', 'wb') as f:
         #     json.dumps(data, f)
@@ -167,7 +167,7 @@ class Evaluate:
 
 if __name__ == "__main__":
     e = Evaluate()
-    # e.calculate_relationships_on_testset('../stable-diffusion/ldm_test_outputs/test_set_baseline_m6e30_3')
+    # e.calculate_relationships_on_testset('../stable-diffusion/ldm_test_outputs/test_set_baseline_m11e7_3','testset_m11e7_3_baseline.pkl' )
     # print("testset_m6e30_baseline")
     # data1 = pickle.load(open('testset_m6e30_1_baseline.pkl', 'rb'))
     # score1 = e.compute_accurary(data1)
@@ -207,6 +207,14 @@ if __name__ == "__main__":
     # print("Avg: ", (score1 + score2 + score3)/3)
     # print(len(data))
 
+    # print("testset_m11e7_baseline")
+    # data1 = pickle.load(open('testset_m11e7_1_baseline.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('testset_m11e7_2_baseline.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('testset_m11e7_3_baseline.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
     
     # Load all the images from the './samples' directory
     # directory = './samples'
