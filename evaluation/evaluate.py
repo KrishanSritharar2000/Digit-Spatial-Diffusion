@@ -167,6 +167,7 @@ class Evaluate:
 
 if __name__ == "__main__":
     e = Evaluate()
+    # e.calculate_relationships_on_testset('../ControlNet/cn_test_outputs/m15e181_3','testset_m15e181_3_cn.pkl' )
     # e.calculate_relationships_on_testset('../stable-diffusion/ldm_test_outputs/test_set_baseline_m11e7_3','testset_m11e7_3_baseline.pkl' )
     # print("testset_m6e30_baseline")
     # data1 = pickle.load(open('testset_m6e30_1_baseline.pkl', 'rb'))
@@ -205,7 +206,6 @@ if __name__ == "__main__":
     # data3 = pickle.load(open('testset_m15e181_3_baseline.pkl', 'rb'))
     # score3 = e.compute_accurary(data3)
     # print("Avg: ", (score1 + score2 + score3)/3)
-    # print(len(data))
 
     # print("testset_m11e7_baseline")
     # data1 = pickle.load(open('testset_m11e7_1_baseline.pkl', 'rb'))
@@ -216,6 +216,27 @@ if __name__ == "__main__":
     # score3 = e.compute_accurary(data3)
     # print("Avg: ", (score1 + score2 + score3)/3)
     
+    ## Control Net
+    print("testset_m12e152_cn")
+    data1 = pickle.load(open('testset_m12e152_1_cn.pkl', 'rb'))
+    score1 = e.compute_accurary(data1)
+    data2 = pickle.load(open('testset_m12e152_2_cn.pkl', 'rb'))
+    score2 = e.compute_accurary(data2)
+    data3 = pickle.load(open('testset_m12e152_3_cn.pkl', 'rb'))
+    score3 = e.compute_accurary(data3)
+    print("Avg: ", (score1 + score2 + score3)/3)
+
+    # print("testset_m11e7_baseline")
+    # data1 = pickle.load(open('testset_m11e7_1_baseline.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('testset_m11e7_2_baseline.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('testset_m11e7_3_baseline.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
+
+
+
     # Load all the images from the './samples' directory
     # directory = './samples'
     # image_size =  84 # 28*3

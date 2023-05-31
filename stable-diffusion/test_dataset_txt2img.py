@@ -246,7 +246,7 @@ def main():
     opt.ckpt = "trained_models/ldm_model11_epoch7.ckpt"
     # opt.config = "configs/stable-diffusion/v1-inference.yaml"
     # opt.ckpt = "../ControlNet/models/v1-5-pruned.ckpt"
-    opt.outdir = "ldm_test_outputs/test_set_baseline_m11e7_3"
+    opt.outdir = "ldm_test_outputs/test_set_baseline_m11e7_2"
     opt.C = 4
     opt.H = 64
     opt.W = 64
@@ -255,8 +255,8 @@ def main():
     opt.n_samples = 8
     opt.from_file = "custom/data/test_prompts_dup.txt"
     # opt.seed = 42
-    # opt.seed = 79637
-    opt.seed = 92923
+    opt.seed = 79637
+    # opt.seed = 92923
     print(f"Using seed {opt.seed}")
     # opt.prompt = "8 right of 4 below 0"
 
