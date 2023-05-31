@@ -97,7 +97,7 @@ class DataModuleFromConfig(pl.LightningDataModule):
         return DataLoader(self.datasets["predict"], batch_size=self.batch_size,
                           num_workers=self.num_workers, worker_init_fn=init_fn)
 # Configs
-resume_path = './models/control_mnist_m6e30_take2.ckpt'
+resume_path = './models/control_mnist_m15e181.ckpt'
 logger_freq = 500
 learning_rate = 5e-5
 sd_locked = True
@@ -105,7 +105,7 @@ only_mid_control = False
 
 
 # First use cpu to load models. Pytorch Lightning will automatically move it to GPUs.
-config_path = './models/model6_epoch30_control.yaml'
+config_path = './models/model15_epoch181_control.yaml'
 model = create_model(config_path).cpu()
 model.load_state_dict(load_state_dict(resume_path, location='cpu'))
 model.learning_rate = learning_rate
@@ -116,6 +116,7 @@ model.only_mid_control = only_mid_control
 config = OmegaConf.load(config_path)
 data = instantiate_from_config(config.data)
 batch_size = data.batch_size
+print("batch_size", batch_size)
 # NOTE according to https://pytorch-lightning.readthedocs.io/en/latest/datamodules.html
 # calling these ourselves should not be necessary but it is.
 # lightning still takes care of proper multiprocessing though
@@ -127,7 +128,7 @@ wandb.init(project="final-year-project", config={
     "batch_size": batch_size,
 })
 
-name = 'control_mnist_m6e30_take2'
+name = 'control_mnist_m15e181'
 now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
 nowname = now + '_' + name
 logdir = os.path.join('logs', nowname)

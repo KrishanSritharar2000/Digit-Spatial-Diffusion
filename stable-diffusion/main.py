@@ -455,7 +455,7 @@ class CUDACallback(Callback):
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    wandb.init(project="final-year-project") #, id="fn26yojf", resume=True)
+    wandb.init(project="final-year-project") #, id="yatxodu0", resume=True)
     # custom parser to specify config files, train, test and debug mode,
     # postfix, resume.
     # `--key value` arguments are interpreted as arguments to the trainer.

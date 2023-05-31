@@ -25,7 +25,9 @@ def get_node_name(name, parent_name):
 
 
 # model = create_model(config_path='./models/cldm_v15.yaml')
-model = create_model(config_path='./models/model6_epoch30_control.yaml')
+# model = create_model(config_path='./models/model6_epoch30_control.yaml')
+model = create_model(config_path='./models/model12_epoch152_control.yaml')
+
 
 pretrained_weights = torch.load(input_path)
 if 'state_dict' in pretrained_weights:

@@ -24,10 +24,10 @@ model:
         image_size: 16 # unused
         in_channels: 4
         hint_channels: 4
-        model_channels: 160
+        model_channels: 64
         attention_resolutions: [ 4, 2, 1 ]
         num_res_blocks: 2
-        channel_mult: [ 1, 2, 4, 4 ]
+        channel_mult: [ 1, 2, 4 ]
         num_heads: 8
         use_spatial_transformer: True
         transformer_depth: 1
@@ -41,10 +41,10 @@ model:
         image_size: 16 # unused
         in_channels: 4
         out_channels: 4
-        model_channels: 160
+        model_channels: 64
         attention_resolutions: [ 4, 2, 1 ]
         num_res_blocks: 2
-        channel_mult: [ 1, 2, 4, 4 ]
+        channel_mult: [ 1, 2, 4 ]
         num_heads: 8
         use_spatial_transformer: True
         transformer_depth: 1
@@ -78,7 +78,7 @@ model:
 data:
     target: main.DataModuleFromConfig
     params:
-        batch_size: 1
+        batch_size: 4
         wrap: True
         train:
             target: mnist_control_dataset.MNISTControlTrain
