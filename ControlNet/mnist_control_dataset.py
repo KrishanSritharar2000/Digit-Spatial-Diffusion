@@ -10,6 +10,8 @@ import datetime
 import matplotlib.pyplot as plt
 import re
 from einops import rearrange
+from PIL import Image, ImageDraw, ImageFont
+import warnings
 
 
 class MNISTControlDataset(Dataset):
@@ -54,33 +56,42 @@ class MNISTControlDataset(Dataset):
         img_path = os.path.join(self.root_dir, self.all_image_files[self.indices[idx]])
         image = Image.open(img_path)
 
+        # Extract the label from the filename, assuming the format "{label}_*.jpg" or "{label}_*.png"
+        filename = self.all_image_files[self.indices[idx]].split("_")
+        label = filename[1]
+        grid = filename[2]
+        #Remove .png extension
+        grid = grid.split(".")[0]
+        grid = list(grid)
+        
         # # Convert the image to RGB if it is grayscale
         # if not image.mode == "RGB":
         #     image = image.convert("RGB")
+        hint = self.create_control_image(grid)
 
         if self.size is not None:
             image = image.resize((self.size, self.size), resample=self.interpolation)
+            hint = hint.resize((self.size, self.size), resample=self.interpolation)
 
 
-        # Extract the label from the filename, assuming the format "{label}_*.jpg" or "{label}_*.png"
-        label = self.all_image_files[self.indices[idx]].split("_")[1]
-        #Remove .png extension
-        label = label.split(".")[0]
-        
+
         to_tensor = transforms.Compose([
             transforms.ToTensor(),
             # transforms.Normalize((0.5,), (0.5,))
         ])
         # to_tensor = transforms.ToTensor()
         image = to_tensor(image)
+        hint = to_tensor(hint)
 
         if self.transform:
             image = self.transform(image)
 
         #shift image values from [0,1] into [-1,1]
         image = ((image * 2.0) - 1.0).to(torch.float32)
+        hint = ((hint * 2.0) - 1.0).to(torch.float32)
+        # hint = self.convertLabelToHintTensor(label)
 
-        hint = self.convertLabelToHintTensor(label)
+
 
         return dict(jpg=image, txt=label, hint=hint)
 
@@ -109,9 +120,6 @@ class MNISTControlDataset(Dataset):
             matrix[triplet[0], triplet[2], relations[triplet[1]]] = 1
         matrix = rearrange(matrix, "h w c -> c h w")
         return matrix
-
-
-
 
     
     @staticmethod
@@ -163,9 +171,44 @@ class MNISTControlDataset(Dataset):
         now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
         plt.savefig(f"training_ldm_log/recon/{now}.png")
 
+
+    def create_control_image(self, grid):
+        warnings.filterwarnings("ignore")
+
+        # Define the size of the grid and individual cell size
+        grid_size = 3
+        cell_size = 28
+
+        # Create a blank image for the grid
+        image_width = grid_size * cell_size
+        image_height = grid_size * cell_size
+        image = Image.new("L", (image_width, image_height), 0)
+        draw = ImageDraw.Draw(image)
+
+        # Define the font and font size
+        font_size = 20
+        font = ImageFont.truetype("arial.ttf", font_size)
+
+        # Draw the digits on the grid
+        for i in range(grid_size):
+            for j in range(grid_size):
+                index = i * grid_size + j
+                digit = str(grid[index])
+                if digit != "-":
+                    digit_width, digit_height = draw.textsize(digit, font=font)
+                    x = j * cell_size + (cell_size - digit_width) // 2
+                    y = i * cell_size + (cell_size - digit_height) // 2
+                    draw.text((x, y), digit, fill=255, font=font)
+
+        # Save the image
+        image.save("grid_image.png")
+        return image
+
+
 class MNISTControlTrain(MNISTControlDataset):
     def __init__(self, **kwargs):
-        super().__init__('../stable-diffusion/data/mnist_dataset/dataset', indicesFile="../stable-diffusion/data/train_indices.pkl", **kwargs)
+        # super().__init__('../stable-diffusion/data/mnist_dataset/dataset', indicesFile="../stable-diffusion/data/train_indices.pkl", **kwargs)
+        super().__init__('../data/new_w_grid_pos/train_dataset', indicesFile="../stable-diffusion/data/train_indices.pkl", **kwargs)
 
 class MNISTControlValidation(MNISTControlDataset):
     def __init__(self, **kwargs):
@@ -174,3 +217,9 @@ class MNISTControlValidation(MNISTControlDataset):
 class MNISTControlTest(MNISTControlDataset):
     def __init__(self, **kwargs):
         super().__init__('../stable-diffusion/data/mnist_dataset/test_dataset', **kwargs)
+
+if __name__ == "__main__":
+    m = MNISTControlTrain()
+    m[0]
+    m[1]
+    m.create_control_image([1,2,3,4,5,6,7,8,9])
