@@ -42,7 +42,7 @@ class MNISTControlDataset(Dataset):
                               "bicubic": PIL.Image.BICUBIC,
                               "lanczos": PIL.Image.LANCZOS,
                               }[interpolation]
-        
+        self.prompts = []
 
 
 
@@ -58,6 +58,7 @@ class MNISTControlDataset(Dataset):
 
         # Extract the label from the filename, assuming the format "{label}_*.jpg" or "{label}_*.png"
         filename = self.all_image_files[self.indices[idx]].split("_")
+        self.prompts.append(self.all_image_files[self.indices[idx]].split(".")[0])
         label = filename[1]
         grid = filename[2]
         #Remove .png extension
@@ -195,6 +196,7 @@ class MNISTControlDataset(Dataset):
                 index = i * grid_size + j
                 digit = str(grid[index])
                 if digit != "-":
+                    digit = '.'
                     digit_width, digit_height = draw.textsize(digit, font=font)
                     x = j * cell_size + (cell_size - digit_width) // 2
                     y = i * cell_size + (cell_size - digit_height) // 2
@@ -203,7 +205,11 @@ class MNISTControlDataset(Dataset):
         # Save the image
         image.save("grid_image.png")
         return image
-
+    
+    def savePrompts(self, path):
+        with open(path, 'w') as f:
+            for item in self.prompts:
+                f.write("%s\n" % item)
 
 class MNISTControlTrain(MNISTControlDataset):
     def __init__(self, **kwargs):
@@ -212,14 +218,19 @@ class MNISTControlTrain(MNISTControlDataset):
 
 class MNISTControlValidation(MNISTControlDataset):
     def __init__(self, **kwargs):
-        super().__init__('../stable-diffusion/data/mnist_dataset/dataset', indicesFile="../stable-diffusion/data/test_indices.pkl", **kwargs)
+        # super().__init__('../stable-diffusion/data/mnist_dataset/dataset', indicesFile="../stable-diffusion/data/test_indices.pkl", **kwargs)
+        super().__init__('../data/new_w_grid_pos/train_dataset', indicesFile="../stable-diffusion/data/test_indices.pkl", **kwargs)
+
 
 class MNISTControlTest(MNISTControlDataset):
     def __init__(self, **kwargs):
-        super().__init__('../stable-diffusion/data/mnist_dataset/test_dataset', **kwargs)
+        # super().__init__('../stable-diffusion/data/mnist_dataset/test_dataset', **kwargs)
+        super().__init__('../data/new_w_grid_pos/test_dataset', **kwargs)
+
 
 if __name__ == "__main__":
-    m = MNISTControlTrain()
-    m[0]
-    m[1]
+    m = MNISTControlTest()
+    for i in range(len(m)):
+        m[i]
+    m.savePrompts("control_test_prompts.txt")
     m.create_control_image([1,2,3,4,5,6,7,8,9])

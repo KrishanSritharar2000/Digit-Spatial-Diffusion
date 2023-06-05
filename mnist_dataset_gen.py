@@ -1,5 +1,6 @@
 # A class for generating an image with multiple MNIST digits
 
+import time
 import torch
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
@@ -152,16 +153,19 @@ class DatasetGenerator:
 
         prompt_str, digits, relationships = prompt
         positions = [(-1, -1)] * self.cols
-
+        digits_at_postions = [None] * self.cols
         image = np.zeros((84, 84), dtype=np.uint8)
         prompt_image = Image.new('L', (28 * self.cols, 28 * self.rows))
 
         digits_completed = 0
+        grid = ['-' for _ in range(self.cols * self.rows)]
+                
         while (digits_completed < len(digits)):
             self.attempts += 1
             if digits_completed == 0:
                 x, y = np.random.randint(0, 3), np.random.randint(0, 3)
                 positions[digits_completed] = (x, y)
+                digits_at_postions[digits_completed] = digits[digits_completed]
                 # image[x * 28:(x + 1) * 28, y * 28:(y + 1) * 28] = mnist_images[digits.index(digits[i])]
                 digit_image = Image.fromarray((self.get_mnist_digit(digits[digits_completed]) * 255).astype('uint8'))
                 prompt_image.paste(digit_image, (28 * y, 28 * x))
@@ -183,19 +187,27 @@ class DatasetGenerator:
                 prompt_image.paste(digit_image, (28 * y, 28 * x))
                 # image[x * 28:(x + 1) * 28, y * 28:(y + 1) * 28] = mnist_images[digits.index(digits[i])]
             digits_completed += 1
-        return prompt_image
+
+        for i, pos in enumerate(positions):
+            flattenPos = pos[0] * self.cols + pos[1]
+            grid[flattenPos] = digits[i]
+
+        return prompt_image, grid
 
 gen = DatasetGenerator()
 digits_to_combine = [3, 5, 1, 7, 0, 0, 7]
 counter = 0
-imagesToMake = 1000
+imagesToMake = 10000
+start = time.time()
 for i in range(imagesToMake):
     prompt = gen.create_a_prompt(3)
     print(prompt)
-    combined_image = gen.generate_image(prompt)
+    combined_image, grid = gen.generate_image(prompt)
     # combined_image = gen.create_combined_image(digits_to_combine)
+    grid_string = "".join([str(x) for x in grid])
     
     #save the image with the filename as the prompt
-    combined_image.save(f"../data/test_dataset/{counter}_{prompt[0]}.png")
+    combined_image.save(f"data/new_w_grid_pos/train_dataset/{counter}_{prompt[0]}_{grid_string}.png")
     counter += 1
 print(f"Generated {gen.attempts} images to produce {imagesToMake} images")
+print(f"Time taken: {time.time() - start} seconds")

@@ -146,8 +146,8 @@ class ControlNet(nn.Module):
         )
         self.zero_convs = nn.ModuleList([self.make_zero_conv(model_channels)])
 
-        self.hint_flatten = nn.Flatten()
-        self.hint_upscale = nn.Linear(hint_channels*10*10, hint_channels*128*128)
+        # self.hint_flatten = nn.Flatten()
+        # self.hint_upscale = nn.Linear(hint_channels*10*10, hint_channels*128*128)
         # self.hint_layer_1 = nn.Linear(hint_channels*10*10, hint_channels*64*64)
         # self.hint_layer_2 = nn.Linear(hint_channels*64*64, hint_channels*128*128)
 
@@ -291,15 +291,15 @@ class ControlNet(nn.Module):
     # Converts the hint from [4, 10, 10] into [4, 128, 128]
 
     def shape_hint(self, hint):
-        batch_size = hint.shape[0] 
-        hint = self.hint_flatten(hint)
-        hint = self.hint_upscale(hint)
+        # batch_size = hint.shape[0] 
+        # hint = self.hint_flatten(hint)
+        # hint = self.hint_upscale(hint)
         # hint = self.hint_layer_1(hint)
         # hint = nn.SiLU()(hint)
         # hint = self.hint_layer_2(hint)
         # hint = nn.SiLU()(hint)
         # hint = self.hint_upscale(hint)
-        hint = hint.view(batch_size, 4, 128, 128)
+        # hint = hint.view(batch_size, 4, 128, 128)
         return hint
 
     def forward(self, x, hint, timesteps, context, **kwargs):

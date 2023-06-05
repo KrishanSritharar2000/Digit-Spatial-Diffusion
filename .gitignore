@@ -1,12 +1,18 @@
 stable-diffusion/logs/*
 data/MNIST
 data/mnist_dataset/dataset
+data/new_w_grid_pos/*
 stable-diffusion/data/*
 stable-diffusion/test_outputs/*
 stable-diffusion/training_image_log/*
 stable-diffusion/models/first_stage_models/*
 stable-diffusion/wandb/*
+stable-diffusion/ldm_test_outputs/*
+evaluation/mnist/*
+evaluation/samples/*
 wandb/*
+ControlNet/wandb/*
+ControlNet/cn_test_outputs/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -137,3 +143,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+evaluation/no_digit_dataset_test.pkl
+evaluation/no_digit_dataset_test.pth
+evaluation/no_digit_dataset_train.pkl
+evaluation/no_digit_dataset_train.pth
+

@@ -31,21 +31,126 @@
             "name": "Python: txt2img",
             "type": "python",
             "request": "launch",
-            "program": "txt2img.py",
+            "program": "test_dataset_txt2img.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "cwd": "${workspaceFolder}/stable-diffusion",
             "args": [
                 "--n_samples",
-                "1",
-                "--prompt",
-                "4 below 5 left of 2",
+                "4",
+                // "--prompt",
+                // "4 below 5 left of 2",
+                "--from-file",
+                "custom/data/test_prompts_dup.txt",
             ],
             "env": {
                 "WANDB_EXECUTABLE": "/vol/bitbucket/ks1619/miniconda3/install/envs/sd-conda-env/bin/python",
                 // "PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb": "512"
                 //     "XDG_CACHE_HOME" : "/home/krishan/fyp/final-year-project/stable-diffusion/data"
             }
-        }
+        },
+        {
+            "name": "Python: MNIST control dataset",
+            "type": "python",
+            "request": "launch",
+            "program": "mnist_control_dataset.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/ControlNet",
+            "args": [],
+            "env": {}
+        },
+        {
+            "name": "Python: MNIST dataset generate",
+            "type": "python",
+            "request": "launch",
+            "program": "mnist_dataset_gen.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}",
+            "args": [],
+            "env": {}
+        },
+        {
+            "name": "Python: ControlNet",
+            "type": "python",
+            "request": "launch",
+            "program": "mnist_train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/ControlNet",
+            "args": [],
+            "env": {}
+        },
+        {
+            "name": "Python: MNISTGradio",
+            "type": "python",
+            "request": "launch",
+            "program": "gradio_mnist.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/ControlNet",
+            "args": [],
+            "env": {}
+        },
+        {
+            "name": "Python: ControlNetCanny",
+            "type": "python",
+            "request": "launch",
+            "program": "tutorial_train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/ControlNet",
+            "args": [],
+            "env": {}
+        },
+        {
+            "name": "Python: Eval",
+            "type": "python",
+            "request": "launch",
+            "program": "evaluate.py",
+            // "program": "mnist_classifier.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/evaluation",
+            "args": [],
+            "env": {}
+        },
+        {
+            "name": "Python: MNISTGradio StableDiffusion",
+            "type": "python",
+            "request": "launch",
+            "program": "gradio_mnist.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/stable-diffusion",
+            "args": [],
+            "env": {}
+        },
+        {
+            "name": "Python: ControlNet ToolAddControl",
+            "type": "python",
+            "request": "launch",
+            "program": "tool_add_control.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/ControlNet",
+            "args": [
+                "../stable-diffusion/trained_models/ldm_model6_epoch30.ckpt",
+                "./models/mycontrol_linear_seperate2.ckpt"
+            ],
+            "env": {}
+        },
+        {
+            "name": "Python: test dataset",
+            "type": "python",
+            "request": "launch",
+            "program": "test_dataset_cn.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/ControlNet",
+            "args": [],
+            "env": {}
+        },
     ]
 }

@@ -97,7 +97,7 @@ class DataModuleFromConfig(pl.LightningDataModule):
         return DataLoader(self.datasets["predict"], batch_size=self.batch_size,
                           num_workers=self.num_workers, worker_init_fn=init_fn)
 # Configs
-resume_path = './models/control_mnist_m15e181.ckpt'
+resume_path = './models/control_mnist_m15e181_typed.ckpt'
 logger_freq = 500
 learning_rate = 5e-5
 sd_locked = True
@@ -128,7 +128,7 @@ wandb.init(project="final-year-project", config={
     "batch_size": batch_size,
 })
 
-name = 'control_mnist_m15e181'
+name = 'control_mnist_m15e181_typed_dot'
 now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
 nowname = now + '_' + name
 logdir = os.path.join('logs', nowname)

@@ -1,0 +1,1000 @@
+73_1 below 1 above 2
+283_8 left of 8 above 9
+514_5 left of 7 below 3
+569_8 right of 5 right of 2
+681_4 above 6 right of 8
+655_6 below 0 below 8
+948_7 above 7 left of 3
+880_1 below 8 left of 1
+255_4 below 9 right of 5
+269_5 right of 9 above 3
+525_7 right of 7 above 9
+189_0 left of 9 left of 7
+572_8 above 7 left of 4
+173_9 right of 5 right of 6
+293_0 left of 1 above 6
+603_0 right of 3 above 5
+980_7 right of 0 above 4
+468_2 above 1 left of 8
+939_6 right of 5 left of 7
+778_1 below 5 above 5
+662_0 right of 9 above 7
+765_4 left of 7 right of 6
+72_4 above 0 right of 1
+380_5 above 9 above 0
+337_6 below 7 left of 3
+816_4 left of 8 above 9
+360_3 above 3 above 4
+531_0 left of 3 above 1
+889_9 left of 2 above 3
+25_0 right of 7 above 2
+237_0 right of 7 left of 2
+367_7 above 2 below 0
+861_2 left of 1 below 0
+117_1 above 5 left of 2
+755_1 right of 8 below 4
+184_2 above 0 below 3
+619_3 above 1 above 8
+677_1 right of 2 above 1
+708_1 right of 0 right of 0
+822_5 left of 8 below 3
+417_3 above 7 above 9
+559_9 below 4 below 7
+229_8 left of 1 left of 3
+488_2 below 7 above 4
+487_6 above 0 left of 4
+153_9 below 7 left of 8
+167_7 right of 7 below 7
+4_9 below 8 below 5
+325_6 above 9 above 9
+391_2 above 2 right of 6
+88_3 below 8 above 6
+937_2 right of 3 below 6
+368_1 below 5 above 3
+605_6 left of 3 above 0
+809_4 above 6 right of 0
+586_0 above 0 right of 9
+759_8 right of 1 below 8
+595_2 above 9 above 0
+509_0 right of 0 below 9
+969_1 below 3 left of 5
+154_7 above 2 above 6
+292_8 left of 3 above 4
+834_1 left of 3 above 4
+48_4 above 3 left of 6
+193_2 right of 2 below 9
+218_1 above 2 left of 0
+324_1 left of 4 right of 8
+406_9 above 8 right of 0
+100_0 left of 6 left of 7
+95_8 above 1 below 7
+437_1 below 4 right of 7
+798_8 left of 6 below 2
+137_6 right of 2 left of 1
+627_5 below 9 below 0
+624_8 left of 7 above 3
+466_8 right of 6 left of 4
+402_7 right of 6 below 1
+107_5 left of 2 above 0
+793_0 below 4 left of 6
+545_4 below 0 left of 5
+611_3 right of 1 right of 9
+967_9 left of 9 above 1
+228_3 right of 2 below 3
+178_0 left of 1 below 0
+856_2 below 8 left of 2
+945_7 above 7 right of 7
+438_4 below 2 below 8
+526_7 above 4 above 1
+41_0 left of 8 right of 9
+807_5 right of 4 right of 1
+524_8 right of 9 left of 6
+920_5 above 1 below 4
+875_5 left of 3 left of 8
+177_1 right of 6 below 4
+651_3 right of 9 above 2
+949_3 right of 5 below 8
+32_8 above 7 left of 4
+171_7 right of 1 below 1
+420_5 below 0 right of 3
+18_9 below 5 above 9
+529_9 right of 6 right of 6
+156_6 below 1 above 1
+296_9 below 5 above 2
+10_5 above 0 below 6
+553_5 above 2 left of 4
+125_5 below 0 right of 0
+551_6 left of 3 below 4
+823_1 above 7 above 6
+527_1 left of 5 right of 8
+947_0 below 7 right of 1
+799_6 left of 4 above 0
+540_5 below 0 below 5
+2_1 right of 2 below 2
+724_3 left of 9 above 7
+852_6 left of 6 right of 3
+668_5 left of 9 right of 9
+853_8 left of 0 below 6
+192_6 left of 6 left of 7
+995_8 above 8 left of 7
+961_0 left of 7 below 3
+378_1 left of 3 right of 4
+958_3 left of 7 below 8
+5_5 left of 6 right of 6
+397_6 left of 9 left of 4
+281_9 above 4 above 6
+610_1 below 7 below 0
+745_4 right of 0 left of 5
+320_5 right of 4 left of 7
+64_2 right of 1 right of 0
+401_4 left of 4 right of 2
+363_4 left of 6 left of 2
+424_7 left of 3 above 4
+641_3 left of 1 left of 9
+77_6 right of 9 right of 0
+761_5 below 7 below 3
+760_6 above 6 above 2
+364_8 left of 7 below 3
+54_0 above 9 right of 8
+631_0 left of 4 below 5
+168_1 right of 3 right of 9
+865_8 above 0 right of 7
+930_6 left of 2 left of 5
+893_5 right of 7 left of 2
+748_0 right of 2 below 1
+698_9 below 2 left of 1
+477_2 left of 5 above 0
+286_3 left of 0 above 6
+954_1 below 4 left of 0
+928_5 right of 5 above 6
+815_4 right of 5 below 5
+222_4 above 6 above 4
+214_6 left of 1 left of 6
+453_2 right of 9 below 1
+519_6 left of 7 right of 9
+862_3 below 8 below 8
+115_1 right of 2 right of 1
+330_8 above 9 above 3
+242_3 below 3 below 4
+312_2 above 5 left of 4
+549_5 below 4 right of 7
+774_1 above 9 left of 9
+666_9 below 2 below 2
+268_6 left of 8 right of 8
+128_2 right of 8 left of 4
+785_5 below 6 above 7
+874_4 left of 7 above 4
+136_6 above 5 below 2
+413_5 above 7 below 7
+715_3 above 6 right of 3
+83_9 above 5 right of 6
+224_2 above 4 left of 0
+55_4 left of 7 left of 1
+825_6 left of 4 below 6
+133_5 above 1 above 4
+304_8 below 6 above 8
+201_8 above 6 left of 9
+496_5 below 9 left of 7
+831_8 left of 5 left of 3
+579_6 right of 3 left of 5
+11_0 below 5 above 8
+626_3 above 9 below 1
+276_1 above 1 right of 6
+932_5 right of 8 right of 7
+410_2 above 5 below 5
+682_3 right of 6 below 7
+882_0 below 8 above 4
+580_9 left of 7 right of 5
+441_2 right of 9 below 1
+36_9 above 7 right of 5
+263_5 left of 0 below 4
+753_8 above 7 right of 5
+890_1 above 4 above 3
+695_5 above 9 left of 6
+702_5 below 0 right of 4
+473_9 left of 4 above 7
+837_1 right of 4 right of 2
+299_6 right of 4 right of 8
+463_1 above 8 above 2
+528_9 above 1 below 5
+910_9 left of 0 below 6
+339_0 left of 4 below 2
+148_0 right of 9 below 5
+653_9 below 6 right of 3
+859_9 above 5 left of 9
+102_7 right of 2 right of 1
+69_4 above 5 left of 1
+386_6 left of 9 above 8
+673_9 below 2 below 4
+588_4 above 3 left of 4
+987_2 right of 6 left of 8
+280_7 below 0 right of 8
+483_4 left of 9 right of 5
+738_4 below 8 above 7
+762_5 below 7 right of 9
+38_5 above 7 above 4
+249_2 right of 8 right of 4
+868_8 above 1 left of 3
+621_3 left of 9 right of 6
+188_8 left of 7 below 5
+91_6 above 5 left of 7
+294_8 above 8 left of 1
+170_9 above 6 right of 2
+897_1 below 2 above 3
+585_3 above 8 below 3
+105_2 left of 8 right of 3
+647_2 above 6 below 3
+714_5 right of 5 left of 8
+440_4 right of 0 below 8
+250_1 right of 2 left of 9
+89_4 right of 7 left of 8
+550_1 below 1 above 8
+535_4 above 5 left of 7
+285_8 below 3 below 5
+642_2 left of 7 above 1
+84_3 right of 9 left of 3
+740_7 above 6 right of 2
+661_1 above 9 left of 1
+758_0 right of 7 below 0
+309_1 below 8 below 7
+183_5 right of 9 left of 1
+212_1 above 6 below 2
+33_2 below 4 right of 4
+7_6 left of 1 right of 9
+693_4 above 6 right of 3
+23_1 left of 0 below 8
+120_5 right of 5 left of 7
+205_2 left of 6 below 4
+717_1 below 7 left of 0
+855_7 above 5 below 8
+491_0 left of 7 right of 0
+135_9 right of 4 left of 8
+271_0 above 5 above 3
+783_9 below 2 above 8
+907_9 left of 3 right of 5
+691_8 left of 2 left of 2
+141_8 below 2 right of 7
+903_2 right of 0 above 7
+259_0 left of 8 left of 2
+632_9 left of 3 below 2
+287_9 below 0 above 9
+744_2 above 9 right of 3
+186_6 right of 0 left of 7
+298_5 below 8 right of 8
+479_7 below 4 below 4
+261_6 left of 2 left of 7
+791_0 right of 3 above 8
+584_3 above 6 below 5
+215_1 left of 4 above 2
+220_7 right of 8 right of 7
+909_7 below 4 left of 1
+814_7 above 0 above 1
+244_9 left of 0 above 5
+423_7 below 8 below 8
+913_9 above 6 right of 9
+434_2 right of 2 left of 8
+394_5 left of 3 below 3
+659_0 left of 8 right of 5
+742_6 above 2 below 0
+346_7 left of 2 below 5
+846_8 above 4 right of 9
+335_0 below 6 right of 9
+243_4 above 1 above 9
+769_4 left of 6 right of 3
+399_2 right of 1 above 3
+997_0 above 7 right of 3
+282_0 left of 5 left of 3
+122_7 right of 1 left of 2
+876_2 below 8 left of 7
+416_6 right of 0 right of 4
+901_8 right of 5 left of 4
+533_6 below 5 left of 6
+190_5 left of 1 above 9
+152_1 left of 8 below 8
+484_9 below 2 left of 6
+679_2 left of 2 left of 1
+132_3 above 5 above 9
+841_1 left of 1 below 3
+254_0 right of 8 left of 0
+382_6 below 2 below 5
+180_7 below 8 above 7
+418_2 below 1 below 1
+646_9 right of 2 left of 6
+649_2 left of 9 above 6
+51_7 left of 7 below 3
+140_2 left of 4 above 8
+999_8 below 2 right of 5
+31_9 left of 8 above 8
+582_4 right of 4 right of 8
+927_6 right of 6 above 2
+929_6 above 6 below 2
+436_8 above 5 left of 3
+634_7 left of 6 right of 3
+328_9 above 1 below 5
+951_6 above 6 above 1
+66_0 above 7 below 3
+984_8 above 6 above 2
+736_4 below 2 right of 9
+505_4 above 8 below 1
+613_4 right of 3 left of 6
+730_5 left of 8 above 5
+354_3 above 5 left of 3
+369_4 below 2 above 4
+206_7 below 9 left of 6
+385_0 left of 6 below 2
+857_6 left of 7 above 0
+267_1 above 2 right of 6
+973_0 right of 5 left of 2
+481_2 below 2 above 8
+490_2 left of 6 right of 7
+390_5 right of 3 right of 2
+313_4 above 2 below 7
+777_5 right of 3 right of 3
+604_3 left of 5 right of 4
+503_8 right of 8 below 3
+564_6 left of 5 left of 8
+757_1 below 8 left of 9
+248_9 below 4 left of 9
+340_6 below 0 below 0
+676_8 right of 8 below 7
+8_0 right of 8 right of 3
+718_1 right of 9 right of 4
+506_8 right of 4 below 0
+849_2 left of 5 above 9
+935_0 left of 2 above 2
+544_6 left of 8 right of 9
+20_9 right of 7 above 9
+59_2 below 9 above 5
+469_1 right of 9 right of 9
+754_2 right of 6 left of 8
+620_8 right of 9 below 3
+71_4 left of 7 right of 4
+421_9 left of 2 right of 4
+3_5 below 6 above 0
+847_9 right of 8 above 6
+518_0 above 2 above 6
+640_2 right of 1 left of 7
+439_9 right of 1 below 0
+832_4 right of 5 right of 6
+749_5 right of 4 right of 7
+979_5 above 2 above 3
+179_1 right of 7 right of 6
+341_8 below 0 above 3
+376_5 right of 6 above 4
+635_8 right of 4 right of 3
+428_3 right of 3 right of 0
+211_3 above 9 right of 5
+660_2 below 0 right of 6
+24_7 below 5 right of 7
+917_2 below 5 left of 6
+884_4 right of 3 right of 8
+914_9 above 5 left of 1
+921_4 right of 3 right of 9
+208_9 below 5 above 2
+988_2 above 3 above 9
+534_2 right of 3 left of 9
+978_4 right of 4 above 4
+971_7 below 6 below 3
+403_4 right of 1 above 8
+747_4 left of 3 left of 1
+838_6 right of 9 below 4
+116_1 above 4 right of 0
+338_6 above 9 below 5
+922_8 above 8 right of 3
+873_3 below 1 above 2
+366_8 left of 8 right of 5
+962_8 right of 8 above 8
+923_8 below 4 below 4
+347_2 right of 3 left of 8
+28_4 right of 5 above 6
+556_9 left of 2 below 0
+79_6 above 9 left of 1
+53_0 left of 2 left of 9
+314_8 below 3 right of 1
+227_5 below 0 right of 8
+408_6 below 2 right of 4
+996_1 above 3 below 0
+306_8 below 5 right of 1
+737_7 below 1 above 0
+820_1 left of 2 below 6
+803_3 below 1 right of 4
+99_1 left of 2 right of 1
+219_1 below 4 left of 4
+159_7 left of 3 left of 1
+50_6 left of 2 above 0
+802_9 left of 9 below 9
+158_3 left of 5 right of 5
+30_4 below 5 left of 3
+517_2 right of 1 below 8
+470_3 right of 9 right of 4
+840_7 above 4 below 3
+247_2 left of 0 right of 0
+44_1 below 8 above 3
+906_1 left of 8 above 3
+467_7 right of 4 right of 6
+155_0 right of 7 right of 4
+497_0 left of 0 right of 8
+960_9 left of 0 left of 0
+429_7 right of 8 below 1
+554_8 left of 8 below 4
+202_0 above 2 right of 2
+16_9 right of 8 below 4
+751_4 right of 8 left of 2
+532_1 above 7 left of 2
+563_5 left of 7 left of 5
+275_3 right of 0 below 6
+850_0 below 5 left of 1
+27_7 left of 4 below 5
+675_9 below 5 left of 3
+131_8 right of 9 below 5
+597_2 above 1 above 9
+361_6 below 4 left of 8
+616_6 below 0 left of 0
+596_2 below 7 below 0
+844_4 right of 9 above 0
+323_2 right of 0 left of 2
+422_6 left of 5 right of 8
+482_5 above 9 left of 5
+826_0 right of 1 above 1
+144_7 right of 4 right of 8
+474_6 left of 6 left of 5
+333_3 below 1 left of 8
+645_4 right of 3 left of 9
+329_3 left of 7 above 7
+602_4 below 9 left of 5
+955_8 below 9 above 6
+163_6 right of 2 left of 7
+475_1 above 0 below 9
+207_3 left of 5 right of 3
+796_3 below 2 below 6
+614_7 right of 3 below 5
+93_3 below 5 left of 2
+833_5 right of 1 right of 0
+689_9 above 3 right of 0
+303_4 left of 3 left of 3
+160_2 above 0 below 8
+291_7 above 2 right of 7
+536_1 right of 6 above 5
+648_4 left of 3 left of 4
+671_9 above 0 below 5
+704_1 left of 1 below 3
+768_5 below 9 right of 5
+425_4 left of 6 above 6
+663_7 right of 5 above 0
+864_3 below 0 below 4
+358_8 right of 3 right of 7
+277_1 above 2 left of 1
+61_6 below 6 left of 4
+264_4 left of 0 left of 4
+804_0 left of 3 right of 5
+476_5 above 3 left of 1
+57_0 right of 1 below 4
+342_9 below 4 right of 1
+836_9 below 8 above 8
+442_9 right of 2 left of 2
+21_4 right of 4 left of 7
+860_1 above 9 right of 5
+404_0 below 2 above 1
+942_0 right of 4 above 0
+362_3 below 9 left of 2
+40_8 above 8 right of 0
+398_8 left of 2 above 8
+68_9 left of 5 below 7
+772_6 below 5 left of 1
+722_2 left of 1 right of 8
+373_7 right of 9 right of 8
+629_6 below 6 below 3
+78_6 left of 9 right of 0
+86_6 right of 1 below 1
+13_6 left of 3 right of 7
+331_9 right of 1 below 5
+782_6 left of 6 left of 2
+485_1 right of 1 above 8
+609_2 below 9 above 5
+407_3 left of 0 left of 0
+388_5 left of 7 left of 3
+555_9 left of 6 below 9
+279_1 below 6 right of 1
+200_9 above 6 right of 0
+504_6 right of 7 left of 7
+944_5 below 5 below 7
+806_3 below 6 left of 5
+49_1 right of 9 right of 6
+735_4 above 3 above 4
+456_0 below 5 right of 0
+290_8 left of 0 left of 9
+319_0 above 4 below 1
+705_5 right of 0 below 6
+318_5 below 4 right of 1
+221_9 left of 5 left of 1
+111_7 above 9 left of 8
+968_9 above 3 right of 6
+203_2 left of 0 below 2
+379_3 above 0 above 5
+644_5 below 8 above 9
+986_3 left of 0 above 4
+52_1 left of 3 above 4
+240_6 left of 2 below 4
+239_5 left of 1 left of 2
+601_0 left of 6 below 0
+863_7 left of 2 right of 7
+499_6 right of 7 above 2
+959_7 right of 7 below 7
+0_2 left of 3 left of 5
+58_4 below 7 below 6
+371_2 below 3 below 1
+94_8 above 5 right of 1
+445_9 left of 1 above 5
+842_5 below 9 below 7
+792_2 above 8 above 9
+432_4 above 5 above 4
+720_6 below 8 left of 5
+992_3 below 5 right of 1
+600_0 right of 2 above 0
+918_2 right of 4 below 0
+65_0 below 3 below 8
+512_2 above 3 left of 1
+9_6 left of 9 above 1
+542_4 left of 5 below 2
+817_9 right of 9 above 3
+310_9 above 9 right of 5
+878_0 left of 5 above 0
+941_0 below 0 right of 0
+956_7 left of 7 right of 5
+766_3 left of 9 above 6
+577_1 left of 7 below 2
+706_1 below 8 right of 7
+162_7 above 1 above 4
+210_9 right of 6 below 9
+344_1 left of 6 left of 7
+830_4 above 6 above 6
+938_9 below 1 right of 7
+462_9 above 8 below 6
+828_4 below 5 right of 9
+508_9 below 5 above 9
+552_2 above 2 below 7
+771_6 below 2 left of 5
+511_7 below 8 below 6
+925_4 left of 2 above 5
+770_9 above 4 above 8
+821_8 left of 0 below 3
+96_7 below 1 right of 7
+685_6 below 2 below 4
+327_8 above 8 left of 4
+272_0 above 4 left of 5
+70_3 below 0 right of 8
+615_6 left of 5 below 0
+786_1 below 8 below 0
+336_3 below 5 right of 6
+933_8 below 9 below 2
+900_4 below 9 right of 9
+150_4 right of 1 above 7
+965_4 below 2 below 4
+570_6 right of 5 below 9
+712_0 left of 7 below 7
+701_2 left of 8 right of 3
+592_9 above 1 left of 9
+982_8 below 2 above 3
+593_8 left of 9 right of 0
+587_1 above 6 right of 5
+112_7 left of 2 left of 2
+905_5 above 5 right of 5
+618_8 below 5 below 6
+697_1 above 9 above 7
+252_7 below 5 below 2
+85_5 left of 6 left of 6
+396_1 below 0 left of 6
+351_5 left of 1 left of 4
+196_6 above 9 below 5
+345_7 above 2 right of 3
+284_5 left of 4 above 7
+607_8 below 9 above 1
+728_3 left of 4 below 8
+684_0 below 7 left of 6
+400_8 left of 3 right of 6
+129_6 below 5 right of 8
+197_5 left of 6 below 8
+147_0 left of 2 above 5
+692_0 below 9 right of 3
+6_5 right of 6 above 0
+628_8 left of 3 below 1
+352_5 left of 4 right of 3
+870_3 below 9 above 1
+233_2 below 3 right of 4
+824_7 left of 1 above 1
+495_3 above 3 below 0
+779_7 right of 8 above 2
+45_1 right of 5 left of 6
+80_0 left of 1 above 1
+232_0 below 4 left of 9
+74_8 below 5 below 8
+273_8 below 8 above 7
+562_6 left of 0 right of 1
+321_0 left of 3 left of 5
+326_7 below 4 below 7
+492_6 below 6 below 8
+683_4 below 8 left of 0
+145_2 above 8 left of 9
+734_6 left of 2 above 7
+829_6 left of 0 above 6
+721_2 left of 1 left of 5
+305_0 above 7 below 8
+781_2 above 0 right of 4
+612_5 left of 2 left of 8
+633_5 above 0 right of 0
+548_3 above 3 right of 6
+195_4 right of 5 left of 8
+501_0 below 2 below 5
+37_4 right of 1 left of 6
+175_5 above 0 above 1
+374_5 below 4 below 9
+904_2 left of 7 above 9
+680_0 above 5 above 2
+377_3 below 3 left of 4
+39_4 above 7 above 5
+678_1 right of 8 right of 8
+82_2 above 5 left of 2
+888_7 right of 7 right of 6
+123_4 left of 3 below 3
+970_3 left of 2 right of 6
+443_2 below 5 above 6
+800_3 below 2 right of 2
+658_5 above 2 above 1
+894_0 below 2 left of 5
+974_8 right of 6 below 5
+541_1 above 1 left of 4
+700_9 right of 7 below 3
+176_7 above 0 below 3
+489_1 left of 8 right of 3
+687_0 right of 4 right of 9
+538_1 right of 3 above 4
+359_5 above 2 below 3
+223_8 right of 8 left of 2
+746_2 above 0 above 1
+447_4 above 6 right of 8
+574_8 above 7 below 7
+35_5 below 1 left of 7
+729_1 left of 4 left of 8
+699_1 below 6 below 5
+387_6 below 9 left of 9
+590_8 above 0 below 0
+964_7 left of 9 left of 7
+985_4 above 3 left of 8
+998_7 below 6 below 8
+448_5 above 1 above 9
+976_3 right of 5 below 2
+654_3 below 6 left of 7
+957_5 right of 3 right of 6
+161_7 above 2 right of 3
+315_6 above 9 left of 4
+787_9 left of 1 above 3
+867_6 above 1 above 0
+789_8 below 7 left of 2
+226_6 right of 2 left of 8
+231_9 above 3 below 0
+435_9 above 1 above 6
+622_1 below 7 above 8
+384_6 left of 8 above 0
+217_6 below 1 below 0
+912_9 above 9 right of 4
+113_9 above 0 above 8
+300_3 below 1 right of 5
+375_5 below 3 below 3
+433_2 right of 9 below 0
+896_0 above 9 left of 0
+703_7 below 6 left of 8
+672_7 right of 9 left of 3
+322_1 left of 9 below 1
+858_8 left of 1 right of 6
+143_8 right of 1 below 6
+26_6 left of 4 below 8
+994_7 left of 4 above 3
+891_3 right of 5 left of 4
+743_8 above 6 right of 9
+225_7 left of 5 above 4
+902_2 right of 3 below 0
+370_0 above 7 below 5
+166_6 right of 0 above 2
+848_1 left of 8 above 8
+966_5 left of 7 below 2
+393_9 left of 8 below 0
+174_7 right of 4 left of 1
+230_5 above 2 above 5
+915_6 above 2 above 2
+458_1 left of 2 left of 6
+109_7 left of 4 below 9
+652_8 above 6 below 1
+241_1 left of 4 below 7
+669_0 below 4 below 7
+454_7 right of 7 above 7
+126_5 left of 0 left of 5
+350_6 above 1 left of 2
+146_6 below 1 above 5
+589_9 below 6 left of 6
+667_8 left of 7 left of 3
+557_3 right of 4 above 4
+657_8 below 3 below 4
+187_9 above 4 right of 5
+886_6 above 9 right of 2
+307_5 above 6 below 9
+784_1 left of 5 left of 9
+866_8 below 3 right of 0
+464_3 above 3 right of 3
+835_1 left of 9 below 2
+739_9 right of 5 above 1
+547_7 below 1 above 4
+29_7 above 4 above 3
+450_1 right of 4 above 7
+63_4 above 7 right of 7
+108_8 left of 5 left of 1
+149_7 left of 3 left of 8
+510_8 right of 2 left of 9
+274_0 left of 7 left of 5
+266_0 below 6 below 8
+733_5 below 4 left of 8
+430_5 below 2 right of 0
+741_5 above 9 right of 8
+235_5 below 8 below 3
+216_0 right of 4 below 5
+151_8 left of 5 right of 1
+710_7 left of 6 right of 2
+157_7 above 9 above 0
+465_5 above 5 above 5
+486_2 right of 4 left of 0
+139_1 below 5 below 3
+127_4 above 2 above 5
+606_2 right of 3 above 5
+696_5 right of 7 below 0
+763_9 left of 8 right of 4
+134_7 above 3 left of 4
+812_6 right of 1 left of 5
+520_3 below 5 below 1
+349_5 above 0 left of 4
+47_2 right of 0 right of 9
+845_0 left of 5 right of 5
+405_7 below 7 below 8
+142_9 left of 8 left of 1
+209_2 left of 5 below 7
+895_4 above 8 above 5
+989_0 right of 1 below 7
+246_4 above 3 above 4
+169_8 left of 9 left of 3
+494_0 left of 9 right of 4
+92_6 left of 0 left of 7
+245_8 below 2 above 5
+356_6 above 5 left of 2
+752_5 right of 5 left of 7
+808_8 right of 8 left of 7
+869_8 below 3 right of 5
+638_8 right of 1 left of 5
+260_0 above 0 above 1
+750_2 above 2 left of 9
+636_3 left of 9 left of 7
+493_5 right of 4 below 1
+446_7 left of 3 right of 8
+594_3 above 6 above 8
+288_0 right of 5 right of 6
+583_4 below 4 above 5
+674_7 left of 5 left of 6
+560_8 above 6 below 2
+883_2 below 3 left of 2
+571_7 left of 1 below 3
+801_4 below 2 above 4
+924_8 below 9 right of 7
+543_7 above 8 left of 2
+811_6 above 0 above 3
+34_9 right of 1 left of 4
+919_4 above 3 left of 5
+426_7 right of 0 below 6
+90_4 right of 3 below 1
+575_7 below 5 below 8
+262_3 above 8 below 4
+946_9 above 4 below 6
+818_1 below 1 below 7
+278_0 right of 8 right of 0
+523_5 left of 0 right of 4
+332_1 left of 9 above 7
+452_5 above 4 above 7
+502_4 left of 8 above 4
+639_5 left of 0 right of 8
+731_7 below 5 above 9
+1_2 right of 0 right of 7
+419_6 above 0 below 2
+537_0 right of 3 below 9
+15_2 right of 0 left of 0
+530_3 left of 5 below 8
+480_9 above 9 left of 7
+106_9 above 2 above 4
+776_0 left of 4 right of 1
+472_0 above 7 left of 6
+121_1 right of 9 above 4
+521_5 right of 5 left of 2
+881_3 right of 8 left of 9
+719_4 below 1 right of 7
+478_4 right of 2 below 7
+182_3 right of 3 right of 8
+767_8 above 9 below 3
+795_6 below 7 left of 3
+98_0 above 7 below 1
+522_8 right of 6 left of 9
+780_6 right of 8 below 1
+665_4 left of 4 below 5
+60_7 above 3 right of 5
+664_6 below 7 below 3
+953_2 right of 0 below 4
+204_8 right of 5 left of 4
+194_1 below 3 below 3
+578_6 left of 6 right of 0
+14_8 below 9 below 1
+898_4 above 9 above 9
+256_4 right of 0 right of 6
+412_4 below 9 right of 8
+591_6 below 9 right of 0
+871_5 above 4 below 9
+565_1 left of 8 below 5
+598_1 right of 2 above 0
+926_8 below 1 below 4
+567_2 below 4 above 1
+124_5 left of 4 above 9
+118_1 below 4 left of 9
+251_2 above 4 right of 7
+213_5 below 5 right of 3
+756_8 left of 6 right of 4
+316_0 below 4 right of 5
+819_2 below 9 left of 9
+234_9 below 5 below 1
+773_7 right of 1 left of 2
+355_8 above 0 below 2
+566_9 above 9 above 1
+688_4 below 6 left of 4
+334_5 left of 8 below 7
+343_7 right of 9 above 7
+461_2 above 4 right of 0
+576_1 right of 5 right of 6
+539_4 right of 5 below 5
+348_9 below 3 above 2
+46_7 right of 1 below 2
+643_7 below 8 below 4
+573_6 above 1 below 7
+981_0 right of 0 left of 1
+843_8 right of 7 below 2
+775_1 below 8 below 7
+716_0 above 3 left of 8
+457_4 left of 7 left of 5
+460_4 right of 3 left of 0
+827_3 below 6 above 4
+507_7 below 7 left of 7
+723_5 above 4 right of 3
+164_9 right of 2 right of 6
+887_4 below 9 left of 9
+637_4 above 9 below 4
+87_2 below 3 below 1
+395_5 above 9 above 8
+788_5 below 7 above 0
+383_4 left of 0 below 6
+185_9 above 4 below 0
+805_1 below 2 right of 7
+983_5 right of 4 left of 2
+940_9 right of 2 above 5
+409_5 left of 4 above 4
+581_9 below 5 right of 0
+238_2 below 7 left of 9
+17_3 above 3 above 6
+617_8 right of 2 below 6
+498_3 right of 0 below 8
+415_5 below 7 right of 9
+513_7 below 1 left of 3
+952_3 above 9 above 0
+295_9 above 6 above 7
+599_2 left of 4 left of 3
+943_0 above 9 left of 2
+630_3 above 5 left of 6
+558_8 above 9 above 9
+879_7 above 5 below 8
+546_4 right of 7 below 9
+963_5 right of 5 above 3
+317_1 left of 7 below 7
+381_6 left of 0 above 3
+934_3 above 7 left of 6
+311_4 above 2 right of 0
+198_9 below 6 right of 6
+899_1 left of 6 right of 3
+199_2 below 2 above 9
+515_6 left of 0 right of 2
+22_5 right of 8 left of 3
+81_0 left of 8 right of 1
+103_0 left of 3 below 4
+561_5 below 9 left of 4
+357_3 left of 3 below 3
+302_7 above 3 right of 2
+892_4 right of 9 above 3
+908_1 left of 4 above 5
+172_9 right of 8 left of 8
+56_8 right of 3 right of 3
+854_5 below 7 right of 8
+993_1 above 8 right of 3
+119_1 left of 5 left of 8
+851_9 right of 9 right of 9
+711_3 right of 6 right of 5
+455_8 below 1 below 6
+191_7 below 6 above 0
+790_3 right of 7 above 7
+62_0 below 7 left of 2
+670_3 right of 8 above 8
+12_2 above 1 below 9
+76_1 left of 1 below 1
+353_5 above 8 below 5
+308_2 left of 8 right of 2
+75_7 below 7 above 3
+972_5 above 2 below 4
+411_0 right of 0 above 9
+451_8 below 7 above 2
+931_2 below 5 above 4
+516_9 right of 8 right of 4
+885_1 below 1 below 4
+42_5 above 5 below 9
+839_7 above 2 left of 4
+725_5 left of 2 left of 6
+991_3 left of 7 right of 5
+690_5 left of 9 below 2
+270_4 below 1 right of 8
+500_8 above 7 below 9
+365_3 above 6 right of 8
+686_7 below 1 left of 1
+43_2 above 9 right of 8
+732_6 right of 6 left of 3
+656_0 below 2 above 5
+975_9 right of 0 left of 1
+726_3 above 9 right of 0
+392_2 left of 5 right of 1
+911_4 right of 0 below 3
+709_1 left of 8 right of 4
+623_3 right of 6 below 4
+97_8 below 7 below 7
+181_2 above 9 above 1
+265_1 left of 8 left of 9
+990_0 above 4 right of 3
+104_0 left of 8 below 9
+444_0 right of 8 above 1
+936_4 left of 7 above 4
+459_9 below 2 right of 3
+110_4 below 7 above 6
+797_0 right of 2 above 9
+138_0 above 7 right of 0
+101_7 right of 9 above 8
+625_0 below 6 below 0
+257_8 below 3 above 2
+713_8 left of 5 left of 0
+431_8 above 0 left of 5
+608_1 below 6 below 2
+694_5 right of 6 above 6
+727_8 above 7 below 9
+568_7 above 2 below 1
+707_9 above 5 left of 3
+950_5 above 3 above 6
+810_5 left of 4 above 7
+289_5 left of 3 above 5
+872_4 left of 3 left of 0
+236_3 right of 0 above 3
+389_0 right of 1 below 0
+372_3 right of 8 above 6
+130_5 above 9 left of 6
+414_4 above 7 left of 3
+19_5 below 6 right of 4
+427_1 above 9 left of 4
+114_9 above 7 left of 6
+301_1 left of 0 left of 6
+471_7 above 5 right of 1
+258_9 below 4 above 5
+650_9 right of 6 above 4
+297_0 left of 5 right of 6
+794_4 above 5 above 7
+449_1 below 2 right of 3
+67_5 right of 3 above 0
+813_7 below 2 left of 0
+165_2 above 4 above 0
+977_0 below 1 below 9
+764_7 below 9 right of 0
+253_6 right of 9 right of 8
+877_6 above 1 below 2
+916_0 right of 3 right of 7

@@ -22,13 +22,13 @@ import os
 # model = create_model('./models/model12_epoch152_control.yaml').cpu()
 # model.load_state_dict(load_state_dict('./logs/2023-05-30T22-50-32_control_mnist_m12e152/checkpoints/epoch=78-step=177749-val_loss=0.000000.ckpt', location='cuda'))
 model = create_model('./models/model15_epoch181_control.yaml').cpu()
-model.load_state_dict(load_state_dict('./logs/2023-05-30T22-53-05_control_mnist_m15e181/checkpoints/epoch=45-step=103499-val_loss=0.000000.ckpt', location='cuda'))
+model.load_state_dict(load_state_dict('./logs/2023-06-05T09-54-43_control_mnist_m15e181_typed/checkpoints/epoch=22-step=51749-val_loss=0.000000.ckpt', location='cuda'))
 
 model = model.cuda()
 ddim_sampler = DDIMSampler(model)
 
 # outpath = './cn_test_outputs/m12e152_3'
-outpath = './cn_test_outputs/m15e181_2'
+outpath = './cn_test_outputs/typed_m15e181_1'
 
 os.makedirs(outpath, exist_ok=True)
 
