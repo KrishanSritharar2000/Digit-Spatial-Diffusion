@@ -5,7 +5,7 @@ from collections import defaultdict
 import PIL
 from PIL import Image
 import numpy as np
-from mnist_classifier import MNISTClassifierSimple, CustomTensorDataset
+from mnist_classifier import MNISTClassifierSimple, MNISTClassifierSoftmax, CustomTensorDataset
 import re
 import os
 import pickle
@@ -16,7 +16,7 @@ from collections import Counter
 class Evaluate:
     def __init__(self):
         # Load the classifier
-        self.classifier = MNISTClassifierSimple()
+        self.classifier = MNISTClassifierSoftmax()
         self.classifier.load()
         self.digit_regex = r'\b\d\b'
         self.relationship_regex = r'\b(left of|right of|above|below)\b'
@@ -58,7 +58,7 @@ class Evaluate:
 
         return set(relationships), digits
     
-    def compute_accuracy(self, prompt, image):
+    def compute_accuracy_1(self, prompt, image):
         relationships, digits = self.find_relationships(image)
         prompt = prompt.strip()
         p_digits = list(map(int, re.findall(self.digit_regex, prompt)))
@@ -235,7 +235,9 @@ class Evaluate:
 if __name__ == "__main__":
     e = Evaluate()
     e.compareClassifierDigitAndGroundTruth()
-    # e.calculate_relationships_on_testset('../ControlNet/cn_test_outputs/m15e181_3','testset_m15e181_3_cn.pkl' )
+    # e.calculate_relationships_on_testset('../ControlNet/cn_test_outputs/typed_m12e152_1','testset_typed_m12e152_1_cn.pkl' )
+    # data = pickle.load(open('testset_m12e152_1.pkl', 'rb'))
+    # e.compute_accurary(data)
     # e.calculate_relationships_on_testset('../stable-diffusion/ldm_test_outputs/test_set_baseline_m11e7_3','testset_m11e7_3_baseline.pkl' )
     # print("testset_m6e30_baseline")
     # data1 = pickle.load(open('testset_m6e30_1_baseline.pkl', 'rb'))

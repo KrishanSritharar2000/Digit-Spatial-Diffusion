@@ -19,22 +19,22 @@ from torchvision.utils import make_grid
 from tqdm import tqdm
 import os
 
-# model = create_model('./models/model12_epoch152_control.yaml').cpu()
-# model.load_state_dict(load_state_dict('./logs/2023-05-30T22-50-32_control_mnist_m12e152/checkpoints/epoch=78-step=177749-val_loss=0.000000.ckpt', location='cuda'))
-model = create_model('./models/model15_epoch181_control.yaml').cpu()
-model.load_state_dict(load_state_dict('./logs/2023-06-05T09-54-43_control_mnist_m15e181_typed/checkpoints/epoch=22-step=51749-val_loss=0.000000.ckpt', location='cuda'))
+model = create_model('./models/model12_epoch152_control.yaml').cpu()
+model.load_state_dict(load_state_dict('./logs/2023-06-05T10-20-21_control_mnist_m12e152_typed_dot/checkpoints/epoch=23-step=53999-val_loss=0.000000.ckpt', location='cuda'))
+# model = create_model('./models/model15_epoch181_control.yaml').cpu()
+# model.load_state_dict(load_state_dict('./logs/2023-06-05T09-54-43_control_mnist_m15e181_typed/checkpoints/epoch=26-step=60749-val_loss=0.000000.ckpt', location='cuda'))
 
 model = model.cuda()
 ddim_sampler = DDIMSampler(model)
 
-# outpath = './cn_test_outputs/m12e152_3'
-outpath = './cn_test_outputs/typed_m15e181_1'
+outpath = './cn_test_outputs/typed_dot_m12e152_1'
+# outpath = './cn_test_outputs/typed_m15e181_1'
 
 os.makedirs(outpath, exist_ok=True)
 
-prompt_file = "./test_prompts_dup.txt"
-# seed = 42
-seed = 79637
+prompt_file = "./control_test_prompts.txt"
+seed = 42
+# seed = 79637
 # seed = 92923
 seed_everything(seed)
 C = 4
@@ -56,9 +56,9 @@ with open(prompt_file, "r") as file:
 def process():
     with torch.no_grad():
         for prompts in tqdm(data_idx_prompt, desc="data_idx_prompt"):
-            idx, prompt = prompts
+            idx, prompt, grid = prompts
 
-            sample_path = os.path.join(outpath, f"{idx}_{prompt}")
+            sample_path = os.path.join(outpath, f"{idx}_{prompt}_{grid}")
             os.makedirs(sample_path, exist_ok=True)
             base_count = len(os.listdir(sample_path))
             grid_count = len(os.listdir(outpath)) - 1
@@ -72,7 +72,8 @@ def process():
             c = model.get_learned_conditioning(n_prompt)
             shape = [C, H // f, W // f]
 
-            control = MNISTControlDataset.convertLabelToHintTensor(prompt).cuda()
+            # control = MNISTControlDataset.convertLabelToHintTensor(prompt).cuda()
+            control = MNISTControlDataset.create_control_image(grid, tensor=True, normalise=True, resize=True).cuda()
             control = torch.stack([control for _ in range(num_samples)], dim=0)
 
 

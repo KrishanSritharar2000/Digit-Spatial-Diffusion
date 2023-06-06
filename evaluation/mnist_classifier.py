@@ -30,6 +30,20 @@ class Net(nn.Module):
         x = torch.relu(self.fc2(x))
         x = self.fc3(x) # no activation function on the last layer
         return x
+
+class SoftmaxNet(nn.Module):
+    def __init__(self):
+        super(SoftmaxNet, self).__init__()
+        # self.fc1 = nn.Linear(28 * 28, 384)
+        # self.fc3 = nn.Linear(384, 11)
+        self.fc1 = nn.Linear(28 * 28, 512)
+        self.fc3 = nn.Linear(512, 11)
+
+    def forward(self, x):
+        x = x.view(-1, 28 * 28)
+        x = torch.relu(self.fc1(x))
+        x = self.fc3(x) # no activation function on the last layer
+        return torch.log_softmax(x, dim=1)
     
 # Define the architecture of the network
 class AdvNet(nn.Module):
@@ -170,19 +184,19 @@ class MNISTClassifierSimple:
             return predicted.item()
         
     def create_no_digit_dataset(self):
-        no_digit_images_zero = torch.zeros([1500, 1, 28, 28])
-        no_digit_images_rand = 2 * torch.rand([500, 1, 28, 28]) - 1
+        no_digit_images_zero = torch.zeros([500, 1, 28, 28])
+        no_digit_images_rand = 2 * torch.rand([150, 1, 28, 28]) - 1
         no_digit_images = torch.cat((no_digit_images_zero, no_digit_images_rand), 0)
         #shuffle the images
         # no_digit_images = no_digit_images[torch.randperm(no_digit_images.size()[0])]
-        no_digit_labels = torch.full((2000,), 10)
+        no_digit_labels = torch.full((650,), 10)
         no_digit_images = no_digit_images.to(torch.float32)
         no_digit_labels = no_digit_labels.to(torch.int64)
         self.no_digit_dataset = CustomTensorDataset(no_digit_images, no_digit_labels)
         # self.no_digit_dataset = TensorDataset(no_digit_images, no_digit_labels)
-        with open('./no_digit_dataset_train_noise.pkl', 'wb') as f:
+        with open('./no_digit_dataset_test_noise.pkl', 'wb') as f:
             pickle.dump(self.no_digit_dataset, f)
-        torch.save(self.no_digit_dataset, './no_digit_dataset_train_noise.pth')
+        torch.save(self.no_digit_dataset, './no_digit_dataset_test_noise.pth')
 
 class CustomTensorDataset(torch.utils.data.Dataset):
     def __init__(self, images, labels):
@@ -304,7 +318,8 @@ class MNISTClassifierAdv:
         self.net = AdvNet()
         # PATH = './mnist_classifier.pth'
         # PATH = './mnist_classifier_no_digit_inc_b.pth'
-        PATH = './adv_mnist_classifier_no_digit_inc_b_e25.pth'
+        PATH = 'mnist_classifier_no_digit_inc_512_2.pth'
+        # PATH = './adv_mnist_classifier_no_digit_inc_b_e25.pth'
 
         
         self.net.load_state_dict(torch.load(PATH))
@@ -355,14 +370,145 @@ class MNISTClassifierAdv:
 
         print(f'Accuracy of the network on the {round(len(self.testloader)*64, 0)} test images: %d %%' % (100 * correct / total))
 
+
+class MNISTClassifierSoftmax:
+    
+    def __init__(self):
+        self.load_data()
+
+    def load_data(self):
+        # Prepare the data
+        # Define the transformations to be applied to the images
+        transform = transforms.Compose([transforms.ToTensor()])
+        transform2 = transforms.Compose([
+            transforms.Grayscale(num_output_channels=1),  # Convert to grayscale
+            transforms.Resize((28, 28)),  # Resize to 28x28 to match MNIST
+            transforms.ToTensor()  # Convert to tensor
+        ])
+
+        # Assuming no_digit_dataset is your custom dataset
+        no_digit_dataset_train = torch.load('no_digit_dataset_train_noise.pth')
+        no_digit_dataset_test = torch.load('no_digit_dataset_test_noise.pth')
+
+        # Prepare training set and testing set
+        trainset = torchvision.datasets.MNIST('mnist', train=True, download=True, transform=transform)
+        testset = torchvision.datasets.MNIST('mnist', train=False, download=True, transform=transform)
+
+        # non_digit_train = torchvision.datasets.CIFAR10('cifar10', train=True, download=True, transform=transform2)
+        # non_digit_test = torchvision.datasets.CIFAR10('cifar10', train=False, download=True, transform=transform2)
+        
+        # non_digit_train_subset = NonDigitDataset(Subset(non_digit_train, range(0, 12000)))
+        # non_digit_test_subset = NonDigitDataset(Subset(non_digit_test, range(0, 2000)))
+
+        # Combine the datasets
+        train_dataset = ConcatDataset([trainset, no_digit_dataset_train])
+        test_dataset = ConcatDataset([testset, no_digit_dataset_test])
+        # train_dataset = trainset
+        # test_dataset = testset
+
+        # Prepare data loaders
+        self.trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
+        self.testloader = torch.utils.data.DataLoader(test_dataset, batch_size=32, shuffle=True)
+        
+
+    def print_sample_types(self, dataset, num_samples=5):
+        for i in range(num_samples):
+            image, label = dataset[i]
+            print(f"Sample {i}:")
+            print("Image type: ", type(image))
+            print("Label type: ", type(label))
+
+        # print("MNIST training set:")
+        # print_sample_types(trainset)
+        # print("\nNo digit training set:")
+        # print_sample_types(no_digit_dataset_train)
+
+    def train(self):
+        # Instantiate the network, the loss function and the optimizer
+        self.net = SoftmaxNet().to(device)
+        criterion = nn.NLLLoss()
+        optimizer = optim.SGD(self.net.parameters(), lr=0.003, momentum=0.9)
+
+        # Train the network showing the loss and progress using tqdm
+        for epoch in tqdm(range(50)):  # loop over the dataset multiple times
+            running_loss = 0.0
+            for i, data in tqdm(enumerate(self.trainloader, 0), desc=f"Epoch {epoch}, i"):
+                # get the inputs
+                inputs, labels = data[0].float().to(device), data[1].to(device)
+
+
+                # zero the parameter gradients
+                optimizer.zero_grad()
+
+                # forward propagation
+                outputs = self.net(inputs)
+                loss = criterion(outputs, labels)
+                
+                # backward propagation
+                loss.backward()
+                
+                # optimize
+                optimizer.step()
+                running_loss += loss.item()
+
+            print('[%d] loss: %.3f' % (epoch + 1, running_loss / 2000))
+
+
+
+        print('Finished Training')
+
+        # Save the model
+        PATH = './softmax_mnist_classifier_50.pth'
+        torch.save(self.net.state_dict(), PATH)
+
+    def load(self):
+        # Load the model
+        self.net = SoftmaxNet()
+        # PATH = './mnist_classifier.pth'
+        # PATH = './mnist_classifier_no_digit_inc_b.pth'
+        PATH = 'softmax_mnist_classifier_50.pth'
+        # PATH = './adv_mnist_classifier_no_digit_inc_b_e25.pth'
+
+        
+        self.net.load_state_dict(torch.load(PATH))
+        self.net.to(device)
+
+    def test(self):
+        # Test the network
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for data in self.testloader:
+                images, labels = data[0].float().to(device), data[1].to(device)
+                outputs = self.net(images)
+                _, predicted = torch.max(outputs.data, 1)
+                # print(labels, predicted)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
+
+        print(f'Accuracy of the network on the {round(len(self.testloader)*64, 0)} test images: %d %%' % (100 * correct / total))
+    
+    def classify_digit(self, digitImage):
+        #Convert the image to a tensor
+        digitTensor = transforms.ToTensor()(digitImage)
+        digitTensor = digitTensor.to(device)
+        # Classify a digit
+        with torch.no_grad():
+            output = self.net(digitTensor)
+            _, predicted = torch.max(output.data, 1)
+            return predicted.item()
 if __name__ == "__main__":
     # mnist_classifier = MNISTClassifierSimple()
     # mnist_classifier.train()
     # mnist_classifier.load()
     # mnist_classifier.test()
     # mnist_classifier.create_no_digit_dataset()
-    mnist_classifier_adv = MNISTClassifierAdv()
+    # mnist_classifier_adv = MNISTClassifierAdv()
     # mnist_classifier_adv.train()
-    mnist_classifier_adv.load()
-    mnist_classifier_adv.testPretrained()
+    # mnist_classifier_adv.load()
+    # mnist_classifier_adv.testPretrained()
     # mnist_classifier_adv.test()
+    m = MNISTClassifierSoftmax()
+    m.train()
+    m.load()
+    m.test()

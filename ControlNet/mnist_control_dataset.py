@@ -58,7 +58,7 @@ class MNISTControlDataset(Dataset):
 
         # Extract the label from the filename, assuming the format "{label}_*.jpg" or "{label}_*.png"
         filename = self.all_image_files[self.indices[idx]].split("_")
-        self.prompts.append(self.all_image_files[self.indices[idx]].split(".")[0])
+        # self.prompts.append(self.all_image_files[self.indices[idx]].split(".")[0])
         label = filename[1]
         grid = filename[2]
         #Remove .png extension
@@ -172,8 +172,8 @@ class MNISTControlDataset(Dataset):
         now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
         plt.savefig(f"training_ldm_log/recon/{now}.png")
 
-
-    def create_control_image(self, grid):
+    @staticmethod
+    def create_control_image(grid, tensor=False, normalise=False, resize=False, size=128):
         warnings.filterwarnings("ignore")
 
         # Define the size of the grid and individual cell size
@@ -203,7 +203,13 @@ class MNISTControlDataset(Dataset):
                     draw.text((x, y), digit, fill=255, font=font)
 
         # Save the image
-        image.save("grid_image.png")
+        # image.save("grid_image.png")
+        if (resize):
+            image = transforms.Resize((size, size))(image)
+        if (tensor):
+            image = transforms.ToTensor()(image)
+        if (normalise):
+            image = ((image * 2.0) - 1.0).to(torch.float32)
         return image
     
     def savePrompts(self, path):
