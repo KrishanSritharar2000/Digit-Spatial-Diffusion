@@ -19,23 +19,28 @@ from torchvision.utils import make_grid
 from tqdm import tqdm
 import os
 
-model = create_model('./models/model12_epoch152_control.yaml').cpu()
-model.load_state_dict(load_state_dict('./logs/2023-06-05T10-20-21_control_mnist_m12e152_typed_dot/checkpoints/epoch=23-step=53999-val_loss=0.000000.ckpt', location='cuda'))
-# model = create_model('./models/model15_epoch181_control.yaml').cpu()
-# model.load_state_dict(load_state_dict('./logs/2023-06-05T09-54-43_control_mnist_m15e181_typed/checkpoints/epoch=26-step=60749-val_loss=0.000000.ckpt', location='cuda'))
+# model = create_model('./models/model12_epoch152_control.yaml').cpu()
+# model.load_state_dict(load_state_dict('./logs/2023-06-05T09-56-24_control_mnist_m12e152_typed/checkpoints/epoch=129-step=292499-val_loss=0.000000.ckpt', location='cuda'))
+# model.load_state_dict(load_state_dict('./logs/2023-06-05T10-20-21_control_mnist_m12e152_typed_dot/checkpoints/epoch=131-step=296999-val_loss=0.000000.ckpt', location='cuda'))
+model = create_model('./models/model15_epoch181_control.yaml').cpu()
+# model.load_state_dict(load_state_dict('./logs/2023-06-05T09-54-43_control_mnist_m15e181_typed/checkpoints/epoch=135-step=305999-val_loss=0.000000.ckpt', location='cuda'))
+model.load_state_dict(load_state_dict('./logs/2023-06-06T00-23-17_control_mnist_m15e181_typed_dot/checkpoints/epoch=147-step=332999-val_loss=0.000000.ckpt', location='cuda'))
 
 model = model.cuda()
 ddim_sampler = DDIMSampler(model)
 
-outpath = './cn_test_outputs/typed_dot_m12e152_1'
-# outpath = './cn_test_outputs/typed_m15e181_1'
+# outpath = './cn_test_outputs/typed_m12e152_3'
+# outpath = './cn_test_outputs/typed_dot_m12e152_3'
+# outpath = './cn_test_outputs/typed_m15e181_3'
+outpath = './cn_test_outputs/typed_dot_m15e181_3'
+
 
 os.makedirs(outpath, exist_ok=True)
 
 prompt_file = "./control_test_prompts.txt"
-seed = 42
+# seed = 42
 # seed = 79637
-# seed = 92923
+seed = 92923
 seed_everything(seed)
 C = 4
 H = 64

@@ -21,6 +21,7 @@ class Evaluate:
         self.digit_regex = r'\b\d\b'
         self.relationship_regex = r'\b(left of|right of|above|below)\b'
 
+
     def find_relationships(self, image):
         # Convert PIL Image to numpy array
         image = np.array(image)
@@ -76,6 +77,7 @@ class Evaluate:
 
         matches = prompt_set.intersection(image_set)
         score = len(matches) / len(prompt_set)
+        print(f"Total accuracy: {score}")
         return score
     
     def get_digits_relationships(self, prompt):
@@ -84,6 +86,50 @@ class Evaluate:
         p_relationships_and_digits = [(p_digits[i], p_relationships[i], p_digits[i + 1]) for i in range(len(p_relationships))]
         return p_digits, p_relationships, p_relationships_and_digits
     
+    def compute_accuracy_strict(self, data):
+        accuracy = 0
+        for prompt_with_idx in tqdm(data.keys(), desc="Computing accuracy"):
+            prompt = prompt_with_idx.split("_")[1].strip()
+
+            p_digits, p_relationships, p_relationships_and_digits = self.get_digits_relationships(prompt)
+
+            t_accuracy = 0
+            for img in tqdm(data[prompt_with_idx].keys(), desc="Processing image data", leave=False):
+                relationships, digits = data[prompt_with_idx][img]["relationships"], data[prompt_with_idx][img]["digits"]
+                
+                p_counter = Counter(p_digits)
+                d_counter = Counter(digits)
+                
+                if len(digits) != len(p_digits):
+                    t_accuracy += 0
+                    continue
+                # If a digit is not in the prompt, then the accuracy is 0
+                missing_digits = 0
+                for digit in p_counter.keys():
+                    if d_counter[digit] < p_counter[digit]:
+                        missing_digits += (p_counter[digit] - d_counter[digit])
+
+                if missing_digits > 0:
+                    t_accuracy += 0
+                    continue
+
+                
+                prompt_set = set(p_relationships_and_digits)
+                image_set = set(relationships)
+
+                # Accuracy is how many relationships are correct (either 0.5 or 1 since there are only 2 in p_relationships)
+                matches = prompt_set.intersection(image_set)
+                score = len(matches) / len(prompt_set)
+                t_accuracy += (1 + score) / 2
+                # t_accuracy += len(matches)
+                # print(prompt_with_idx, img, digits, p_digits, matches, t_accuracy, (t_accuracy - a_lb) / (a_ub - a_lb))
+            # print(f"Accuracy for {prompt_with_idx}: {t_accuracy / len(data[prompt_with_idx])}")
+            accuracy += t_accuracy / len(data[prompt_with_idx])
+            # accuracy += t_accuracy
+        print(f"Total accuracy: {accuracy / len(data)}")
+#
+        return accuracy / len(data)
+
     def compute_accurary(self, data):
         a_lb = -9
         a_ub = 5
@@ -100,9 +146,30 @@ class Evaluate:
                 p_counter = Counter(p_digits)
                 d_counter = Counter(digits)
 
+                # Check if digits and p_digits are the same
+                extra_digits = 0
+                if len(digits) > len(p_digits):
+                    extra_digits = len(digits) - len(p_digits)
+                
+                missing_digits = 0
+                for digit in p_counter.keys():
+                    if d_counter[digit] < p_counter[digit]:
+                        missing_digits += (p_counter[digit] - d_counter[digit])
+                
                 # Find the number of intersections
-                t_accuracy += len(list((p_counter & d_counter).elements()))
-                t_accuracy -= len(list((p_counter - d_counter).elements()))
+                correct_digits = len(list((p_counter & d_counter).elements()))
+
+                t_accuracy += correct_digits
+                t_accuracy -= extra_digits
+                t_accuracy -= missing_digits
+
+                #Difference
+                # all_keys = set(p_counter.keys()).union(set(d_counter.keys()))
+                # total_difference = sum(abs(p_counter[key] - d_counter[key]) for key in all_keys)
+                # t_accuracy -= total_difference
+
+
+                # t_accuracy -= len(list((p_counter - d_counter).elements()))
 
                 # # If the number of digits is not the same, then the accuracy is 0
                 # if len(digits) != len(p_digits):
@@ -186,7 +253,9 @@ class Evaluate:
         #     json.dumps(data, f)
 
     def compareClassifierDigitAndGroundTruth(self):
-        test_set_dir = "../stable-diffusion/data/mnist_dataset/dataset"
+        # test_set_dir = "../stable-diffusion/data/mnist_dataset/dataset"
+        test_set_dir = "../data/new_w_grid_pos/test_dataset"
+
         all_image_files = os.listdir(test_set_dir)
         data = {}
         wrong = 0
@@ -233,12 +302,68 @@ class Evaluate:
 
 
 if __name__ == "__main__":
+    print("Evaluating...")
     e = Evaluate()
     e.compareClassifierDigitAndGroundTruth()
-    # e.calculate_relationships_on_testset('../ControlNet/cn_test_outputs/typed_m12e152_1','testset_typed_m12e152_1_cn.pkl' )
+    # e.calculate_relationships_on_testset('../ControlNet/cn_test_outputs/typed_dot_m15e181_2','softmax_testset_typed_dot_m15e181_2_cn.pkl' )
+
+    # print("testset_m12e152_baseline")
+    # data1 = pickle.load(open('softmax_cntestset_m12e152_1_baseline.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('softmax_cntestset_m12e152_2_baseline.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('softmax_cntestset_m12e152_3_baseline.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
+
+    # print("Typed testset_m12e152_")
+    # data1 = pickle.load(open('softmax_testset_typed_m12e152_1_cn.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('softmax_testset_typed_m12e152_2_cn.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('softmax_testset_typed_m12e152_3_cn.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
+
+    # print("Typed testset_m12e152_")
+    # data1 = pickle.load(open('softmax_testset_typed_dot_m12e152_1_cn.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('softmax_testset_typed_dot_m12e152_2_cn.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('softmax_testset_typed_dot_m12e152_3_cn.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
+
+    # print("testset_m15e181_baseline")
+    # data1 = pickle.load(open('softmax_cntestset_m15e181_1_baseline.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('softmax_cntestset_m15e181_2_baseline.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('softmax_cntestset_m15e181_3_baseline.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
+
+    # print("Typed testset_m15e181_")
+    # data1 = pickle.load(open('softmax_testset_typed_m15e181_1_cn.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('softmax_testset_typed_m15e181_2_cn.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # # data3 = pickle.load(open('softmax_testset_typed_m15e181_3_cn.pkl', 'rb'))
+    # # score3 = e.compute_accuracy_strict(data3)
+    # print("Avg: ", (score1 + score2)/2)
+
+    # data1 = pickle.load(open('softmax_testset_m15e181_1_cn.pkl', 'rb'))
+    # score1 = e.compute_accurary(data1)
+    # data2 = pickle.load(open('softmax_testset_m15e181_2_cn.pkl', 'rb'))
+    # score2 = e.compute_accurary(data2)
+    # data3 = pickle.load(open('softmax_testset_m15e181_3_cn.pkl', 'rb'))
+    # score3 = e.compute_accurary(data3)
+    # print("Avg: ", (score1 + score2 + score3)/3)
+
+
     # data = pickle.load(open('testset_m12e152_1.pkl', 'rb'))
     # e.compute_accurary(data)
-    # e.calculate_relationships_on_testset('../stable-diffusion/ldm_test_outputs/test_set_baseline_m11e7_3','testset_m11e7_3_baseline.pkl' )
+    # e.calculate_relationships_on_testset('../stable-diffusion/ldm_test_outputs/cntestset_baseline_m15e181_1','softmax_cntestset_m15e181_1_baseline.pkl' )
     # print("testset_m6e30_baseline")
     # data1 = pickle.load(open('testset_m6e30_1_baseline.pkl', 'rb'))
     # score1 = e.compute_accurary(data1)
@@ -249,11 +374,11 @@ if __name__ == "__main__":
     # print("Avg: ", (score1 + score2 + score3)/3)
 
     # print("testset_m12e152_baseline")
-    # data1 = pickle.load(open('testset_m12e152_1_baseline.pkl', 'rb'))
+    # data1 = pickle.load(open('softmax_cntestset_m12e152_1_baseline.pkl', 'rb'))
     # score1 = e.compute_accurary(data1)
-    # data2 = pickle.load(open('testset_m12e152_2_baseline.pkl', 'rb'))
+    # data2 = pickle.load(open('softmax_cntestset_m12e152_2_baseline.pkl', 'rb'))
     # score2 = e.compute_accurary(data2)
-    # data3 = pickle.load(open('testset_m12e152_3_baseline.pkl', 'rb'))
+    # data3 = pickle.load(open('softmax_cntestset_m12e152_3_baseline.pkl', 'rb'))
     # score3 = e.compute_accurary(data3)
     # print("Avg: ", (score1 + score2 + score3)/3)
 
@@ -269,11 +394,11 @@ if __name__ == "__main__":
 
 
     # print("testset_m15e181_baseline")
-    # data1 = pickle.load(open('testset_m15e181_1_baseline.pkl', 'rb'))
+    # data1 = pickle.load(open('softmax_cntestset_m15e181_1_baseline.pkl', 'rb'))
     # score1 = e.compute_accurary(data1)
-    # data2 = pickle.load(open('testset_m15e181_2_baseline.pkl', 'rb'))
+    # data2 = pickle.load(open('softmax_cntestset_m15e181_2_baseline.pkl', 'rb'))
     # score2 = e.compute_accurary(data2)
-    # data3 = pickle.load(open('testset_m15e181_3_baseline.pkl', 'rb'))
+    # data3 = pickle.load(open('softmax_cntestset_m15e181_3_baseline.pkl', 'rb'))
     # score3 = e.compute_accurary(data3)
     # print("Avg: ", (score1 + score2 + score3)/3)
 
