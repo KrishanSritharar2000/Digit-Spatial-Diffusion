@@ -199,15 +199,15 @@ digits_to_combine = [3, 5, 1, 7, 0, 0, 7]
 counter = 0
 imagesToMake = 10000
 start = time.time()
-for i in range(imagesToMake):
-    prompt = gen.create_a_prompt(3)
-    print(prompt)
-    combined_image, grid = gen.generate_image(prompt)
-    # combined_image = gen.create_combined_image(digits_to_combine)
-    grid_string = "".join([str(x) for x in grid])
+# for i in range(imagesToMake):
+#     prompt = gen.create_a_prompt(3)
+#     print(prompt)
+#     combined_image, grid = gen.generate_image(prompt)
+#     # combined_image = gen.create_combined_image(digits_to_combine)
+#     grid_string = "".join([str(x) for x in grid])
     
-    #save the image with the filename as the prompt
-    combined_image.save(f"data/new_w_grid_pos/train_dataset/{counter}_{prompt[0]}_{grid_string}.png")
-    counter += 1
+#     #save the image with the filename as the prompt
+#     combined_image.save(f"data/new_w_grid_pos/train_dataset/{counter}_{prompt[0]}_{grid_string}.png")
+#     counter += 1
 print(f"Generated {gen.attempts} images to produce {imagesToMake} images")
 print(f"Time taken: {time.time() - start} seconds")

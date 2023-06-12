@@ -14,13 +14,13 @@ from cldm.ddim_hacked import DDIMSampler
 from mnist_control_dataset import MNISTControlDataset
 
 
-model = create_model('./models/model6_epoch30_control.yaml').cpu()
-model.load_state_dict(load_state_dict('./logs/2023-05-27T20-42-56_control_mnist_m6e30_take2/checkpoints/epoch=59-step=16919-val_loss=0.00.ckpt', location='cuda'))
+model = create_model('./models/model12_epoch152_control.yaml').cpu()
+model.load_state_dict(load_state_dict('./logs/2023-06-05T09-56-24_control_mnist_m12e152_typed/checkpoints/epoch=129-step=292499-val_loss=0.000000.ckpt', location='cuda'))
 model = model.cuda()
 ddim_sampler = DDIMSampler(model)
 
 
-def process(prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_digit_3, input_image, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta, low_threshold, high_threshold):
+def process(prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_digit_3, dot, input_image, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta, low_threshold, high_threshold):
     with torch.no_grad():
         # img = resize_image(HWC3(input_image), image_resolution)
         # H, W, C = img.shape
@@ -31,9 +31,15 @@ def process(prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prom
         # control = torch.from_numpy(detected_map.copy()).float().cuda() / 255.0
         # control = torch.stack([control for _ in range(num_samples)], dim=0)
         # control = einops.rearrange(control, 'b h w c -> b c h w').clone()
+        print("Running with prompt:")
         prompt = " ".join([prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_digit_3]).strip()
 
-        control = MNISTControlDataset.convertLabelToHintTensor(prompt).cuda()
+
+
+        # controlImg = MNISTControlDataset.convertLabelToHintTensor(prompt).cuda()
+        grid = MNISTControlDataset.generate_grid_from_prompt(prompt)
+        controlImg = MNISTControlDataset.create_control_image(grid, tensor=True, normalise=True, resize=True, dot=dot).cuda()
+        print("prompt:", prompt, "grid:", grid)
         control = torch.stack([control for _ in range(num_samples)], dim=0)
 
         if seed == -1:
@@ -64,10 +70,11 @@ def process(prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prom
         # x_samples = (einops.rearrange(x_samples, 'b c h w -> b h w c') * 127.5 + 127.5).cpu().numpy().clip(0, 255).astype(np.uint8)
         x_samples = np.squeeze(x_samples, axis=1)
         results = [x_samples[i] for i in range(num_samples)]
-    return results
+    return controlImg + results
 
 
 block = gr.Blocks().queue()
+print("Started")
 with block:
     with gr.Row():
         gr.Markdown("## Control Stable Diffusion with Canny Edge Maps")
@@ -80,6 +87,7 @@ with block:
             prompt_digit_2 = gr.Dropdown(label="Prompt Digit 2", choices=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
             relationship_2 = gr.Dropdown(label="Relationship 2", choices=['left of', 'right of', 'above', 'below'])
             prompt_digit_3 = gr.Dropdown(label="Prompt Digit 3", choices=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
+            dot = gr.Checkbox(label='Control Image dot', value=False)
 
 
             run_button = gr.Button(label="Run")
@@ -99,7 +107,7 @@ with block:
                                       value='longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality')
         with gr.Column():
             result_gallery = gr.Gallery(label='Output', show_label=False, elem_id="gallery").style(grid=2, height='auto')
-    ips = [prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_digit_3, input_image, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta, low_threshold, high_threshold]
+    ips = [prompt_digit_1, relationship_1, prompt_digit_2, relationship_2, prompt_digit_3, dot, input_image, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta, low_threshold, high_threshold]
     run_button.click(fn=process, inputs=ips, outputs=[result_gallery])
 
 
