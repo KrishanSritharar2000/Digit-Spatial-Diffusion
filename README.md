@@ -2,6 +2,8 @@
 
 Thesis: 👉 [Krishan-Sritharar-Thesis](../main/Krishan_Sritharar_Thesis.pdf)
 
+Hugging Face Models: 👉 [Image Models](https://huggingface.co/Krishan3168/Digit-Spatial-Diffusion)!
+
 In recent years, the growing field of artificial intelligence has opened up exciting opportunities
 in the realm of image synthesis, with a particular interest in the potential
 of text-to-image generation. Among the multitude of techniques available, diffusion
